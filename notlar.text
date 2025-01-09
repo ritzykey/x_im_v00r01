@@ -1,0 +1,6 @@
+core komponentler module/ui_widgetsda olacak 
+feature da genel işler yapılacak
+product ile sayfanın ihtiyacı olan şeyleri çözmek
+coreda projede kullanılan ama projeden bağımsız olan işlemler 
+common ile projenin ihtiyacı olan şeyler paketleri koyabiliriz
+code . module projelerini yeni windowda açar 

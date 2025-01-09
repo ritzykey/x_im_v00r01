@@ -1,0 +1,96 @@
+name: x_im_v00r01
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+
+  #Core
+  equatable: ^2.0.5
+  get_it: ^8.0.0
+
+
+  #Network dependencies
+  vexana: ^5.0.1
+
+  #State
+  flutter_bloc: ^8.1.3
+
+  #Config
+  easy_localization: ^3.0.7
+
+
+  #Utility
+  easy_logger: ^0.0.2
+  logger: ^2.4.0
+  kartal: ^4.1.0
+  google_fonts: ^6.2.1
+
+
+  #Navigation
+  auto_route: ^9.2.2
+
+  widgets:
+    path: module/widgets
+
+  # Modules
+  gen:
+    path: module/gen
+
+  common:
+    path: module/common
+
+  core:
+    path: module/core    
+# vb10:
+#   git:
+#     url:-------------
+
+
+# dependency_overrides: 
+#   cupertino_icons : 1.0.1
+
+dev_dependencies:
+
+  flutter_test:
+    sdk: flutter
+
+  very_good_analysis: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
+  auto_route_generator: ^9.0.0
+  build_runner: ^2.4.13
+  device_preview: ^1.2.0
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+
+
+
+flutter:
+
+
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - asset/translations/
+
+  
