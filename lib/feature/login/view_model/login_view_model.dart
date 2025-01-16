@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:flutter/material.dart';
 import 'package:x_im_v00r01/feature/login/view_model/state/login_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/authenction_operation.dart';
@@ -12,7 +13,8 @@ final class LoginViewModel extends BaseCubit<LoginState> {
   })  : _authenticationOperationService = operationService,
         userCacheOperation = userCacheOperation,
         super(const LoginState(isLoading: false));
-
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   final AuthenticationOperation _authenticationOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
 
@@ -29,9 +31,36 @@ final class LoginViewModel extends BaseCubit<LoginState> {
   }
 
   Future<bool> buttonloading() async {
-    await Future.delayed(const Duration(seconds: 5));
+    final response = await _authenticationOperationService.inlogin(
+      emailController.text,
+      passwordController.text,
+    );
+
+    print('${emailController.text}, ${passwordController.text}');
+
+    if (response == null) {
+      // Handle error case
+      return false;
+    }
+    //await Future.delayed(const Duration(seconds: 5));
 
     //emit(state.copyWith(users: response));
+    userCacheOperation.put('1', UserCacheModel(user: response));
+
+    return true;
+  }
+
+  Future<bool> tokenCheck() async {
+    final token = userCacheOperation.get(
+      '1',
+    );
+    final response = await _authenticationOperationService
+        .tokencheck(token?.user.token?.token ?? '');
+
+    if (response?.token?.token != null) {
+      return true;
+    }
+
     return false;
   }
 }

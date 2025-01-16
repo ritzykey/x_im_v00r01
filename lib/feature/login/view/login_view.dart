@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/login/view/mixin/login_view_mixin.dart';
+import 'package:x_im_v00r01/feature/login/view/widget/UizardTextForm.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/widget/button/custom_login/custom_login_button.dart';
 
@@ -20,194 +21,162 @@ class _LoginViewState extends BaseState<LoginView> with LoginViewMixin {
     final size = MediaQuery.of(context).size;
     final widthScale = size.width / 411.43; // Ekran genişliğine göre ölçek
     final heightScale = size.height / 707.43; // Ekran yüksekliğine göre ölçek
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
 
     return SafeArea(
       child: Scaffold(
         body: ListView(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: heightScale * 40),
-              child: SizedBox(
-                width: 128 * widthScale,
-                height: 128 * heightScale,
-                child: Assets.images.imgLog2.image(package: 'gen'),
-              ),
-            ),
-            Center(
-              child: Container(
-                child: Text(
-                  'XDBM Life Stories',
-                  style: context.general.textTheme.headlineMedium,
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                child: Text(
-                  'Discover inspiring life journey',
-                  style: context.general.textTheme.bodySmall,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 24,
-            ),
-            Center(
-              child: UizardTextForm(
-                heightScale: heightScale,
-                widthScale: widthScale,
-                label: 'Email',
-                controller: emailController,
-                obscure: false,
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 20,
-            ),
-            Center(
-              child: UizardTextForm(
-                heightScale: heightScale,
-                widthScale: widthScale,
-                label: 'Password',
-                controller: passwordController,
-                obscure: true,
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 8,
-            ),
-            Center(
-              child: SizedBox(
-                width: widthScale * 327,
-                height: heightScale * 13,
-                child: TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    overlayColor: WidgetStateProperty.all(
-                      Colors.transparent,
-                    ),
-                    alignment: Alignment.centerRight,
-                    padding: WidgetStateProperty.all(
-                      EdgeInsets.zero,
-                    ),
-                  ),
-                  child: Text(
-                    'Forgot your password ?',
-                    style: context.general.textTheme.labelSmall,
-                    textAlign: TextAlign.right,
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: heightScale * 40),
+                  child: SizedBox(
+                    width: 128 * widthScale,
+                    height: 128 * heightScale,
+                    child: Assets.images.imgLog2.image(package: 'gen'),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 37,
-            ),
-            Center(
-              child: CustomLoginButton(
-                onOperation: loginViewModel.buttonloading,
-                widthScale: widthScale * 327,
-                heightScale: heightScale * 48,
-                title: 'Login',
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 20,
-            ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: widthScale * 141, // Çizginin uzunluğunu ayarla
-                    child: const Divider(
-                      thickness: 1,
-                      color: Colors.grey,
+                Center(
+                  child: Container(
+                    child: Text(
+                      'XDBM Life Stories',
+                      style: context.general.textTheme.headlineMedium,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text('or'),
-                  ),
-                  SizedBox(
-                    width: widthScale * 141, // Çizginin uzunluğunu ayarla
-                    child: const Divider(
-                      thickness: 1,
-                      color: Colors.grey,
+                ),
+                Center(
+                  child: Container(
+                    child: Text(
+                      'Discover inspiring life journey',
+                      style: context.general.textTheme.bodySmall,
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: heightScale * 16,
-            ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Ortalamak için
+                ),
+                SizedBox(
+                  height: heightScale * 24,
+                ),
+                Center(
+                  child: UizardTextForm(
+                    heightScale: heightScale,
+                    widthScale: widthScale,
+                    label: 'Email',
+                    controller: loginViewModel.emailController,
+                    obscure: false,
+                  ),
+                ),
+                SizedBox(
+                  height: heightScale * 20,
+                ),
+                Center(
+                  child: UizardTextForm(
+                    heightScale: heightScale,
+                    widthScale: widthScale,
+                    label: 'Password',
+                    controller: loginViewModel.passwordController,
+                    obscure: true,
+                  ),
+                ),
+                SizedBox(
+                  height: heightScale * 8,
+                ),
+                Center(
+                  child: SizedBox(
+                    width: widthScale * 327,
+                    height: heightScale * 13,
+                    child: TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        overlayColor: WidgetStateProperty.all(
+                          Colors.transparent,
+                        ),
+                        alignment: Alignment.centerRight,
+                        padding: WidgetStateProperty.all(
+                          EdgeInsets.zero,
+                        ),
+                      ),
+                      child: Text(
+                        'Forgot your password ?',
+                        style: context.general.textTheme.labelSmall,
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: heightScale * 37,
+                ),
+                Center(
+                  child: CustomLoginButton(
+                    onOperation: loginViewModel.buttonloading,
+                    widthScale: widthScale * 327,
+                    heightScale: heightScale * 48,
+                    title: 'Login',
+                  ),
+                ),
+                SizedBox(
+                  height: heightScale * 20,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: widthScale * 141, // Çizginin uzunluğunu ayarla
+                        child: const Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('or'),
+                      ),
+                      SizedBox(
+                        width: widthScale * 141, // Çizginin uzunluğunu ayarla
+                        child: const Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: heightScale * 16,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.center, // Ortalamak için
 
-                children: [
-                  CustomLoginButton(
-                    onOperation: loginViewModel.buttonloading,
-                    widthScale: widthScale * 157,
-                    heightScale: heightScale * 48,
-                    title: 'Facebook',
-                    icon: Assets.icons.facebook.svg(
-                      package: 'gen',
-                      width: 25,
-                    ),
+                    children: [
+                      CustomLoginButton(
+                        onOperation: loginViewModel.buttonloading,
+                        widthScale: widthScale * 157,
+                        heightScale: heightScale * 48,
+                        title: 'Facebook',
+                        icon: Assets.icons.facebook.svg(
+                          package: 'gen',
+                          width: 25,
+                        ),
+                      ),
+                      SizedBox(width: widthScale * 13),
+                      CustomLoginButton(
+                        onOperation: loginViewModel.buttonloading,
+                        widthScale: widthScale * 157,
+                        heightScale: heightScale * 48,
+                        title: 'Google',
+                        icon: Assets.icons.google.svg(
+                          package: 'gen',
+                          width: 20,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: widthScale * 13),
-                  CustomLoginButton(
-                    onOperation: loginViewModel.buttonloading,
-                    widthScale: widthScale * 157,
-                    heightScale: heightScale * 48,
-                    title: 'Google',
-                    icon: Assets.icons.google.svg(
-                      package: 'gen',
-                      width: 20,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class UizardTextForm extends StatelessWidget {
-  const UizardTextForm({
-    required this.heightScale,
-    required this.widthScale,
-    required this.label,
-    required this.controller,
-    required this.obscure,
-    super.key,
-  });
-
-  final double heightScale;
-  final double widthScale;
-  final String label;
-  final TextEditingController controller;
-  final bool obscure;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: widthScale * 327,
-      height: heightScale * 48,
-      child: TextFormField(
-        style: context.general.textTheme.bodyMedium,
-        controller: controller,
-        obscureText: obscure,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: label,
-          labelStyle: context.general.textTheme.bodySmall,
         ),
       ),
     );

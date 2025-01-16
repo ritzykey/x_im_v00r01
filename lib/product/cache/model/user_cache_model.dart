@@ -4,23 +4,23 @@ import 'package:kartal/kartal.dart';
 
 final class UserCacheModel with CacheModel {
   UserCacheModel({required this.user});
-  UserCacheModel.empty() : user = User();
-  final User user;
+  UserCacheModel.empty() : user = LoginResponseModel2();
+  final LoginResponseModel2 user;
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
     final jsonMap = json as Map<String, dynamic>?;
     if (jsonMap == null) {
-      CustomLogger.showError<User>('Json cannot be null');
+      CustomLogger.showError<LoginResponseModel2>('Json cannot be null');
       return this;
     }
     return copyWith(
-      user: User.fromJson(jsonMap),
+      user: LoginResponseModel2.fromJson(jsonMap),
     );
   }
 
   @override
-  String get id => user.id.toString();
+  String get id => user.user?.id.toString() ?? '';
 
   @override
   Map<String, dynamic> toJson() {
@@ -28,7 +28,7 @@ final class UserCacheModel with CacheModel {
   }
 
   UserCacheModel copyWith({
-    User? user,
+    LoginResponseModel2? user,
   }) {
     return UserCacheModel(
       user: user ?? this.user,

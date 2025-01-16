@@ -1,18 +1,17 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:x_im_v00r01/feature/login/view/login_view.dart';
-import 'package:x_im_v00r01/feature/login/view_model/login_view_model.dart';
-import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
+import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
+import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/product/service/login_service.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
-mixin LoginViewMixin on BaseState<LoginView> {
+// manage your home view screen
+mixin HomenewViewMixin on BaseState<HomenewView> {
   @override
   late final ProductNetworkManager productNetworkManager;
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
-  late final LoginViewModel loginViewModel;
+  late final HomenewViewModel homenewViewModel;
 
   @override
   void initState() {
@@ -22,25 +21,9 @@ mixin LoginViewMixin on BaseState<LoginView> {
     ProductStateItems.productNetworkManager.listenErrorState(
       onErrorStatus: productNetworkErrorManager.handleError,
     );
-    loginViewModel = LoginViewModel(
+    homenewViewModel = HomenewViewModel(
       operationService: LoginService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
-  }
-
-  // if (await loginViewModel.tokenCheck()) {
-  //   context.router.navigate(const HomenewRoute());
-  // }
-  Future<void> _initializeAsyncWork() async {
-    // Token doğrulama işlemi
-    final isValid = await loginViewModel.tokenCheck();
-
-    if (isValid) {
-      context.router.navigate(const HomenewRoute());
-    }
-    // Token geçersizse başka bir sayfaya yönlendirme yapılabilir
-    if (!isValid) {
-      context.router.navigate(const LoginRoute());
-    }
   }
 }

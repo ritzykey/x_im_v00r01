@@ -24,7 +24,7 @@ dependencies:
 
 
   #Network dependencies
-  vexana: ^5.0.1
+  vexana: ^5.0.2
 
   #State
   flutter_bloc: ^8.1.3

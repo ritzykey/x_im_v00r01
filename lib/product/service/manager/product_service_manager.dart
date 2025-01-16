@@ -8,7 +8,9 @@ import 'package:x_im_v00r01/product/init/config/app_environment.dart';
 final class ProductNetworkManager extends NetworkManager<EmptyModel> {
   ProductNetworkManager.base()
       : super(
+          isEnableLogger: true,
           options: BaseOptions(
+            receiveTimeout: const Duration(seconds: 20),
             baseUrl: AppEnvironmentItems.baseurl.value,
           ),
         );

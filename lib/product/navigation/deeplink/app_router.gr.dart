@@ -75,6 +75,25 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomenewView]
+class HomenewRoute extends PageRouteInfo<void> {
+  const HomenewRoute({List<PageRouteInfo>? children})
+      : super(
+          HomenewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomenewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const HomenewView();
+    },
+  );
+}
+
+/// generated route for
 /// [LoginView]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
