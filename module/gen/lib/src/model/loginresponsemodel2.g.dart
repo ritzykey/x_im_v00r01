@@ -28,7 +28,8 @@ User2 _$User2FromJson(Map<String, dynamic> json) => User2(
       username: json['username'] as String?,
       email: json['email'] as String?,
       image: json['image'] as String?,
-    )..fullName = json['fullName'] as String?;
+      fullName: json['fullName'] as String?,
+    );
 
 Map<String, dynamic> _$User2ToJson(User2 instance) => <String, dynamic>{
       'id': instance.id,

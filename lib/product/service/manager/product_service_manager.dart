@@ -13,6 +13,7 @@ final class ProductNetworkManager extends NetworkManager<EmptyModel> {
             receiveTimeout: const Duration(seconds: 20),
             baseUrl: AppEnvironmentItems.baseurl.value,
           ),
+          fileManager: LocalFile(),
         );
 
   /// Handle error

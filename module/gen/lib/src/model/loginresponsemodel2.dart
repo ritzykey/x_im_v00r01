@@ -11,6 +11,7 @@ class LoginResponseModel2 extends INetworkModel<LoginResponseModel2>
 
   factory LoginResponseModel2.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseModel2FromJson(json);
+
   final User2? user;
   final Token2? token;
 
@@ -25,15 +26,6 @@ class LoginResponseModel2 extends INetworkModel<LoginResponseModel2>
     return _$LoginResponseModel2FromJson(json);
   }
 
-  LoginResponseModel2 copyWith({
-    User2? user,
-    Token2? token,
-  }) {
-    return LoginResponseModel2(
-      user: user ?? this.user,
-      token: token ?? this.token,
-    );
-  }
 }
 
 @JsonSerializable()

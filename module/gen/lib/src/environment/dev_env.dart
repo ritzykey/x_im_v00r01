@@ -49,4 +49,5 @@ final class DevEnv implements AppConfiguration {
 
 // Yorum: Bu komut, 'build_runner' aracını çalıştırarak .g.dart dosyasını üretir.
 // --delete-conflicting-outputs ile eski ve çakışan dosyalar silinir.
+// dart run build_runner clean
 // flutter pub run build_runner build --delete-conflicting-outputs

@@ -13,6 +13,33 @@ void main() {
     AppEnvironment.general();
     manager = ProductNetworkManager.base();
   });
+
+  test('post /auth service', () async {
+    //manager.clearHeader();
+    //manager.addBaseHeader(const MapEntry('Content-Type', 'application/json'));
+    //manager.addBaseHeader(const MapEntry('accept-encoding', 'gzip'));
+    //manager.addBaseHeader(const MapEntry('cache-control', 'no-cache'));
+    final response =
+        await manager.send<LoginResponseModel2, LoginResponseModel2>(
+      ProductServicePath.login.value,
+      parseModel: LoginResponseModel2(),
+      method: RequestType.POST,
+      data: {
+        'email': 'user4@mail.com',
+        'password': 'P4sswoord',
+      },
+    );
+    print('**** TOKEN *****');
+    print(response.data!.token!.token);
+    print('****************');
+
+    if (response.error != null) {
+      print('**** ERROR *****');
+      expect(response.error?.statusCode, '200');
+      print('****************');
+    }
+  });
+
   test('get users items from api', () async {
     //manager. 1.senin içinde hangi türde parse yapacağın
     //2.olarak ne türde döneceğini ister
