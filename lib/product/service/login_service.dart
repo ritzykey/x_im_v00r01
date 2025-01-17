@@ -6,6 +6,7 @@ import 'package:gen/gen.dart';
 import 'package:http/http.dart' as http;
 import 'package:vexana/vexana.dart';
 import 'package:x_im_v00r01/product/service/interface/authenction_operation.dart';
+import 'package:x_im_v00r01/product/service/manager/product_service_manager.dart';
 import 'package:x_im_v00r01/product/service/manager/product_service_path.dart';
 
 final class LoginService extends AuthenticationOperation {
@@ -41,33 +42,22 @@ final class LoginService extends AuthenticationOperation {
 
   @override
   Future<LoginResponseModel2?> inlogin(String email, String password) async {
-    // _networkManager.addBaseHeader(const MapEntry('Content-Type', 'application/json'));
-    //_networkManager.addBaseHeader(const MapEntry('Authorization', ''));
-
-    try {
-      _networkManager.clearHeader();
-      _networkManager
-          .addBaseHeader(const MapEntry('Content-Type', 'application/json'));
-
-      final response =
-          await _networkManager.send<LoginResponseModel2, LoginResponseModel2>(
-        ProductServicePath.login.value,
-        parseModel: LoginResponseModel2(),
-        method: RequestType.POST,
-        data: {
-          'email': email,
-          'password': password,
-        },
-        expiration: const Duration(seconds: 3),
-      );
-      if (response.data != null) {
-        return response.data;
-      }
-      return null;
-    } catch (e) {
-      print(e);
-      return null;
+    final manager = ProductNetworkManager.base();
+    final response =
+        await manager.send<LoginResponseModel2, LoginResponseModel2>(
+      ProductServicePath.login.value,
+      parseModel: LoginResponseModel2(),
+      method: RequestType.POST,
+      data: {
+        'email': email,
+        'password': password,
+      },
+      expiration: const Duration(seconds: 3),
+    );
+    if (response.data != null) {
+      return response.data;
     }
+    return null;
   }
 
   @override
