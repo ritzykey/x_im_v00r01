@@ -6,7 +6,6 @@ import 'package:gen/gen.dart';
 import 'package:http/http.dart' as http;
 import 'package:vexana/vexana.dart';
 import 'package:x_im_v00r01/product/service/interface/authenction_operation.dart';
-import 'package:x_im_v00r01/product/service/manager/product_service_manager.dart';
 import 'package:x_im_v00r01/product/service/manager/product_service_path.dart';
 
 final class LoginService extends AuthenticationOperation {
@@ -42,9 +41,9 @@ final class LoginService extends AuthenticationOperation {
 
   @override
   Future<LoginResponseModel2?> inlogin(String email, String password) async {
-    final manager = ProductNetworkManager.base();
+    _networkManager.clearHeader();
     final response =
-        await manager.send<LoginResponseModel2, LoginResponseModel2>(
+        await _networkManager.send<LoginResponseModel2, LoginResponseModel2>(
       ProductServicePath.login.value,
       parseModel: LoginResponseModel2(),
       method: RequestType.POST,
@@ -61,15 +60,13 @@ final class LoginService extends AuthenticationOperation {
   }
 
   @override
-  Future<LoginResponseModel2?> tokencheck(String token) async {
+  Future<EmptyModel?> tokencheck(String token) async {
     _networkManager.addBaseHeader(MapEntry('Authorization', 'Bearer $token'));
 
-    final response =
-        await _networkManager.send<LoginResponseModel2, LoginResponseModel2>(
-      ProductServicePath.login.value,
-      parseModel: LoginResponseModel2(),
+    final response = await _networkManager.send<EmptyModel, EmptyModel>(
+      ProductServicePath.secure.value,
+      parseModel: const EmptyModel(),
       method: RequestType.GET,
-      options: Options(receiveTimeout: const Duration(seconds: 20)),
     );
 
     if (response.data != null) {

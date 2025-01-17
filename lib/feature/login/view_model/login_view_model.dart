@@ -57,7 +57,7 @@ final class LoginViewModel extends BaseCubit<LoginState> {
     final response = await _authenticationOperationService
         .tokencheck(token?.user.token?.token ?? '');
 
-    if (response?.token?.token != null) {
+    if (response?.name != null) {
       return true;
     }
 
