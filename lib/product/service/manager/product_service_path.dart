@@ -2,10 +2,11 @@
 // ignore_for_file: public_member_api_docs
 
 enum ProductServicePath {
-  userV1('users'),
+  userV1('api/v1/users'),
   posts('posts'),
   usersV2('v2/users'),
-  login('auth');
+  login('api/v1/auth'),
+  secure('secure');
 
   final String value;
   const ProductServicePath(this.value);

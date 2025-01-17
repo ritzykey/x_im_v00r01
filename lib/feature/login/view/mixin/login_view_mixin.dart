@@ -26,6 +26,7 @@ mixin LoginViewMixin on BaseState<LoginView> {
       operationService: LoginService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
+    _initializeAsyncWork();
   }
 
   // if (await loginViewModel.tokenCheck()) {
