@@ -29,6 +29,76 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
     return BlocProvider(
       create: (context) => homenewViewModel,
       child: Scaffold(
+        body: Stack(
+          children: [
+            /*Positioned.fill(
+              child: Image(
+                image: AssetImage('asset/translations/pexels1.jpg'),
+                fit: BoxFit.cover, // Resmin Stack'e nasıl sığacağını belirtir
+              ),
+            ),*/
+            CustomScrollView(
+              slivers: [
+                const SliverAppBar(
+                  backgroundColor: Colors.black, // Başlık başlığı rengi
+                  expandedHeight: 250,
+                  toolbarHeight: 20, // Kapalı halindeki yükseklik
+                  leading: SizedBox(),
+                  floating: true, // Kaydırıldığında görünmesini sağlar
+
+                  pinned: true,
+                  snap: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image(
+                      image: AssetImage('asset/translations/pexels1.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SliverAppBar(
+                  forceMaterialTransparency: true,
+                  backgroundColor: Colors.white,
+                  toolbarHeight: 40,
+                  flexibleSpace: Row(
+                    children: [
+                      Container(
+                        color: Colors.amber,
+                        child: const Text('data'),
+                      ),
+                    ],
+                  ),
+                  leading: const SizedBox(),
+                ),
+                const SliverAppBar(
+                  backgroundColor: Colors.black,
+                  expandedHeight: 50,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text('Başlık'),
+                  ),
+                  leading: SizedBox(),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    color: Colors.black,
+                    width: 200,
+                    height: 2000,
+                    child: const Text('data'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+//----------------------------------------------------------------
+  BlocProvider<HomenewViewModel> firstHomeNew(BuildContext context) {
+    return BlocProvider(
+      create: (context) => homenewViewModel,
+      child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, top: 32),
           child: ListView(
