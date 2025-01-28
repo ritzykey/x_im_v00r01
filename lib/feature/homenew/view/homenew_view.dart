@@ -10,6 +10,7 @@ import 'package:x_im_v00r01/feature/homenew/view/widget/HomenewText.dart';
 import 'package:x_im_v00r01/feature/homenew/view/widget/SearchAndFriend.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
+import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 
 @RoutePage()
@@ -21,6 +22,8 @@ class HomenewView extends StatefulWidget {
 }
 
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
+  int selectedIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -54,11 +57,12 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                     return state.content ??
                         [
                           Content(
-                              email: '',
-                              fullName: '',
-                              id: '',
-                              username: '',
-                              image: '')
+                            email: '',
+                            fullName: '',
+                            id: '',
+                            username: '',
+                            image: '',
+                          ),
                         ];
                   },
                   builder: (context, state) {
@@ -94,7 +98,10 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       child: HomenewStoryButton(
                         width: 161,
                         height: 184,
-                        onOperation: homenewViewModel.fetchUsers,
+                        onOperation: () async {
+                          await context.router.navigate(const StoryyRoute());
+                          return true; // Ensure the return type is Future<bool>
+                        },
                       ),
                     );
                   },
@@ -102,6 +109,62 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
               ),
             ],
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.black,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.black,
+              ),
+              label: 'Settings',
+            ),
+          ],
+          currentIndex: selectedIndex, // Selected index (Settings)
+          onTap: (index) {
+            // Bottom navigation logic
+            setState(() {
+              selectedIndex = index;
+              switch (selectedIndex) {
+                case 0:
+                  // Navigate to Home route
+                  context.router.navigate(const HomenewRoute());
+                // case 1:
+                //   // Navigate to Search route
+                //   context.router.navigate(const SearchRoute());
+                // case 2:
+                //   // Navigate to Profile route
+                //   context.router.navigate(const ProfileRoute());
+                case 3:
+                  // Navigate to Settings route
+                  context.router.navigate(const SettingsRoute());
+                default:
+                  break;
+              }
+            });
+            print('$index');
+          },
         ),
       ),
     );

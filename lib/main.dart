@@ -20,6 +20,16 @@ class MyApp extends StatelessWidget {
   static final _appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+    final widthScale = size.width / 375; // Ekran genişliğine göre ölçek
+    final heightScale = size.height / 643; // Ekran yüksekliğine göre ölçek
+    print(' $width aaaaa $height');
+
+    context.read<ProductViewModel>().screenSize(widthScale, heightScale);
+    print(' $widthScale ssss $heightScale');
+
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
       builder: CustomResponsive.build,

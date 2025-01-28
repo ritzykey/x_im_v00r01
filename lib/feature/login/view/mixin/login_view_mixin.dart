@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
 import 'package:x_im_v00r01/feature/login/view_model/login_view_model.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
@@ -43,5 +44,7 @@ mixin LoginViewMixin on BaseState<LoginView> {
     if (!isValid) {
       context.router.navigate(const LoginRoute());
     }
+
+    FlutterNativeSplash.remove();
   }
 }

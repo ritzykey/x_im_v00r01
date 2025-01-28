@@ -10,4 +10,9 @@ final class ProductViewModel extends BaseCubit<ProductState> {
   void changeThemeMode(ThemeMode themeMode) {
     emit(state.copyWith(themeMode: themeMode));
   }
+
+  void screenSize(double widthScale, double heightScale) {
+    emit(state.copyWith(widthScale: widthScale));
+    emit(state.copyWith(heightScale: heightScale));
+  }
 }

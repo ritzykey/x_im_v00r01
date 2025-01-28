@@ -42,9 +42,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/imagelog.svg
   SvgGenImage get imagelog => const SvgGenImage('assets/icons/imagelog.svg');
 
+  /// File path: assets/icons/logo_splash.svg
+  SvgGenImage get logoSplash =>
+      const SvgGenImage('assets/icons/logo_splash.svg');
+
   /// List of all assets
   List<SvgGenImage> get values =>
-      [imageLogin, facebook, google, icLove, imagelog];
+      [imageLogin, facebook, google, icLove, imagelog, logoSplash];
 }
 
 class $AssetsImagesGen {

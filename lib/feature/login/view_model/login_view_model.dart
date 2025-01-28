@@ -45,19 +45,24 @@ final class LoginViewModel extends BaseCubit<LoginState> {
     //await Future.delayed(const Duration(seconds: 5));
 
     //emit(state.copyWith(users: response));
+
     userCacheOperation.put('1', UserCacheModel(user: response));
+
+    emit(state.copyWith(model: response));
 
     return true;
   }
 
   Future<bool> tokenCheck() async {
-    final token = userCacheOperation.get(
+    final model = userCacheOperation.get(
       '1',
     );
     final response = await _authenticationOperationService
-        .tokencheck(token?.user.token?.token ?? '');
+        .tokencheck(model?.user.token?.token ?? '');
 
-    if (response?.name != null) {
+    if (response?.name != null && model != null) {
+      emit(state.copyWith(model: model.user));
+
       return true;
     }
 

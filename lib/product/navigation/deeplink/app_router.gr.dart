@@ -111,3 +111,41 @@ class LoginRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [SettingsView]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsView();
+    },
+  );
+}
+
+/// generated route for
+/// [StoryyView]
+class StoryyRoute extends PageRouteInfo<void> {
+  const StoryyRoute({List<PageRouteInfo>? children})
+      : super(
+          StoryyRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'StoryyRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const StoryyView();
+    },
+  );
+}

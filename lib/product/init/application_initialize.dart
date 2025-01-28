@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kartal/kartal.dart';
 import 'package:logger/logger.dart';
 import 'package:x_im_v00r01/product/init/config/app_environment.dart';
@@ -13,8 +14,8 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 @immutable
 final class AplicationInitiliaze {
   Future<void> make() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     await runZonedGuarded<Future<void>>(
       _initialize,
       (error, stack) {
@@ -36,6 +37,7 @@ final class AplicationInitiliaze {
     _productEnvironmentWithContainer();
 
     await ProductStateItems.productCache.init();
+
     //await ProductStateItems.productCache.loadData();
     //await ProductStateItems.productCache.updateData();
   }
