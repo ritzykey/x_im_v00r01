@@ -3,9 +3,12 @@ import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 
 final class UserCacheModel with CacheModel {
-  UserCacheModel({required this.user});
-  UserCacheModel.empty() : user = LoginResponseModel2();
+  UserCacheModel({required this.user, this.isFirstTime});
+  UserCacheModel.empty()
+      : user = LoginResponseModel2(),
+        isFirstTime = null;
   final LoginResponseModel2 user;
+  final bool? isFirstTime; // Opsiyonel alan
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -29,9 +32,11 @@ final class UserCacheModel with CacheModel {
 
   UserCacheModel copyWith({
     LoginResponseModel2? user,
+    bool? isFirstTime,
   }) {
     return UserCacheModel(
       user: user ?? this.user,
+      isFirstTime: isFirstTime ?? this.isFirstTime,
     );
   }
 }

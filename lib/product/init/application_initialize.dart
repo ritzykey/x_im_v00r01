@@ -38,6 +38,8 @@ final class AplicationInitiliaze {
 
     await ProductStateItems.productCache.init();
 
+    FlutterNativeSplash.remove();
+
     //await ProductStateItems.productCache.loadData();
     //await ProductStateItems.productCache.updateData();
   }

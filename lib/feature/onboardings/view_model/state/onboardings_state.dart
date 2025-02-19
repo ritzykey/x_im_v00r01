@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:gen/gen.dart';
 
-final class LoginState extends Equatable {
-  const LoginState({required this.isLoading, this.model, this.users});
+final class OnboardingsState extends Equatable {
+  const OnboardingsState({required this.isLoading, this.model, this.users});
 
   final bool isLoading;
   final List<User>? users;
@@ -10,12 +10,12 @@ final class LoginState extends Equatable {
   @override
   List<Object?> get props => [isLoading, users, model];
 
-  LoginState copyWith({
+  OnboardingsState copyWith({
     bool? isLoading,
     List<User>? users,
     LoginResponseModel2? model,
   }) {
-    return LoginState(
+    return OnboardingsState(
       model: model ?? this.model,
       isLoading: isLoading ?? this.isLoading,
       users: users ?? this.users,

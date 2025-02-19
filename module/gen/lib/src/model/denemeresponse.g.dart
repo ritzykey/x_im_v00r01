@@ -28,7 +28,8 @@ DenemeResponseModel _$DenemeResponseModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$DenemeResponseModelToJson(
-        DenemeResponseModel instance) =>
+  DenemeResponseModel instance,
+) =>
     <String, dynamic>{
       'content': instance.content,
       'pageable': instance.pageable,
