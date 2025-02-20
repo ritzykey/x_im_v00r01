@@ -25,5 +25,6 @@ mixin OnboardingsViewMixin on BaseState<OnboardingsView> {
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
+    
   }
 }

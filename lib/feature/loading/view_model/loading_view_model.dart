@@ -23,7 +23,7 @@ final class LoadingViewModel extends BaseCubit<LoadingState> {
   }
 
   void loadData() {
-    userCacheOperation.put('isFirsTime',
+    userCacheOperation.put('1',
         UserCacheModel(user: LoginResponseModel2(), isFirstTime: false));
   }
 }
