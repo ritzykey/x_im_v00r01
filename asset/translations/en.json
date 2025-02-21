@@ -12,5 +12,31 @@
                 "content": "Version Info"
             }
         }
+    },
+    "settings": {
+        "title": "Settings",
+        "login": "Login",
+        "register": "Register",
+        "account": "Account",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System",
+        "help": "Help",
+        "logout": "Logout",
+        "appearance": {
+            "title": "Appearance",
+            "showModal": "Select a Theme"
+        },
+        "language": {
+            "title": "Language",
+            "content": "Language Selection",
+            "showModal": "Select a Language"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "showModal": {
+                "title": "Select a Notification Type"
+            }
+        }
     }
 }

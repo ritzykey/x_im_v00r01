@@ -1,13 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
+import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 import 'package:x_im_v00r01/product/utility/constans/ColorConstants.dart';
+import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 @RoutePage()
 class SettingsView extends StatefulWidget {
@@ -34,7 +37,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                   centerTitle: false,
                   titlePadding: const EdgeInsets.symmetric(horizontal: 16),
                   title: Text(
-                    'Settings',
+                    'settings.title'.tr(),
                     style: context.general.textTheme.headlineSmall,
                   ),
                 ),
@@ -52,7 +55,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                     children: [
                       const SizedBox(height: 16),
                       Text(
-                        'Account',
+                        'settings.account.title'.tr(),
                         style: context.general.textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.w400),
                       ),
@@ -95,7 +98,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                             ),
                             const SizedBox(width: 16),
                             Text(
-                              'Login / Register',
+                              '${'settings.login'.tr()} / ${'settings.register'.tr()}',
                               style: context.general.textTheme.titleLarge
                                   ?.copyWith(
                                 fontWeight: FontWeight.w400,
@@ -107,7 +110,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 32),
                       Text(
-                        'Settings',
+                        'settings.title'.tr(),
                         style: context.general.textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.w400),
                       ),
@@ -115,7 +118,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                       BlocBuilder<SettingsViewModel, SettingsState>(
                         builder: (contextAppearance, dynamic) {
                           return _buildListTile(
-                            'Appearance',
+                            'settings.appearance.title'.tr(),
                             Icons.dark_mode,
                             capitalizeThemeModeName(context),
                             Colors.purple,
@@ -130,17 +133,25 @@ class _SettingsViewState extends BaseState<SettingsView>
                         },
                       ),
                       const SizedBox(height: 8),
-                      _buildListTile(
-                        'Language',
-                        Icons.language,
-                        'EN',
-                        Colors.orange,
-                        context.general.appTheme,
-                        onTab: () {},
+                      BlocBuilder<SettingsViewModel, SettingsState>(
+                        builder: (contextLanguage, state) {
+                          return _buildListTile(
+                            'settings.language.title'.tr(),
+                            Icons.language,
+                            'EN',
+                            Colors.orange,
+                            context.general.appTheme,
+                            onTab: () => _showLanguageModal(
+                              context,
+                              context.general.appTheme,
+                              context.locale.languageCode.toUpperCase(),
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
-                        'Notifications',
+                        'settings.notifications.title'.tr(),
                         Icons.notifications_outlined,
                         '',
                         Colors.blue,
@@ -149,7 +160,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
-                        'Help',
+                        'settings.help'.tr(),
                         Icons.help,
                         '',
                         Colors.green,
@@ -158,7 +169,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
-                        'Logout',
+                        'settings.logout'.tr(),
                         Icons.exit_to_app,
                         '',
                         Colors.red,
@@ -168,7 +179,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                     ],
                   ),
                   Text(
-                    'Version 1.0.0',
+                    '${'general.dialog.version.title'.tr()} 1.0.0',
                     style: context.general.appTheme.textTheme.bodyMedium
                         ?.copyWith(color: Colors.grey.shade500),
                   ),
@@ -211,7 +222,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           children: [
             Text(
               trailing,
-              style: context.general.appTheme.textTheme.bodyLarge
+              style: context.general.appTheme.textTheme.bodySmall
                   ?.copyWith(color: Colors.grey.shade600),
             ),
             const Icon(
@@ -225,7 +236,11 @@ class _SettingsViewState extends BaseState<SettingsView>
     );
   }
 
-  _showAppearanceModal(BuildContext context, ThemeData theme, String current) {
+  void _showAppearanceModal(
+    BuildContext context,
+    ThemeData theme,
+    String current,
+  ) {
     print(current);
     showModalBottomSheet(
       context: context,
@@ -248,7 +263,7 @@ class _SettingsViewState extends BaseState<SettingsView>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Select a Theme',
+                'settings.appearance.showModal'.tr(),
                 style: theme.textTheme.titleLarge,
               ),
               const SizedBox(height: 32),
@@ -257,7 +272,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   Icons.brightness_5,
                   color: Colors.blue,
                 ),
-                title: Text('Light', style: theme.textTheme.bodyLarge),
+                title: Text(
+                  'settings.light'.tr(),
+                  style: theme.textTheme.bodyMedium,
+                ),
                 onTap: () {
                   context
                       .read<ProductViewModel>()
@@ -275,7 +293,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   Icons.brightness_2,
                   color: Colors.orange,
                 ),
-                title: Text('Dark', style: theme.textTheme.bodyLarge),
+                title: Text(
+                  'settings.dark'.tr(),
+                  style: theme.textTheme.bodyMedium,
+                ),
                 onTap: () {
                   context
                       .read<ProductViewModel>()
@@ -293,7 +314,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   Icons.brightness_6,
                   color: Colors.blueGrey,
                 ),
-                title: Text('System', style: theme.textTheme.bodyLarge),
+                title: Text(
+                  'settings.system'.tr(),
+                  style: theme.textTheme.bodyMedium,
+                ),
                 onTap: () {
                   context
                       .read<ProductViewModel>()
@@ -302,7 +326,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                 },
                 trailing: Icon(
                   Icons.check,
-                  color: current == 'system'
+                  color: current == 'System'
                       ? Colors.blueGrey
                       : Colors.transparent,
                 ),
@@ -312,5 +336,96 @@ class _SettingsViewState extends BaseState<SettingsView>
         );
       },
     );
+    return;
+  }
+
+  void _showLanguageModal(
+    BuildContext context,
+    ThemeData theme,
+    String current,
+  ) {
+    print(current);
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: 320,
+          decoration: BoxDecoration(
+            color: context.watch<ProductViewModel>().state.themeMode ==
+                    ThemeMode.dark
+                ? Colors.grey.shade900
+                : Colors.grey.shade200,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'settings.language.showModal'.tr(),
+                style: theme.textTheme.titleLarge,
+              ),
+              const SizedBox(height: 32),
+              ListTile(
+                title: Text('TR', style: theme.textTheme.bodyMedium),
+                onTap: () {
+                  ProductLocalization.updateLanguage(
+                    context: context,
+                    value: Locales.tr,
+                  );
+                  Navigator.pop(context);
+                },
+                trailing: Icon(
+                  Icons.check,
+                  color: current == 'TR' ? Colors.blue : Colors.transparent,
+                ),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                title: Text('EN', style: theme.textTheme.bodyMedium),
+                onTap: () {
+                  ProductLocalization.updateLanguage(
+                    context: context,
+                    value: Locales.en,
+                  );
+                  Navigator.pop(context);
+                },
+                trailing: Icon(
+                  Icons.check,
+                  color: current == 'EN' ? Colors.blue : Colors.transparent,
+                ),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: const Icon(
+                  Icons.language,
+                  color: Colors.orange,
+                ),
+                title: Text(
+                  'settings.system'.tr(),
+                  style: theme.textTheme.bodyMedium,
+                ),
+                onTap: () {
+                  ProductLocalization.updateLanguage(
+                    context: context,
+                    value: Locales.en,
+                  );
+                  Navigator.pop(context);
+                },
+                trailing: Icon(
+                  Icons.check,
+                  color: current == 'EN' ? Colors.blue : Colors.transparent,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    return;
   }
 }
