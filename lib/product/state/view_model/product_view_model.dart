@@ -10,6 +10,7 @@ final class ProductViewModel extends BaseCubit<ProductState> {
   /// [themeMode] is [ThemeMode.light] or [ThemeMode.dark]
   void changeThemeMode(ThemeMode themeMode) {
     emit(state.copyWith(themeMode: themeMode));
+
   }
 
   void screenSize(double widthScale, double heightScale) {
