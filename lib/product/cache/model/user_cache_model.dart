@@ -3,7 +3,9 @@ import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 
 final class UserCacheModel with CacheModel {
+
   UserCacheModel({required this.user, this.isFirstTime});
+
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
         isFirstTime = true;
@@ -29,8 +31,8 @@ final class UserCacheModel with CacheModel {
   @override
   Map<String, dynamic> toJson() {
     return {
-      ...user.toJson(), // Kullanıcı verisini al
-      'isFirstTime': isFirstTime, // isFirstTime değerini de kaydet!
+      ...user.toJson(),
+      'isFirstTime': this.isFirstTime,
     };
   }
 

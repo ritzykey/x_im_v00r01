@@ -31,6 +31,7 @@ final class OnboardingsViewModel extends BaseCubit<OnboardingsState> {
     emit(state.copyWith(isLoading: !state.isLoading));
   }
 
+
   void nextPage() {
     if (state.currentPage < 4) {
       pageController.nextPage(

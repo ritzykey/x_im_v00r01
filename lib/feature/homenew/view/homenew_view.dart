@@ -77,7 +77,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                       BorderRadius.all(Radius.circular(20)),
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      'asset/translations/pexels1.jpg',
+                                      'asset/images/pexels1.jpg',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -516,7 +516,7 @@ class HomenewPage2 extends StatelessWidget {
                                     Padding(
                                       padding: homenewViewModel.dynamicPadding,
                                       child: Image.asset(
-                                        'asset/translations/pexels1.jpg',
+                                        'asset/images/pexels1.jpg',
                                         fit: BoxFit.cover,
                                       ),
                                     ),

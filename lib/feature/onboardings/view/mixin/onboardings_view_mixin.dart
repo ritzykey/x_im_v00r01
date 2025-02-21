@@ -29,6 +29,7 @@ mixin OnboardingsViewMixin on BaseState<OnboardingsView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
     );
+    
   }
 
   final List<OnboardingPage> onboardingPages = [

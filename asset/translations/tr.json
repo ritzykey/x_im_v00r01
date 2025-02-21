@@ -12,5 +12,31 @@
                 "content": "Versiyon Bilgisi"
             }
         }
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "account": "Hesap",
+        "login": "Giriş",
+        "register": "Kayıt",
+        "light": "Açık",
+        "dark": "Koyu",
+        "system": "Sistem",
+        "help": "Yardım",
+        "logout": "Çıkış",
+        "appearance": {
+            "title": "Görünüm",
+            "showModal": "Bir Tema Seçin"
+        },
+        "language": {
+            "title": "Dil",
+            "content": "Dil Seçimi",
+            "showModal": "Bir Dil Seçin"
+        },
+        "notifications": {
+            "title": "Bildirimler",
+            "showModal": {
+                "title": "Bir Bildirim Türü Seçin"
+            }
+        }
     }
 }

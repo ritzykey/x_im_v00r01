@@ -7,12 +7,14 @@ final class ProductState extends Equatable {
     this.heightScale = 1,
     this.themeMode = ThemeMode.light,
     this.selectedindex = 0,
+    this.themeModeName = 'Light',
   });
 
   final ThemeMode themeMode;
   final double widthScale;
   final double heightScale;
   final int selectedindex;
+  final String themeModeName;
 
   @override
   List<Object> get props => [themeMode, widthScale, heightScale, selectedindex];
@@ -22,12 +24,14 @@ final class ProductState extends Equatable {
     double? widthScale,
     double? heightScale,
     int? selectedindex,
+    String? themeModeName,
   }) {
     return ProductState(
       themeMode: themeMode ?? this.themeMode,
       widthScale: widthScale ?? this.widthScale,
       heightScale: heightScale ?? this.heightScale,
       selectedindex: selectedindex ?? this.selectedindex,
+      themeModeName: themeModeName ?? this.themeModeName,
     );
   }
 }
