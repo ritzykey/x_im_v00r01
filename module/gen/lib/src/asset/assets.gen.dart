@@ -76,8 +76,30 @@ class $AssetsLottieGen {
   LottieGenImage get animZombie =>
       const LottieGenImage('assets/lottie/anim_zombie.json');
 
+  /// File path: assets/lottie/onboardscreen1.json
+  LottieGenImage get onboardscreen1 =>
+      const LottieGenImage('assets/lottie/onboardscreen1.json');
+
+  /// File path: assets/lottie/onboardscreen2.json
+  LottieGenImage get onboardscreen2 =>
+      const LottieGenImage('assets/lottie/onboardscreen2.json');
+
+  /// File path: assets/lottie/onboardscreen3.json
+  LottieGenImage get onboardscreen3 =>
+      const LottieGenImage('assets/lottie/onboardscreen3.json');
+
+  /// File path: assets/lottie/onboardscreen4.json
+  LottieGenImage get onboardscreen4 =>
+      const LottieGenImage('assets/lottie/onboardscreen4.json');
+
   /// List of all assets
-  List<LottieGenImage> get values => [animZombie];
+  List<LottieGenImage> get values => [
+        animZombie,
+        onboardscreen1,
+        onboardscreen2,
+        onboardscreen3,
+        onboardscreen4
+      ];
 }
 
 class Assets {
