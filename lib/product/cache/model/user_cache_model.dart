@@ -6,7 +6,7 @@ final class UserCacheModel with CacheModel {
   UserCacheModel({required this.user, this.isFirstTime});
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
-        isFirstTime = null;
+        isFirstTime = true;
   final LoginResponseModel2 user;
   final bool? isFirstTime; // Opsiyonel alan
 
@@ -19,6 +19,7 @@ final class UserCacheModel with CacheModel {
     }
     return copyWith(
       user: LoginResponseModel2.fromJson(jsonMap),
+      isFirstTime: jsonMap['isFirstTime'] as bool?, // isFirstTime'ı al!
     );
   }
 
@@ -27,7 +28,10 @@ final class UserCacheModel with CacheModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return user.toJson();
+    return {
+      ...user.toJson(), // Kullanıcı verisini al
+      'isFirstTime': isFirstTime, // isFirstTime değerini de kaydet!
+    };
   }
 
   UserCacheModel copyWith({

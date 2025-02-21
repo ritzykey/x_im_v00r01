@@ -31,9 +31,8 @@ mixin LoadingViewMixin on BaseState<LoadingView> {
   }
 
   Future<void> _initializeAsyncWork() async {
-    // Token doğrulama işlemi
     Future.delayed(const Duration(seconds: 5), () {
-      context.router.navigate(const NavigationRoute());
+      context.router.replaceAll([const NavigationRoute()]);
     });
   }
 }

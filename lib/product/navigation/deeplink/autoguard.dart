@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:core/core.dart';
-import 'package:gen/gen.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 
@@ -13,19 +12,11 @@ class FirstTimeGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    var userCache = userCacheOperation.get('2');
-    final isFirstTime =
-        userCache?.isFirstTime == null ? true : false; // Null kontrolü
+    var userCache = userCacheOperation.get('isFirstTime');
+    const isFirstTime = true; //userCache?.isFirstTime ?? true; // Null kontrolü
     print('isFirstTime: $isFirstTime');
     if (isFirstTime) {
-      userCacheOperation.put(
-        '2',
-        UserCacheModel(
-          user: LoginResponseModel2(),
-          isFirstTime: false,
-        ),
-      );
-      userCache = userCacheOperation.get('2');
+      userCache = userCacheOperation.get('isFirstTime');
       print(userCache?.isFirstTime); // İlk defa açıldığı için cache'e atayın
       router.push(const OnboardingsRoute());
     } else {
