@@ -22,9 +22,6 @@ class _LoginViewState extends BaseState<LoginView> with LoginViewMixin {
     final size = MediaQuery.of(context).size;
     final widthScale = size.width / 411.43; // Ekran genişliğine göre ölçek
     final heightScale = size.height / 707.43; // Ekran yüksekliğine göre ölçek
-    print(
-      ' ${productViewModel.state.widthScale}ssssss ${productViewModel.state.heightScale}',
-    );
 
     return SafeArea(
       child: First_Design_Login(

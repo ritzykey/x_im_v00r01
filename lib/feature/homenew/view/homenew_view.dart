@@ -42,9 +42,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                       kToolbarHeight)
                                   .clamp(0.0, 1.0);
 
-                        print(
-                          'scroloffset: ${constraints.scrollOffset} , toolbar: $kToolbarHeight',
-                        );
                         return SliverPadding(
                           padding: const EdgeInsets.all(8),
                           sliver: SliverAppBar(
@@ -366,9 +363,6 @@ class HomenewPage2 extends StatelessWidget {
               slivers: [
                 SliverLayoutBuilder(
                   builder: (context, constraints) {
-                    print(
-                      'scrollOffsetttt: ${homenewViewModel.scrollOffset} , titleSize: ${homenewViewModel.titleSize} , opacity: ${homenewViewModel.opacity}, titlemaxline: ${homenewViewModel.titlemaxline}, dynamicPadding: ${homenewViewModel.dynamicPadding}',
-                    );
                     return SliverAppBar(
                       backgroundColor: Colors.blueGrey[900],
                       expandedHeight: 500,
@@ -562,7 +556,6 @@ class HomenewPage2 extends StatelessWidget {
                 ),
                 SliverLayoutBuilder(
                   builder: (context, constraints) {
-                    print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
@@ -623,7 +616,6 @@ class HomenewPage2 extends StatelessWidget {
                         Builder(
                           builder: (context) {
                             if (state < 0.1) {
-                              print('oooooooooo $state');
                               return IconButton(
                                 icon: const Icon(Icons.favorite),
                                 onPressed: () {
