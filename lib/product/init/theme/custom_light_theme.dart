@@ -19,6 +19,8 @@ final class CustomLightTheme implements CustomTheme {
           bodyMedium: TextStyle(fontSize: 20),
           bodyLarge: TextStyle(fontSize: 24),
         ),
+        primarySwatch: Colors.yellow,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       );
 
   @override

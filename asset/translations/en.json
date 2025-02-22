@@ -1,4 +1,11 @@
 {
+    "bottomNavigation": {
+        "home": "Home",
+        "discover": "Discover",
+        "search": "Search",
+        "favorites": "Favorites",
+        "profile": "Profile"
+    },
     "home": {
         "title": "Home Page"
     },

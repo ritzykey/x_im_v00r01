@@ -52,6 +52,16 @@ class AppRouter extends RootStackRouter {
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),
+            CustomRoute(
+              page: StoryyRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+            ),
+            CustomRoute(
+              page: StoryyRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+            ),
             AutoRoute(page: SettingsRoute.page),
           ],
         ),

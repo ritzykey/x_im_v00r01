@@ -1,4 +1,11 @@
 {
+    "bottomNavigation": {
+        "home": "Ana Sayfa",
+        "discover": "Keşfet",
+        "search": "Arama",
+        "favorites": "Favoriler",
+        "profile": "Profil"
+    },
     "home": {
         "title": "Ana Sayfa"
     },
