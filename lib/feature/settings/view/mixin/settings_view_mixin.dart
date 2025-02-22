@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_im_v00r01/feature/settings/view/settings_view.dart';
@@ -45,8 +46,29 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
           .split('.')
           .last,
     );
+    return themeModeName;
+  }
 
+  String capitalizeLanguageName(BuildContext context) {
+    final themeModeName = capitalize(
+      context
+          .read<ProductViewModel>()
+          .state
+          .themeMode
+          .toString()
+          .split('.')
+          .last,
+    );
 
+    if (context.locale.languageCode == 'tr') {
+      if (themeModeName == 'System') {
+        return 'Sistem';
+      } else if (themeModeName == 'Light') {
+        return 'Açık';
+      } else if (themeModeName == 'Dark') {
+        return 'Koyu';
+      }
+    }
     return themeModeName;
   }
 }

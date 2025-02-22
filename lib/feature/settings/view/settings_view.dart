@@ -120,7 +120,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                           return _buildListTile(
                             'settings.appearance.title'.tr(),
                             Icons.dark_mode,
-                            capitalizeThemeModeName(context),
+                            capitalizeLanguageName(context),
                             Colors.purple,
                             context.watch<ProductViewModel>().state.themeMode,
                             onTab: () => _showAppearanceModal(
@@ -138,7 +138,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                           return _buildListTile(
                             'settings.language.title'.tr(),
                             Icons.language,
-                            'EN',
+                            context.locale.languageCode.toUpperCase(),
                             Colors.orange,
                             context.general.appTheme,
                             onTab: () => _showLanguageModal(
