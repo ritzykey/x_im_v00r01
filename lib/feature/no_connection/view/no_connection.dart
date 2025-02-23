@@ -42,7 +42,7 @@ class NoConnectionView extends StatelessWidget {
                 onPressed: () {
                   if (context.read<ProductViewModel>().state.networkStatus ==
                       NetworkStatus.connected) {
-                    context.router.popAndPush(const NavigationRoute());
+                    context.router.replaceAll([const NavigationRoute()]);
                     return;
                   }
                 },

@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/LoginSignupWidget.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/SingleChoice.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
-import 'package:x_im_v00r01/product/utility/constans/ColorConstants.dart';
 
 @RoutePage()
 class SettingsView extends StatefulWidget {
@@ -62,54 +63,9 @@ class _SettingsViewState extends BaseState<SettingsView>
                             ?.copyWith(fontWeight: FontWeight.w400),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        height: 80,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: context
-                                      .watch<ProductViewModel>()
-                                      .state
-                                      .themeMode ==
-                                  ThemeMode.dark
-                              ? ColorConstants.gray700
-                              : Colors.grey.shade200,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 52,
-                              height: 52,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context
-                                            .watch<ProductViewModel>()
-                                            .state
-                                            .themeMode ==
-                                        ThemeMode.dark
-                                    ? ColorConstants.gray500
-                                    : Colors.grey.shade300,
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 32,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              '${'settings.login'.tr()} / ${'settings.register'.tr()}',
-                              style: context.general.textTheme.titleLarge
-                                  ?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+
+                      /// This [LoginSignupWidget] is where the login/signup widget is placed
+                      const LoginSignupWidget(),
                       const SizedBox(height: 32),
                       Text(
                         'settings.title'.tr(),
@@ -168,6 +124,36 @@ class _SettingsViewState extends BaseState<SettingsView>
                         Colors.green,
                         context.general.appTheme,
                         onTab: () {},
+                      ),
+                      const SizedBox(height: 8),
+                      ListTile(
+                        contentPadding: const EdgeInsets.all(0),
+                        leading: Container(
+                          width: 46,
+                          height: 46,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: const Color.fromARGB(255, 90, 81, 216)
+                                .withAlpha(30),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.text_fields_rounded,
+                              color: Color.fromARGB(255, 90, 81, 216),
+                            ),
+                          ),
+                        ),
+                        title: Text('settings.textSize'.tr()),
+                        trailing: const SizedBox(
+                          width: 190,
+                          height: 34,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SingleChoice(),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
@@ -337,8 +323,6 @@ class _SettingsViewState extends BaseState<SettingsView>
                       .getPlatformBrightness(context);
                   context.read<ProductViewModel>().changeThemeMode(
                         themeModeSystem,
-                        userCacheOperation:
-                            settingsViewModel.userCacheOperation,
                       );
                   Navigator.pop(context);
                 },

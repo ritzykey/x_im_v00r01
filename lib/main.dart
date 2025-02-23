@@ -5,8 +5,6 @@ import 'package:widgets/widgets.dart';
 import 'package:x_im_v00r01/product/init/application_initialize.dart';
 import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/init/state_initialize.dart';
-import 'package:x_im_v00r01/product/init/theme/custom_dark_theme.dart';
-import 'package:x_im_v00r01/product/init/theme/custom_light_theme.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
@@ -65,8 +63,8 @@ class MyApp extends StatelessWidget {
           child: CustomResponsive.build(context, child),
         );
       },
-      theme: CustomLightTheme().themeData,
-      darkTheme: CustomDarkTheme().themeData,
+      theme: context.watch<ProductViewModel>().state.lightThemeData,
+      darkTheme: context.watch<ProductViewModel>().state.darkThemeData,
       themeMode: context.watch<ProductViewModel>().state.themeMode,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

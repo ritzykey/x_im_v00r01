@@ -24,40 +24,47 @@ class _NavigationViewState extends BaseState<NavigationView>
       create: (context) => navigationViewModel,
       child: BlocBuilder<NavigationViewModel, NavigationState>(
         builder: (context, state) {
-          return Scaffold(
-            body: const AutoRouter(),
-            bottomNavigationBar: SalomonBottomBar(
-              currentIndex: state.selectedindex ?? 0,
-              onTap: (index) {
-                navigationViewModel.changeTab(index, context.router);
-              },
-              items: <SalomonBottomBarItem>[
-                SalomonBottomBarItem(
-                  icon: const Icon(Icons.home_outlined),
-                  title: const Text('bottomNavigation.home').tr(),
-                  selectedColor: Colors.blue,
-                ),
-                SalomonBottomBarItem(
-                  icon: const Icon(Icons.travel_explore),
-                  title: const Text('bottomNavigation.discover').tr(),
-                  selectedColor: Colors.teal,
-                ),
-                SalomonBottomBarItem(
-                  icon: const Icon(Icons.search),
-                  title: const Text('bottomNavigation.search').tr(),
-                  selectedColor: Colors.orange,
-                ),
-                SalomonBottomBarItem(
-                  icon: const Icon(Icons.favorite),
-                  title: const Text('bottomNavigation.favorites').tr(),
-                  selectedColor: Colors.pinkAccent,
-                ),
-                SalomonBottomBarItem(
-                  icon: const Icon(Icons.person),
-                  title: Text('bottomNavigation.profile'.tr()),
-                  selectedColor: Colors.cyan,
-                ),
-              ],
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              navigationViewModel.changeTab(0, context.router);
+            },
+            child: Scaffold(
+              body: const AutoRouter(),
+              bottomNavigationBar: SalomonBottomBar(
+                key: ValueKey(context.locale),
+                currentIndex: state.selectedindex ?? 0,
+                onTap: (index) {
+                  navigationViewModel.changeTab(index, context.router);
+                },
+                items: <SalomonBottomBarItem>[
+                  SalomonBottomBarItem(
+                    icon: const Icon(Icons.home_outlined),
+                    title: const Text('bottomNavigation.home').tr(),
+                    selectedColor: Colors.blue,
+                  ),
+                  SalomonBottomBarItem(
+                    icon: const Icon(Icons.travel_explore),
+                    title: const Text('bottomNavigation.discover').tr(),
+                    selectedColor: Colors.teal,
+                  ),
+                  SalomonBottomBarItem(
+                    icon: const Icon(Icons.search),
+                    title: const Text('bottomNavigation.search').tr(),
+                    selectedColor: Colors.orange,
+                  ),
+                  SalomonBottomBarItem(
+                    icon: const Icon(Icons.favorite),
+                    title: const Text('bottomNavigation.favorites').tr(),
+                    selectedColor: Colors.pinkAccent,
+                  ),
+                  SalomonBottomBarItem(
+                    icon: const Icon(Icons.settings_outlined),
+                    title: const Text('settings.title').tr(),
+                    selectedColor: Colors.cyan,
+                  ),
+                ],
+              ),
             ),
           );
         },

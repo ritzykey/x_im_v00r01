@@ -37,18 +37,19 @@ final class ProductViewModel extends BaseCubit<ProductState> {
       } else {
         emit(state.copyWith(networkStatus: NetworkStatus.connected));
       }
-    print("obsject");
+      print('obsject');
     });
   }
 
   /// Change theme mode
   /// [themeMode] is [ThemeMode.light] or [ThemeMode.dark]
-  void changeThemeMode(
-    ThemeMode themeMode, {
-    HiveCacheOperation<UserCacheModel>? userCacheOperation,
-  }) {
+  void changeThemeMode(ThemeMode themeMode) {
     //print(userCacheOperation.getAll());
     emit(state.copyWith(themeMode: themeMode));
+  }
+
+  void setTextSize(double textSize) {
+    emit(state.copyWith(fontSize: textSize));
   }
 
   void screenSize(double widthScale, double heightScale) {

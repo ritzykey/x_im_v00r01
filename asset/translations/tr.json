@@ -30,6 +30,10 @@
         "system": "Sistem",
         "help": "Yardım",
         "logout": "Çıkış",
+        "textSize": "Yazı Boyutu",
+        "default": "Varsayılan",
+        "small": "Küçük",
+        "large": "Büyük",
         "appearance": {
             "title": "Görünüm",
             "showModal": "Bir Tema Seçin"

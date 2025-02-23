@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:x_im_v00r01/product/init/theme/custom_dark_theme.dart';
+import 'package:x_im_v00r01/product/init/theme/custom_light_theme.dart';
 
 enum NetworkStatus { connected, disconnected }
 
@@ -10,6 +12,7 @@ final class ProductState extends Equatable {
     this.themeMode = ThemeMode.light,
     this.selectedindex = 0,
     this.networkStatus = NetworkStatus.connected,
+    this.fontSize = 12.0,
   });
 
   final ThemeMode themeMode;
@@ -17,10 +20,25 @@ final class ProductState extends Equatable {
   final double heightScale;
   final int selectedindex;
   final NetworkStatus networkStatus;
+  final double fontSize;
+
+  ThemeData get darkThemeData => CustomDarkTheme().themeData.copyWith(
+        textTheme: CustomDarkTheme().textTheme(fontSize),
+      );
+
+  ThemeData get lightThemeData => CustomLightTheme().themeData.copyWith(
+        textTheme: CustomLightTheme().textTheme(fontSize),
+      );
 
   @override
-  List<Object> get props =>
-      [themeMode, widthScale, heightScale, selectedindex, networkStatus];
+  List<Object> get props => [
+        themeMode,
+        widthScale,
+        heightScale,
+        selectedindex,
+        networkStatus,
+        fontSize,
+      ];
 
   ProductState copyWith({
     ThemeMode? themeMode,
@@ -28,6 +46,7 @@ final class ProductState extends Equatable {
     double? heightScale,
     int? selectedindex,
     NetworkStatus? networkStatus,
+    double? fontSize,
   }) {
     return ProductState(
       themeMode: themeMode ?? this.themeMode,
@@ -35,6 +54,7 @@ final class ProductState extends Equatable {
       heightScale: heightScale ?? this.heightScale,
       selectedindex: selectedindex ?? this.selectedindex,
       networkStatus: networkStatus ?? this.networkStatus,
+      fontSize: fontSize ?? this.fontSize,
     );
   }
 }
