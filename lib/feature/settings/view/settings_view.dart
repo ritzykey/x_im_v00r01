@@ -1,16 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
+import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 import 'package:x_im_v00r01/product/utility/constans/ColorConstants.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 @RoutePage()
 class SettingsView extends StatefulWidget {
@@ -279,6 +280,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.light);
+                  settingsViewModel.userCacheOperation.put(
+                    'themeMode',
+                    UserCacheModel(themeMode: ThemeMode.light),
+                  );
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -300,6 +305,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.dark);
+                  settingsViewModel.userCacheOperation.put(
+                    'themeMode',
+                    UserCacheModel(themeMode: ThemeMode.dark),
+                  );
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -321,6 +330,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.system);
+                  settingsViewModel.userCacheOperation.put(
+                    'themeMode',
+                    UserCacheModel(themeMode: ThemeMode.system),
+                  );
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -373,7 +386,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                 onTap: () {
                   ProductLocalization.updateLanguage(
                     context: context,
-                    value: Locales.tr,
+                    value: const Locale('tr'),
+                  );
+                  settingsViewModel.userCacheOperation.put(
+                    'lang',
+                    UserCacheModel(language: const Locale('tr')),
                   );
                   Navigator.pop(context);
                 },
@@ -388,7 +405,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                 onTap: () {
                   ProductLocalization.updateLanguage(
                     context: context,
-                    value: Locales.en,
+                    value: const Locale('en'),
+                  );
+                  settingsViewModel.userCacheOperation.put(
+                    'lang',
+                    UserCacheModel(language: const Locale('en')),
                   );
                   Navigator.pop(context);
                 },
@@ -408,15 +429,27 @@ class _SettingsViewState extends BaseState<SettingsView>
                   style: theme.textTheme.bodyMedium,
                 ),
                 onTap: () {
+                  final systemLocale = PlatformDispatcher.instance.locale;
+
+                  settingsViewModel.userCacheOperation.put(
+                    'lang',
+                    UserCacheModel(),
+                  );
                   ProductLocalization.updateLanguage(
                     context: context,
-                    value: Locales.en,
+                    value: context
+                            .read<ProductViewModel>()
+                            .userCacheOperation
+                            .get('lang')
+                            ?.language ??
+                        systemLocale,
                   );
+
                   Navigator.pop(context);
                 },
                 trailing: Icon(
                   Icons.check,
-                  color: current == 'EN' ? Colors.blue : Colors.transparent,
+                  color: current == PlatformDispatcher.instance.locale.languageCode.toUpperCase() ? Colors.blue : Colors.transparent,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:widgets/widgets.dart';
@@ -29,6 +30,29 @@ class MyApp extends StatelessWidget {
 
     context.read<ProductViewModel>().screenSize(widthScale, heightScale);
     print(' $widthScale ssss $heightScale');
+
+    //context.read<ProductViewModel>().userCacheOperation.clear();
+
+    context.read<ProductViewModel>().changeThemeMode(
+          context
+                  .read<ProductViewModel>()
+                  .userCacheOperation
+                  .get('themeMode')
+                  ?.themeMode ??
+              ThemeMode.system,
+        );
+
+    final systemLocale = PlatformDispatcher.instance.locale;
+
+    ProductLocalization.updateLanguage(
+      context: context,
+      value: context
+              .read<ProductViewModel>()
+              .userCacheOperation
+              .get('lang')
+              ?.language ??
+          systemLocale,
+    );
 
     return MaterialApp.router(
       routerConfig: _appRouter.config(),

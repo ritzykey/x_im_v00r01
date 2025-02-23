@@ -58,7 +58,7 @@ final class LoginViewModel extends BaseCubit<LoginState> {
       '1',
     );
     final response = await _authenticationOperationService
-        .tokencheck(model?.user.token?.token ?? '');
+        .tokencheck(model?.user?.token?.token ?? '');
 
     if (response?.name != null && model != null) {
       emit(state.copyWith(model: model.user));

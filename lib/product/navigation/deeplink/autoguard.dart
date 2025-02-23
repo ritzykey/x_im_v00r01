@@ -18,7 +18,6 @@ class FirstTimeGuard extends AutoRouteGuard {
     if (isFirstTime) {
       userCache = userCacheOperation.get('isFirstTime');
       print(userCache?.isFirstTime); // İlk defa açıldığı için cache'e atayın
-      print(userCacheOperation.getAll());
       router.push(const OnboardingsRoute());
     } else {
       resolver.next(); // Direkt devam et

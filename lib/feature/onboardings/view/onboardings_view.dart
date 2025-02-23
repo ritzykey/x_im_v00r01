@@ -12,8 +12,6 @@ import 'package:x_im_v00r01/product/state/base/base_state.dart';
 class OnboardingsView extends StatefulWidget {
   const OnboardingsView({super.key});
 
-  
-
   @override
   State<OnboardingsView> createState() => _OnboardingsViewState();
 }
