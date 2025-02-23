@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_im_v00r01/feature/settings/view/settings_view.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
+import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
 import 'package:x_im_v00r01/product/service/project_service.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
@@ -31,29 +32,34 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
     );
   }
 
+  late String themeModeName;
+
   String capitalize(String text) {
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
   String capitalizeThemeModeName(BuildContext context) {
-    final themeModeName = capitalize(
-      context
-          .read<ProductViewModel>()
-          .state
+    return capitalize(
+      (context
+                  .read<ProductViewModel>()
+                  .userCacheOperation
+                  .get('themeMode') ??
+              UserCacheModel(themeMode: ThemeMode.system))
           .themeMode
           .toString()
           .split('.')
           .last,
     );
-    return themeModeName;
   }
 
   String capitalizeLanguageName(BuildContext context) {
-    final themeModeName = capitalize(
-      context
-          .read<ProductViewModel>()
-          .state
+    themeModeName = capitalize(
+      (context
+                  .watch<ProductViewModel>()
+                  .userCacheOperation
+                  .get('themeMode') ??
+              UserCacheModel(themeMode: ThemeMode.system))
           .themeMode
           .toString()
           .split('.')

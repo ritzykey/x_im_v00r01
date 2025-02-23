@@ -1,6 +1,7 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
@@ -277,13 +278,13 @@ class _SettingsViewState extends BaseState<SettingsView>
                   style: theme.textTheme.bodyMedium,
                 ),
                 onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.light);
                   settingsViewModel.userCacheOperation.put(
                     'themeMode',
                     UserCacheModel(themeMode: ThemeMode.light),
                   );
+                  context
+                      .read<ProductViewModel>()
+                      .changeThemeMode(ThemeMode.light);
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -302,13 +303,13 @@ class _SettingsViewState extends BaseState<SettingsView>
                   style: theme.textTheme.bodyMedium,
                 ),
                 onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.dark);
                   settingsViewModel.userCacheOperation.put(
                     'themeMode',
                     UserCacheModel(themeMode: ThemeMode.dark),
                   );
+                  context
+                      .read<ProductViewModel>()
+                      .changeThemeMode(ThemeMode.dark);
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -327,13 +328,18 @@ class _SettingsViewState extends BaseState<SettingsView>
                   style: theme.textTheme.bodyMedium,
                 ),
                 onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.system);
                   settingsViewModel.userCacheOperation.put(
                     'themeMode',
                     UserCacheModel(themeMode: ThemeMode.system),
                   );
+                  final themeModeSystem = context
+                      .read<ProductViewModel>()
+                      .getPlatformBrightness(context);
+                  context.read<ProductViewModel>().changeThemeMode(
+                        themeModeSystem,
+                        userCacheOperation:
+                            settingsViewModel.userCacheOperation,
+                      );
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -449,7 +455,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                 },
                 trailing: Icon(
                   Icons.check,
-                  color: current == PlatformDispatcher.instance.locale.languageCode.toUpperCase() ? Colors.blue : Colors.transparent,
+                  color: current ==
+                          PlatformDispatcher.instance.locale.languageCode
+                              .toUpperCase()
+                      ? Colors.blue
+                      : Colors.transparent,
                 ),
               ),
             ],

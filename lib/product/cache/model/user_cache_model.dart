@@ -14,7 +14,7 @@ final class UserCacheModel with CacheModel {
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
         isFirstTime = true,
-        themeMode = ThemeMode.light,
+        themeMode = null,
         language = null;
 
   final LoginResponseModel2? user;

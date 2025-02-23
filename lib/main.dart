@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:widgets/widgets.dart';
@@ -34,25 +33,22 @@ class MyApp extends StatelessWidget {
     //context.read<ProductViewModel>().userCacheOperation.clear();
 
     context.read<ProductViewModel>().changeThemeMode(
-          context
-                  .read<ProductViewModel>()
-                  .userCacheOperation
-                  .get('themeMode')
-                  ?.themeMode ??
-              ThemeMode.system,
+          (context
+                      .read<ProductViewModel>()
+                      .userCacheOperation
+                      .get('themeMode')
+                      ?.themeMode ==
+                  ThemeMode.system)
+              ? context.read<ProductViewModel>().getPlatformBrightness(context)
+              : context
+                      .read<ProductViewModel>()
+                      .userCacheOperation
+                      .get('themeMode')
+                      ?.themeMode ??
+                  context
+                      .read<ProductViewModel>()
+                      .getPlatformBrightness(context),
         );
-
-    final systemLocale = PlatformDispatcher.instance.locale;
-
-    ProductLocalization.updateLanguage(
-      context: context,
-      value: context
-              .read<ProductViewModel>()
-              .userCacheOperation
-              .get('lang')
-              ?.language ??
-          systemLocale,
-    );
 
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
