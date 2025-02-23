@@ -6,6 +6,7 @@ import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
 import 'package:x_im_v00r01/feature/loading/view/loading_view.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
 import 'package:x_im_v00r01/feature/navigation/view/navigation_view.dart';
+import 'package:x_im_v00r01/feature/no_connection/view/no_connection.dart';
 import 'package:x_im_v00r01/feature/onboardings/view/onboardings_view.dart';
 import 'package:x_im_v00r01/feature/settings/view/settings_view.dart';
 import 'package:x_im_v00r01/feature/storyy/view/storyy_view.dart';
@@ -20,9 +21,11 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeRoute.page),
         AutoRoute(page: HomeDetailRoute.page),
+
         AutoRoute(
           page: LoginRoute.page,
         ),
+
         AutoRoute(page: HomenewRoute.page),
         AutoRoute(page: StoryyRoute.page, path: '/storyy/:id'),
         AutoRoute(page: SettingsRoute.page),
@@ -31,7 +34,10 @@ class AppRouter extends RootStackRouter {
           page: LoadingRoute.page,
           initial: true,
         ),
+
         AutoRoute(page: OnboardingsRoute.page),
+
+        AutoRoute(page: NoConnectionRoute.page),
 
         AutoRoute(
           page: NavigationRoute.page,
@@ -47,22 +53,17 @@ class AppRouter extends RootStackRouter {
               page: HomenewRoute.page,
               initial: true,
             ),
-            CustomRoute(
+            CustomRoute<dynamic>(
               page: StoryyRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),
-            CustomRoute(
-              page: StoryyRoute.page,
+            CustomRoute<dynamic>(
+              page: OnboardingsRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),
-            CustomRoute(
-              page: StoryyRoute.page,
-              transitionsBuilder: TransitionsBuilders.fadeIn,
-              durationInMilliseconds: 500, // 🔹 Animasyon süresi
-            ),
-            CustomRoute(
+            CustomRoute<dynamic>(
               page: SettingsRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi

@@ -151,6 +151,25 @@ class NavigationRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NoConnectionView]
+class NoConnectionRoute extends PageRouteInfo<void> {
+  const NoConnectionRoute({List<PageRouteInfo>? children})
+      : super(
+          NoConnectionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NoConnectionRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NoConnectionView();
+    },
+  );
+}
+
+/// generated route for
 /// [OnboardingsView]
 class OnboardingsRoute extends PageRouteInfo<void> {
   const OnboardingsRoute({List<PageRouteInfo>? children})

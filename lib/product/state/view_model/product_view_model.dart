@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,15 +15,30 @@ final class ProductViewModel extends BaseCubit<ProductState> {
   ProductViewModel()
       : super(
           const ProductState(),
-        );
+        ) {
+    _monitorConnection();
+  }
 
   int selectedindex = 0;
   HiveCacheOperation<UserCacheModel> userCacheOperation =
       ProductStateItems.productCache.userCacheOperation;
 
+  final Connectivity _connectivity = Connectivity();
+
   Future<UserCacheModel> getSettings() async {
     final settings = userCacheOperation.get('settings');
     return settings ?? UserCacheModel(user: LoginResponseModel2());
+  }
+
+  void _monitorConnection() {
+    _connectivity.onConnectivityChanged.listen((result) {
+      if (result.contains(ConnectivityResult.none)) {
+        emit(state.copyWith(networkStatus: NetworkStatus.disconnected));
+      } else {
+        emit(state.copyWith(networkStatus: NetworkStatus.connected));
+      }
+    print("obsject");
+    });
   }
 
   /// Change theme mode

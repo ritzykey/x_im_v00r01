@@ -243,7 +243,7 @@ class _SettingsViewState extends BaseState<SettingsView>
     ThemeData theme,
     String current,
   ) {
-    showModalBottomSheet(
+    showModalBottomSheet<Container>(
       context: context,
       builder: (BuildContext context) {
         return Container(
@@ -362,7 +362,7 @@ class _SettingsViewState extends BaseState<SettingsView>
     ThemeData theme,
     String current,
   ) {
-    showModalBottomSheet(
+    showModalBottomSheet<Container>(
       context: context,
       builder: (BuildContext context) {
         return Container(

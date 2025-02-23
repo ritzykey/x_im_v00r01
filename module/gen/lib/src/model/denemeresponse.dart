@@ -24,17 +24,17 @@ class DenemeResponseModel extends INetworkModel<DenemeResponseModel>
   factory DenemeResponseModel.fromJson(Map<String, dynamic> json) =>
       _$DenemeResponseModelFromJson(json);
 
-  List<Content>? content;
-  Pageable? pageable;
-  int? totalPages;
-  int? totalElements;
-  bool? last;
-  int? size;
-  int? number;
-  Sort? sort;
-  int? numberOfElements;
-  bool? first;
-  bool? empty;
+  final List<Content>? content;
+  final Pageable? pageable;
+  final int? totalPages;
+  final int? totalElements;
+  final bool? last;
+  final int? size;
+  final int? number;
+  final Sort? sort;
+  final int? numberOfElements;
+  final bool? first;
+  final bool? empty;
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   @override

@@ -40,8 +40,6 @@ final class NavigationViewModel extends BaseCubit<NavigationState> {
       router.replaceAll([const StoryyRoute()]);
     } else if (index == 2) {
       router.replaceAll([const OnboardingsRoute()]);
-    } else if (index == 3) {
-      router.replaceAll([const StoryyRoute()]);
     } else if (index == 4) {
       router.replaceAll([const SettingsRoute()]);
     }
