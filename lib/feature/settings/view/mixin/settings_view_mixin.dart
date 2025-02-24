@@ -41,8 +41,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
 
   String capitalizeThemeModeName(BuildContext context) {
     return capitalize(
-      (context
-                  .read<ProductViewModel>()
+      (settingsViewModel
                   .userCacheOperation
                   .get('themeMode') ??
               UserCacheModel(themeMode: ThemeMode.system))
@@ -55,8 +54,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
 
   String capitalizeLanguageName(BuildContext context) {
     themeModeName = capitalize(
-      (context
-                  .watch<ProductViewModel>()
+      (settingsViewModel
                   .userCacheOperation
                   .get('themeMode') ??
               UserCacheModel(themeMode: ThemeMode.system))

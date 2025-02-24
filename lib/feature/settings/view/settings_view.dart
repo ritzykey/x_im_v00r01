@@ -129,8 +129,8 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ListTile(
                         contentPadding: const EdgeInsets.all(0),
                         leading: Container(
-                          width: 46,
-                          height: 46,
+                          width: 34,
+                          height: 34,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color.fromARGB(255, 90, 81, 216)
@@ -145,7 +145,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                         ),
                         title: Text('settings.textSize'.tr()),
                         trailing: const SizedBox(
-                          width: 190,
+                          width: 206,
                           height: 34,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -191,8 +191,8 @@ class _SettingsViewState extends BaseState<SettingsView>
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: Container(
-        width: 46,
-        height: 46,
+        width: 34,
+        height: 34,
         decoration:
             BoxDecoration(shape: BoxShape.circle, color: color.withAlpha(30)),
         child: Center(
@@ -202,7 +202,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           ),
         ),
       ),
-      title: Text(title, style: context.general.appTheme.textTheme.titleLarge),
+      title: Text(title, style: context.general.textTheme.titleLarge),
       trailing: SizedBox(
         width: 90,
         child: Row(
@@ -210,7 +210,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           children: [
             Text(
               trailing,
-              style: context.general.appTheme.textTheme.bodySmall
+              style: context.general.appTheme.textTheme.bodyMedium
                   ?.copyWith(color: Colors.grey.shade600),
             ),
             const Icon(
@@ -261,7 +261,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                 ),
                 title: Text(
                   'settings.light'.tr(),
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.bodyLarge,
                 ),
                 onTap: () {
                   settingsViewModel.userCacheOperation.put(
@@ -286,7 +286,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                 ),
                 title: Text(
                   'settings.dark'.tr(),
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.bodyLarge,
                 ),
                 onTap: () {
                   settingsViewModel.userCacheOperation.put(
@@ -311,7 +311,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                 ),
                 title: Text(
                   'settings.system'.tr(),
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.bodyLarge,
                 ),
                 onTap: () {
                   settingsViewModel.userCacheOperation.put(
@@ -368,11 +368,11 @@ class _SettingsViewState extends BaseState<SettingsView>
             children: [
               Text(
                 'settings.language.showModal'.tr(),
-                style: theme.textTheme.titleLarge,
+                style: context.general.textTheme.titleLarge,
               ),
               const SizedBox(height: 32),
               ListTile(
-                title: Text('TR', style: theme.textTheme.bodyMedium),
+                title: Text('TR', style: theme.textTheme.bodyLarge),
                 onTap: () {
                   ProductLocalization.updateLanguage(
                     context: context,
@@ -391,7 +391,7 @@ class _SettingsViewState extends BaseState<SettingsView>
               ),
               const SizedBox(height: 16),
               ListTile(
-                title: Text('EN', style: theme.textTheme.bodyMedium),
+                title: Text('EN', style: theme.textTheme.bodyLarge),
                 onTap: () {
                   ProductLocalization.updateLanguage(
                     context: context,
@@ -416,7 +416,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                 ),
                 title: Text(
                   'settings.system'.tr(),
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.bodyLarge,
                 ),
                 onTap: () {
                   final systemLocale = PlatformDispatcher.instance.locale;
@@ -427,9 +427,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                   );
                   ProductLocalization.updateLanguage(
                     context: context,
-                    value: context
-                            .read<ProductViewModel>()
-                            .userCacheOperation
+                    value: settingsViewModel.userCacheOperation
                             .get('lang')
                             ?.language ??
                         systemLocale,

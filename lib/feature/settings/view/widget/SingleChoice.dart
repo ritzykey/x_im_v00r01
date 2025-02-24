@@ -20,53 +20,58 @@ class _SingleChoiceState extends State<SingleChoice> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ToggleButtons(
-        isSelected: [
-          _selectedSize == TextSize.def,
-          _selectedSize == TextSize.small,
-          _selectedSize == TextSize.large,
-        ],
-        onPressed: (int index) {
-          if (index == 0) {
-            context.read<ProductViewModel>().setTextSize(12);
-          }
-          if (index == 1) {
-            context.read<ProductViewModel>().setTextSize(10);
-          }
-          if (index == 2) {
-            context.read<ProductViewModel>().setTextSize(16);
-          }
+    return ToggleButtons(
+      constraints:
+          const BoxConstraints(minWidth: 35, minHeight: 48), // Butonları küçült
+      borderRadius: BorderRadius.circular(8), // Kenar yuvarlama
+      borderColor: Colors.grey, // Kenarlık rengi
+      selectedBorderColor: Colors.blue, // Seçili segmentin kenarlık rengi
+      color: context.general.textTheme.displaySmall?.color, // Yazı rengi
+      selectedColor: Colors.blue, // Seçili yazı rengi
+      fillColor: Colors.transparent,
+      isSelected: [
+        _selectedSize == TextSize.def,
+        _selectedSize == TextSize.small,
+        _selectedSize == TextSize.large,
+      ],
+      onPressed: (int index) {
+        if (index == 0) {
+          context.read<ProductViewModel>().setTextSize(12);
+        }
+        if (index == 1) {
+          context.read<ProductViewModel>().setTextSize(10);
+        }
+        if (index == 2) {
+          context.read<ProductViewModel>().setTextSize(16);
+        }
 
-          setState(() {
-            _selectedSize = TextSize.values[index]; // Seçilen değeri güncelle
-          });
-        },
-        borderRadius: BorderRadius.circular(8), // Kenar yuvarlama
-        borderColor: Colors.grey, // Kenarlık rengi
-        selectedBorderColor: Colors.blue, // Seçili segmentin kenarlık rengi
-        color: context
-            .general.appTheme.textTheme.displaySmall?.color, // Yazı rengi
-        selectedColor: Colors.blue, // Seçili yazı rengi
-        fillColor: Colors.transparent,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'settings.default'.tr(),
-              style: context.general.appTheme.textTheme.bodySmall,
-            ),
+        setState(() {
+          _selectedSize = TextSize.values[index]; // Seçilen değeri güncelle
+        });
+      },
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            'settings.default'.tr(),
+            style: context.general.appTheme.textTheme.bodySmall,
           ),
-          Text(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
             'settings.small'.tr(),
             style: context.general.appTheme.textTheme.bodySmall,
           ),
-          Text(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
             'settings.large'.tr(),
             style: context.general.appTheme.textTheme.bodySmall,
           ),
-        ], // Seçili arka plan rengi
-      ),
+        ),
+      ], // Seçili arka plan rengi
     );
   }
 }

@@ -49,6 +49,11 @@ class MyApp extends StatelessWidget {
                       .getPlatformBrightness(context),
         );
 
+    if (context.read<ProductViewModel>().state.networkStatus ==
+        NetworkStatus.disconnected) {
+      _appRouter.replaceAll([const NoConnectionRoute()]);
+    }
+
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
       builder: (context, child) {
