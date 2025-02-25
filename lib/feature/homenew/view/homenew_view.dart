@@ -39,97 +39,102 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                     automaticallyImplyLeading: false,
                     flexibleSpace: FlexibleSpaceBar(
                       expandedTitleScale: 1,
-                      titlePadding: const EdgeInsets.only(top: 20),
-                      title: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20),
+                      titlePadding: const EdgeInsets.only(top: 10),
+                      title: Transform.translate(
+                        offset: const Offset(0, 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                            color: context.general.colorScheme.surfaceDim,
                           ),
-                          color: context.general.colorScheme.surfaceDim,
-                        ),
-                        child: Transform.translate(
-                          offset: const Offset(0, -25),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: context
-                                        .general.colorScheme.surfaceBright,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20),
+                          child: Transform.translate(
+                            offset: const Offset(0, -25),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: context
+                                          .general.colorScheme.surfaceBright,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(
+                                        'Bugün',
+                                        style:
+                                            context.general.textTheme.bodySmall,
+                                      ),
                                     ),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      'Bugün',
-                                      style:
-                                          context.general.textTheme.bodySmall,
-                                    ),
+                                  Row(
+                                    children: [
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        iconAlignment: IconAlignment.end,
+                                        icon: Icon(
+                                          Icons.favorite_border,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
+                                        ),
+                                        label: const Text(
+                                          '1664',
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          textStyle: context
+                                              .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          textStyle: context
+                                              .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    TextButton.icon(
-                                      onPressed: () {
-                                        return;
-                                      },
-                                      iconAlignment: IconAlignment.end,
-                                      icon: Icon(
-                                        Icons.favorite_border,
-                                        size: context.general.textTheme
-                                                .bodySmall!.fontSize! +
-                                            5,
-                                      ),
-                                      label: const Text(
-                                        '1664',
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        iconColor: context
-                                            .general.textTheme.bodySmall?.color,
-                                        minimumSize: const Size(0, 32),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        textStyle:
-                                            context.general.textTheme.bodySmall,
-                                        foregroundColor: context
-                                            .general.textTheme.bodySmall?.color,
-                                        backgroundColor: context
-                                            .general.colorScheme.surfaceBright,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        return;
-                                      },
-                                      icon: Icon(
-                                        Icons.share,
-                                        size: context.general.textTheme
-                                                .bodySmall!.fontSize! +
-                                            5,
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        iconColor: context
-                                            .general.textTheme.bodySmall?.color,
-                                        minimumSize: const Size(0, 32),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        textStyle:
-                                            context.general.textTheme.bodySmall,
-                                        foregroundColor: context
-                                            .general.textTheme.bodySmall?.color,
-                                        backgroundColor: context
-                                            .general.colorScheme.surfaceBright,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
