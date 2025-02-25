@@ -7,9 +7,8 @@ import 'package:widgets/widgets.dart';
 import 'package:x_im_v00r01/product/init/application_initialize.dart';
 import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/init/state_initialize.dart';
-import 'package:x_im_v00r01/product/init/theme/custom_dark_theme.dart';
-import 'package:x_im_v00r01/product/init/theme/custom_light_theme.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
+import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 Future<void> main() async {
@@ -35,11 +34,47 @@ class MyApp extends StatelessWidget {
     final systemLocale = PlatformDispatcher.instance.locale;
     print('system locale: $systemLocale');
 
+    //context.read<ProductViewModel>().userCacheOperation.clear();
+
+    context.read<ProductViewModel>().changeThemeMode(
+          (context
+                      .read<ProductViewModel>()
+                      .userCacheOperation
+                      .get('themeMode')
+                      ?.themeMode ==
+                  ThemeMode.system)
+              ? context.read<ProductViewModel>().getPlatformBrightness(context)
+              : context
+                      .read<ProductViewModel>()
+                      .userCacheOperation
+                      .get('themeMode')
+                      ?.themeMode ??
+                  context
+                      .read<ProductViewModel>()
+                      .getPlatformBrightness(context),
+        );
+
+    if (context.read<ProductViewModel>().state.networkStatus ==
+        NetworkStatus.disconnected) {
+      _appRouter.replaceAll([const NoConnectionRoute()]);
+    }
+
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
-      builder: CustomResponsive.build,
-      theme: CustomLightTheme().themeData,
-      darkTheme: CustomDarkTheme().themeData,
+      builder: (context, child) {
+        return BlocListener<ProductViewModel, ProductState>(
+          listener: (context, state) {
+            print(state.networkStatus);
+            if (state.networkStatus == NetworkStatus.disconnected) {
+              _appRouter.replaceAll([const NoConnectionRoute()]);
+              return;
+            }
+          },
+          child: CustomResponsive.build(context, child),
+        );
+      },
+      theme: context.watch<ProductViewModel>().state.lightThemeData,
+      darkTheme: context.watch<ProductViewModel>().state.darkThemeData,
       themeMode: context.watch<ProductViewModel>().state.themeMode,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

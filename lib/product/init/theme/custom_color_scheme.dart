@@ -4,11 +4,9 @@ import 'package:gen/gen.dart';
 final class CustomColorScheme {
   CustomColorScheme._();
 
-  static const lightColorScheme = ColorScheme(
-    brightness: Brightness.light,
+  static ColorScheme lightColorScheme = const ColorScheme.light(
     primary: Color(0xff415f91),
     surfaceTint: Color(0xff415f91),
-    onPrimary: Color(0xffffffff),
     primaryContainer: Color(0xffd6e3ff),
     onPrimaryContainer: Color(0xff001b3e),
     secondary: Color(0xff565f71),
@@ -20,7 +18,6 @@ final class CustomColorScheme {
     tertiaryContainer: Color(0xfffad8fd),
     onTertiaryContainer: Color(0xff28132e),
     error: ColorName.crimsonRed,
-    onError: Color(0xffffffff),
     errorContainer: Color(0xffffdad6),
     onErrorContainer: Color(0xff410002),
     surface: Color(0xfff9f9ff),
@@ -53,8 +50,7 @@ final class CustomColorScheme {
     surfaceContainerHighest: Color(0xffe2e2e9),
   );
 
-  static const darkColorScheme = ColorScheme(
-    brightness: Brightness.dark,
+  static ColorScheme darkColorScheme = const ColorScheme.dark(
     primary: Color(0xffaac7ff),
     surfaceTint: Color(0xffaac7ff),
     onPrimary: Color(0xff0a305f),

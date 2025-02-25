@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
+import 'package:x_im_v00r01/feature/settings/view/utils/appearance_modal.dart';
+import 'package:x_im_v00r01/feature/settings/view/utils/language_modal.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/LoginSignupWidget.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/SingleChoice.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
-import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
-import 'package:x_im_v00r01/product/utility/constans/ColorConstants.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 @RoutePage()
 class SettingsView extends StatefulWidget {
@@ -45,7 +46,7 @@ class _SettingsViewState extends BaseState<SettingsView>
             ];
           },
           body: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,55 +61,12 @@ class _SettingsViewState extends BaseState<SettingsView>
                             ?.copyWith(fontWeight: FontWeight.w400),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        height: 80,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: context
-                                      .watch<ProductViewModel>()
-                                      .state
-                                      .themeMode ==
-                                  ThemeMode.dark
-                              ? ColorConstants.gray700
-                              : Colors.grey.shade200,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 52,
-                              height: 52,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context
-                                            .watch<ProductViewModel>()
-                                            .state
-                                            .themeMode ==
-                                        ThemeMode.dark
-                                    ? ColorConstants.gray500
-                                    : Colors.grey.shade300,
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 32,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              '${'settings.login'.tr()} / ${'settings.register'.tr()}',
-                              style: context.general.textTheme.titleLarge
-                                  ?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 32),
+
+                      /// This is where the login/signup widget is placed
+                      const LoginSignupWidget(),
+
+                      const SizedBox(height: 16),
+
                       Text(
                         'settings.title'.tr(),
                         style: context.general.textTheme.headlineSmall
@@ -120,13 +78,14 @@ class _SettingsViewState extends BaseState<SettingsView>
                           return _buildListTile(
                             'settings.appearance.title'.tr(),
                             Icons.dark_mode,
-                            capitalizeThemeModeName(context),
+                            capitalizeLanguageName(context),
                             Colors.purple,
                             context.watch<ProductViewModel>().state.themeMode,
-                            onTab: () => _showAppearanceModal(
+                            onTab: () => showAppearanceModal(
                               context,
                               context.general.appTheme,
                               capitalizeThemeModeName(context),
+                              settingsViewModel,
                             ),
                           );
                           // return Text(_.theme);
@@ -141,10 +100,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                             context.locale.languageCode.toUpperCase(),
                             Colors.orange,
                             context.general.appTheme,
-                            onTab: () => _showLanguageModal(
+                            onTab: () => showLanguageModal(
                               context,
                               context.general.appTheme,
                               context.locale.languageCode.toUpperCase(),
+                              settingsViewModel,
                             ),
                           );
                         },
@@ -169,6 +129,36 @@ class _SettingsViewState extends BaseState<SettingsView>
                           settingsViewModel.onboardingPutHive();
                           // deneme amaçlı onboarngi truye çeker
                         },
+                      ),
+                      const SizedBox(height: 8),
+                      ListTile(
+                        contentPadding: const EdgeInsets.all(0),
+                        leading: Container(
+                          width: 34,
+                          height: 34,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: const Color.fromARGB(255, 90, 81, 216)
+                                .withAlpha(30),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.text_fields_rounded,
+                              color: Color.fromARGB(255, 90, 81, 216),
+                            ),
+                          ),
+                        ),
+                        title: Text('settings.textSize'.tr()),
+                        trailing: const SizedBox(
+                          width: 190,
+                          height: 34,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SingleChoice(),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
@@ -206,8 +196,8 @@ class _SettingsViewState extends BaseState<SettingsView>
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: Container(
-        width: 46,
-        height: 46,
+        width: 34,
+        height: 34,
         decoration:
             BoxDecoration(shape: BoxShape.circle, color: color.withAlpha(30)),
         child: Center(
@@ -217,7 +207,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           ),
         ),
       ),
-      title: Text(title, style: context.general.appTheme.textTheme.titleLarge),
+      title: Text(title, style: context.general.textTheme.titleLarge),
       trailing: SizedBox(
         width: 90,
         child: Row(
@@ -225,7 +215,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           children: [
             Text(
               trailing,
-              style: context.general.appTheme.textTheme.bodySmall
+              style: context.general.appTheme.textTheme.bodyMedium
                   ?.copyWith(color: Colors.grey.shade600),
             ),
             const Icon(
@@ -237,209 +227,5 @@ class _SettingsViewState extends BaseState<SettingsView>
       ),
       onTap: onTab,
     );
-  }
-
-  void _showAppearanceModal(
-    BuildContext context,
-    ThemeData theme,
-    String current,
-  ) {
-    print(current);
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          height: 320,
-          decoration: BoxDecoration(
-            color: context.watch<ProductViewModel>().state.themeMode ==
-                    ThemeMode.dark
-                ? Colors.grey.shade900
-                : Colors.grey.shade200,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'settings.appearance.showModal'.tr(),
-                style: theme.textTheme.titleMedium,
-              ),
-              const SizedBox(height: 32),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_5,
-                  color: Colors.blue,
-                ),
-                title: Text(
-                  'settings.light'.tr(),
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.light);
-                  settingsViewModel.themeModePutHive(ThemeMode.light);
-
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'Light' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_2,
-                  color: Colors.orange,
-                ),
-                title: Text(
-                  'settings.dark'.tr(),
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.dark);
-                  settingsViewModel.themeModePutHive(ThemeMode.dark);
-
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'Dark' ? Colors.orange : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_6,
-                  color: Colors.blueGrey,
-                ),
-                title: Text(
-                  'settings.system'.tr(),
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.system);
-                  settingsViewModel.themeModePutHive(ThemeMode.system);
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'System'
-                      ? Colors.blueGrey
-                      : Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    return;
-  }
-
-  void _showLanguageModal(
-    BuildContext context,
-    ThemeData theme,
-    String current,
-  ) {
-    print(current);
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          height: 320,
-          decoration: BoxDecoration(
-            color: context.watch<ProductViewModel>().state.themeMode ==
-                    ThemeMode.dark
-                ? Colors.grey.shade900
-                : Colors.grey.shade200,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'settings.language.showModal'.tr(),
-                style: theme.textTheme.titleLarge,
-              ),
-              const SizedBox(height: 32),
-              ListTile(
-                title: Text('TR', style: theme.textTheme.bodyMedium),
-                onTap: () {
-                  settingsViewModel.localesPutHive(Locales.tr);
-
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: Locales.tr,
-                  );
-
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'TR' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                title: Text('EN', style: theme.textTheme.bodyMedium),
-                onTap: () {
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: Locales.en,
-                  );
-                  settingsViewModel.localesPutHive(Locales.en);
-
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'EN' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.language,
-                  color: Colors.orange,
-                ),
-                title: Text(
-                  'settings.system'.tr(),
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onTap: () {
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: Locales.en,
-                  );
-                  settingsViewModel.localesPutHive(Locales.en);
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'EN' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    return;
-  }
+  }  
 }

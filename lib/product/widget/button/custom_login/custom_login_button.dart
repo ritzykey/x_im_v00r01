@@ -12,15 +12,11 @@ final class CustomLoginButton extends StatefulWidget {
   // ignore: public_member_api_docs
   const CustomLoginButton({
     required this.onOperation,
-    required this.widthScale,
-    required this.heightScale,
     required this.title,
     this.icon,
     super.key,
   });
   final AsyncValueGetter<bool> onOperation;
-  final double widthScale;
-  final double heightScale;
   final String title;
   final Widget? icon;
 
@@ -36,24 +32,16 @@ class _CustomLoginButtonState extends State<CustomLoginButton>
       valueListenable: _isLoadingNotifier,
       builder: (BuildContext context, bool value, Widget? child) {
         if (value) {
-          return SizedBox(
-            width: widget.widthScale,
-            height: widget.heightScale,
-            child: LoadingButton(
-              onPressed: () {},
-            ),
+          return LoadingButton(
+            onPressed: () {},
           );
         }
-        return SizedBox(
-          width: widget.widthScale,
-          height: widget.heightScale,
-          child: NormalButton(
-            title: widget.title,
-            icon: widget.icon,
-            onPressed: () async {
-              await _onPressed(context);
-            },
-          ),
+        return NormalButton(
+          title: widget.title,
+          icon: widget.icon,
+          onPressed: () async {
+            await _onPressed(context);
+          },
         );
       },
     );

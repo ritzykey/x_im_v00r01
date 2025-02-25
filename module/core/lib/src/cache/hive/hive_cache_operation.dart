@@ -10,14 +10,14 @@ class HiveCacheOperation<T extends CacheModel> extends CacheOperation<T> {
     _box = Hive.box<T>(name: T.toString());
   }
   late final Box<T> _box;
-  @override
-  void add(T item) {
-    _box.put(item.id, item);
+
+  void put(String name, T item) {
+    _box.put(name, item);
   }
 
   @override
-  void put(String name, T item) {
-    _box.put(name, item);
+  void add(T item) {
+    _box.put(item.id, item);
   }
 
   @override

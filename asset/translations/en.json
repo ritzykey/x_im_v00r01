@@ -1,4 +1,11 @@
 {
+    "bottomNavigation": {
+        "home": "Home",
+        "discover": "Discover",
+        "search": "Search",
+        "favorites": "Favorites",
+        "profile": "Profile"
+    },
     "home": {
         "title": "Home Page"
     },
@@ -23,6 +30,10 @@
         "system": "System",
         "help": "Help",
         "logout": "Logout",
+        "textSize": "Text Size",
+        "default": "Default",
+        "small": "Small",
+        "large": "Large",
         "appearance": {
             "title": "Appearance",
             "showModal": "Select a Theme"

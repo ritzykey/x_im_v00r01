@@ -1,4 +1,11 @@
 {
+    "bottomNavigation": {
+        "home": "Ana Sayfa",
+        "discover": "Keşfet",
+        "search": "Arama",
+        "favorites": "Favoriler",
+        "profile": "Profil"
+    },
     "home": {
         "title": "Ana Sayfa"
     },
@@ -23,6 +30,10 @@
         "system": "Sistem",
         "help": "Yardım",
         "logout": "Çıkış",
+        "textSize": "Yazı Boyutu",
+        "default": "Varsayılan",
+        "small": "Küçük",
+        "large": "Büyük",
         "appearance": {
             "title": "Görünüm",
             "showModal": "Bir Tema Seçin"

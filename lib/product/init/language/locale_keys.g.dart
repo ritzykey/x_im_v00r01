@@ -3,6 +3,12 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
+  static const bottomNavigation_home = 'bottomNavigation.home';
+  static const bottomNavigation_discover = 'bottomNavigation.discover';
+  static const bottomNavigation_search = 'bottomNavigation.search';
+  static const bottomNavigation_favorites = 'bottomNavigation.favorites';
+  static const bottomNavigation_profile = 'bottomNavigation.profile';
+  static const bottomNavigation = 'bottomNavigation';
   static const home_title = 'home.title';
   static const home = 'home';
   static const general_button_save = 'general.button.save';
@@ -21,6 +27,10 @@ abstract class  LocaleKeys {
   static const settings_system = 'settings.system';
   static const settings_help = 'settings.help';
   static const settings_logout = 'settings.logout';
+  static const settings_textSize = 'settings.textSize';
+  static const settings_default = 'settings.default';
+  static const settings_small = 'settings.small';
+  static const settings_large = 'settings.large';
   static const settings_appearance_title = 'settings.appearance.title';
   static const settings_appearance_showModal = 'settings.appearance.showModal';
   static const settings_appearance = 'settings.appearance';

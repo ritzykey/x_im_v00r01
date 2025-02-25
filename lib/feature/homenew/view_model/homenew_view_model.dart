@@ -64,7 +64,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       opacity = (scrollOffset <= maxHeaderHeight - minHeaderHeight)
           ? 1 - (scrollOffset / (maxHeaderHeight - minHeaderHeight))
           : 0.001;
-      print('listener çalışıyor');
       emit(state.copyWith(opacity: opacity));
 
       if ((scrollOffset - oldscrolloffset).abs() > 1) {

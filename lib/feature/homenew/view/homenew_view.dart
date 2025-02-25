@@ -24,285 +24,262 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
     return BlocProvider(
       create: (context) => homenewViewModel,
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: PageView.builder(
-          controller: homenewViewModel.pageController,
-          itemCount: 3,
-          onPageChanged: (index) {},
-          itemBuilder: (context, index) {
-            return Stack(
-              children: <Widget>[
-                CustomScrollView(
-                  slivers: <Widget>[
-                    SliverLayoutBuilder(
-                      builder: (context, constraints) {
-                        var opacity = 0.0;
-                        if (constraints.scrollOffset > (450 - kToolbarHeight))
-                          opacity =
-                              ((constraints.scrollOffset - kToolbarHeight) /
-                                      kToolbarHeight)
-                                  .clamp(0.0, 1.0);
-                        return SliverPadding(
-                          padding: const EdgeInsets.all(8),
-                          sliver: SliverAppBar(
-                            stretch:
-                                true, // Kullanıcı aşağı kaydırınca genişleyecek.
-
-                            expandedHeight: 450,
-                            pinned: true,
-                            automaticallyImplyLeading: false,
-                            backgroundColor: Colors.black,
-                            flexibleSpace: FlexibleSpaceBar(
-                              title: AnimatedOpacity(
-                                opacity: opacity,
-                                duration: const Duration(milliseconds: 300),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    'Emma Watson',
-                                    style:
-                                        context.general.textTheme.bodySmall ??
-                                            const TextStyle(),
-                                  ),
-                                ),
-                              ),
-                              collapseMode: CollapseMode.pin,
-                              background: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      'asset/images/pexels1.jpg',
-                                    ),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.black,
-                                        Colors.black.withOpacity(.1),
-                                      ],
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Container(
-                                          decoration: const BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                10,
-                                              ),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              FadeAnimation(
-                                                1,
-                                                Text(
-                                                  'Emma Watson',
-                                                  style: context
-                                                          .general
-                                                          .textTheme
-                                                          .bodySmall ??
-                                                      const TextStyle(),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              const Row(
-                                                children: <Widget>[
-                                                  FadeAnimation(
-                                                    1.2,
-                                                    Text(
-                                                      '60 Videos',
-                                                      style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 50,
-                                                  ),
-                                                  FadeAnimation(
-                                                    1.3,
-                                                    Text(
-                                                      '240K Subscribers',
-                                                      style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+        body: SafeArea(
+          child: PageView.builder(
+            reverse: true,
+            controller: homenewViewModel.pageController,
+            itemCount: 3,
+            onPageChanged: (index) {},
+            itemBuilder: (context, index) {
+              return CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    elevation: 1,
+                    expandedHeight: context.general.mediaSize.height * 0.6,
+                    automaticallyImplyLeading: false,
+                    flexibleSpace: FlexibleSpaceBar(
+                      expandedTitleScale: 1,
+                      titlePadding: const EdgeInsets.only(top: 10),
+                      title: Transform.translate(
+                        offset: const Offset(0, 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(20),
                             ),
+                            color: context.general.colorScheme.surfaceDim,
                           ),
-                        );
-                      },
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'Born',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'April, 15th 1990, Paris, France',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'Nationality',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'British',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              const FadeAnimation(
-                                1.6,
-                                Text(
-                                  'Videos',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              FadeAnimation(
-                                1.8,
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: <Widget>[
-                                      makeVideo(
-                                        image: 'assets/images/emma-1.jpg',
+                          child: Transform.translate(
+                            offset: const Offset(0, -25),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: context
+                                          .general.colorScheme.surfaceBright,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
                                       ),
-                                      makeVideo(
-                                        image: 'assets/images/emma-2.jpg',
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(
+                                        'Bugün',
+                                        style:
+                                            context.general.textTheme.bodySmall,
                                       ),
-                                      makeVideo(
-                                        image: 'assets/images/emma-3.jpg',
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        iconAlignment: IconAlignment.end,
+                                        icon: Icon(
+                                          Icons.favorite_border,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
+                                        ),
+                                        label: const Text(
+                                          '1664',
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          textStyle: context
+                                              .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          textStyle: context
+                                              .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 120,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ]),
+                      ),
+                      background: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              'asset/images/pexels1.jpg',
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-                // Positioned.fill(
-                //   bottom: 50,
-                //   child: Container(
-                //     child: Align(
-                //       alignment: Alignment.bottomCenter,
-                //       child: FadeAnimation(
-                //         2,
-                //         Container(
-                //           margin: const EdgeInsets.symmetric(horizontal: 30),
-                //           height: 50,
-                //           decoration: BoxDecoration(
-                //             borderRadius: BorderRadius.circular(50),
-                //             color: Colors.yellow[700],
-                //           ),
-                //           child: const Align(
-                //             child: Text(
-                //               'Follow',
-                //               style: TextStyle(color: Colors.white),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              ],
-            );
-          },
+                  ),
+                  const SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    pinned: true,
+                    flexibleSpace: FlexibleSpaceBar(
+                      title: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          'Emma Watson',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'Born',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'April, 15th 1990, Paris, France',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'Nationality',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'British',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const FadeAnimation(
+                            1.6,
+                            Text(
+                              'Videos',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            1.8,
+                            SizedBox(
+                              height: 200,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: <Widget>[
+                                  makeVideo(
+                                    image: 'assets/images/emma-1.jpg',
+                                  ),
+                                  makeVideo(
+                                    image: 'assets/images/emma-2.jpg',
+                                  ),
+                                  makeVideo(
+                                    image: 'assets/images/emma-3.jpg',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 120,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -615,7 +592,6 @@ class HomenewPage2 extends StatelessWidget {
                         Builder(
                           builder: (context) {
                             if (state < 0.1) {
-                              print('oooooooooo $state');
                               return IconButton(
                                 icon: const Icon(Icons.favorite),
                                 onPressed: () {

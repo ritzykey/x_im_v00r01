@@ -5,17 +5,24 @@ import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class UserCacheModel with CacheModel {
-  UserCacheModel({this.user, this.isFirstTime, this.themeMode, this.locale});
+  UserCacheModel({
+    this.user,
+    this.isFirstTime,
+    this.themeMode,
+    this.language,
+  });
 
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
         isFirstTime = true,
-        themeMode = null, // Default theme mode
-        locale = null; // Default locale
+        themeMode = null,
+        language = null;
+
   final LoginResponseModel2? user;
   final bool? isFirstTime; // Opsiyonel alan
-  final ThemeMode? themeMode; // Opsiyonel alan
-  final Locales? locale; // Opsiyonel alan
+  final ThemeMode? themeMode;
+  final Locale? language;
+
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -27,8 +34,11 @@ final class UserCacheModel with CacheModel {
     return copyWith(
       user: LoginResponseModel2.fromJson(jsonMap),
       isFirstTime: jsonMap['isFirstTime'] as bool?, // isFirstTime'ı al!
-      themeMode: ThemeMode.values[(jsonMap['themeMode'] as int?) ?? 0],
-      locale: Locales.values[(jsonMap['locale'] as int?) ?? 0], // locale'i al!
+      themeMode: _stringToThemeMode(jsonMap['themeMode'] as String?),
+      language: jsonMap['language'] != null
+          ? Locale(jsonMap['language'].toString())
+          : null,
+
     );
   }
 
@@ -38,10 +48,10 @@ final class UserCacheModel with CacheModel {
   @override
   Map<String, dynamic> toJson() {
     return {
-      ...?user?.toJson(),
+      ...(user ?? LoginResponseModel2()).toJson(),
       'isFirstTime': isFirstTime,
-      'themeMode': themeMode?.index, // themeMode'i al!
-      'locale': locale?.index, // locale'i al!
+      'themeMode': themeMode.toString().split('.').last,
+      'language': language?.languageCode,
     };
   }
 
@@ -49,13 +59,29 @@ final class UserCacheModel with CacheModel {
     LoginResponseModel2? user,
     bool? isFirstTime,
     ThemeMode? themeMode,
-    Locales? locale,
+    Locale? language,
+
   }) {
     return UserCacheModel(
       user: user ?? this.user,
       isFirstTime: isFirstTime ?? this.isFirstTime,
       themeMode: themeMode ?? this.themeMode,
-      locale: locale ?? this.locale,
+      language: language ?? this.language,
+
     );
+  }
+
+  /// **Enum String'den ThemeMode'a çevirme**
+  ThemeMode? _stringToThemeMode(String? themeModeString) {
+    switch (themeModeString) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+        return ThemeMode.system;
+      default:
+        return null;
+    }
   }
 }

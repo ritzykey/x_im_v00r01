@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:x_im_v00r01/product/init/theme/custom_dark_theme.dart';
+import 'package:x_im_v00r01/product/init/theme/custom_light_theme.dart';
+
+enum NetworkStatus { connected, disconnected }
 
 final class ProductState extends Equatable {
   const ProductState({
@@ -7,31 +11,50 @@ final class ProductState extends Equatable {
     this.heightScale = 1,
     this.themeMode = ThemeMode.light,
     this.selectedindex = 0,
-    this.themeModeName = 'Light',
+    this.networkStatus = NetworkStatus.connected,
+    this.fontSize = 12.0,
   });
 
   final ThemeMode themeMode;
   final double widthScale;
   final double heightScale;
   final int selectedindex;
-  final String themeModeName;
+  final NetworkStatus networkStatus;
+  final double fontSize;
+
+  ThemeData get darkThemeData => CustomDarkTheme().themeData.copyWith(
+        textTheme: CustomDarkTheme().textTheme(fontSize),
+      );
+
+  ThemeData get lightThemeData => CustomLightTheme().themeData.copyWith(
+        textTheme: CustomLightTheme().textTheme(fontSize),
+      );
 
   @override
-  List<Object> get props => [themeMode, widthScale, heightScale, selectedindex];
+  List<Object> get props => [
+        themeMode,
+        widthScale,
+        heightScale,
+        selectedindex,
+        networkStatus,
+        fontSize,
+      ];
 
   ProductState copyWith({
     ThemeMode? themeMode,
     double? widthScale,
     double? heightScale,
     int? selectedindex,
-    String? themeModeName,
+    NetworkStatus? networkStatus,
+    double? fontSize,
   }) {
     return ProductState(
       themeMode: themeMode ?? this.themeMode,
       widthScale: widthScale ?? this.widthScale,
       heightScale: heightScale ?? this.heightScale,
       selectedindex: selectedindex ?? this.selectedindex,
-      themeModeName: themeModeName ?? this.themeModeName,
+      networkStatus: networkStatus ?? this.networkStatus,
+      fontSize: fontSize ?? this.fontSize,
     );
   }
 }

@@ -31,7 +31,6 @@ final class OnboardingsViewModel extends BaseCubit<OnboardingsState> {
     emit(state.copyWith(isLoading: !state.isLoading));
   }
 
-
   void nextPage() {
     if (state.currentPage < 4) {
       pageController.nextPage(
@@ -58,7 +57,7 @@ final class OnboardingsViewModel extends BaseCubit<OnboardingsState> {
   }
 
   void onboardingPutHive() {
-    userCacheOperation.remove('isFirstTime'); // Önce eski veriyi sil
+    //userCacheOperation.remove('isFirstTime'); // Önce eski veriyi sil
     userCacheOperation.put(
       'isFirstTime',
       UserCacheModel(
