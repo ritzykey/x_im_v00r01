@@ -21,8 +21,11 @@ class _SingleChoiceState extends State<SingleChoice> {
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
-      constraints:
-          const BoxConstraints(minWidth: 35, minHeight: 48), // Butonları küçült
+      constraints: const BoxConstraints(
+        minWidth: 62,
+        minHeight: 48,
+        maxWidth: 62,
+      ), // Butonları küçült
       borderRadius: BorderRadius.circular(8), // Kenar yuvarlama
       borderColor: Colors.grey, // Kenarlık rengi
       selectedBorderColor: Colors.blue, // Seçili segmentin kenarlık rengi
@@ -54,22 +57,17 @@ class _SingleChoiceState extends State<SingleChoice> {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Text(
             'settings.default'.tr(),
-            style: context.general.appTheme.textTheme.bodySmall,
+            style: context.general.appTheme.textTheme.bodySmall
+                ?.copyWith(fontSize: 10),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            'settings.small'.tr(),
-            style: context.general.appTheme.textTheme.bodySmall,
-          ),
+        Text(
+          'settings.small'.tr(),
+          style: context.general.appTheme.textTheme.bodySmall,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            'settings.large'.tr(),
-            style: context.general.appTheme.textTheme.bodySmall,
-          ),
+        Text(
+          'settings.large'.tr(),
+          style: context.general.appTheme.textTheme.bodySmall,
         ),
       ], // Seçili arka plan rengi
     );

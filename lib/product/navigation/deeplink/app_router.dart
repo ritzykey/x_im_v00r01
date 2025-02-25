@@ -20,14 +20,18 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeRoute.page),
+
         AutoRoute(page: HomeDetailRoute.page),
 
         AutoRoute(
           page: LoginRoute.page,
+          fullscreenDialog: true,
         ),
 
         AutoRoute(page: HomenewRoute.page),
+
         AutoRoute(page: StoryyRoute.page, path: '/storyy/:id'),
+
         AutoRoute(page: SettingsRoute.page),
 
         AutoRoute(

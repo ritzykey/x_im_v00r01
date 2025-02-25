@@ -10,6 +10,7 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 mixin LoginViewMixin on BaseState<LoginView> {
   @override
   late final ProductNetworkManager productNetworkManager;
+  
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
   late final LoginViewModel loginViewModel;
@@ -26,7 +27,7 @@ mixin LoginViewMixin on BaseState<LoginView> {
       operationService: LoginService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
-    _initializeAsyncWork();
+    //_initializeAsyncWork();
   }
 
   // if (await loginViewModel.tokenCheck()) {

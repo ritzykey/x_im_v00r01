@@ -1,12 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/login/view/mixin/login_view_mixin.dart';
 import 'package:x_im_v00r01/feature/login/view/widget/UizardTextForm.dart';
-import 'package:x_im_v00r01/feature/login/view_model/login_view_model.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 import 'package:x_im_v00r01/product/widget/button/custom_login/custom_login_button.dart';
+
+void showLoginModal(BuildContext context) {
+  showModalBottomSheet<LoginView>(
+    context: context,
+    isScrollControlled: true, // Modalın yüksekliğini kontrol edebilmek için
+    builder: (context) {
+      return const LoginView();
+    },
+  );
+}
 
 @RoutePage()
 class LoginView extends StatefulWidget {
@@ -19,182 +30,110 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends BaseState<LoginView> with LoginViewMixin {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final widthScale = size.width / 411.43; // Ekran genişliğine göre ölçek
-    final heightScale = size.height / 707.43; // Ekran yüksekliğine göre ölçek
-
-    return SafeArea(
-      child: First_Design_Login(
-        heightScale: heightScale,
-        widthScale: widthScale,
-        loginViewModel: loginViewModel,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      height: context.general.mediaSize.height * 0.8,
+      decoration: BoxDecoration(
+        color:
+            context.watch<ProductViewModel>().state.themeMode == ThemeMode.dark
+                ? Colors.grey.shade900
+                : Colors.grey.shade200,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
       ),
-    );
-  }
-}
-
-class First_Design_Login extends StatelessWidget {
-  const First_Design_Login({
-    required this.heightScale,
-    required this.widthScale,
-    required this.loginViewModel,
-    super.key,
-  });
-
-  final double heightScale;
-  final double widthScale;
-  final LoginViewModel loginViewModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // İçeriğe göre boyut alır
         children: [
-          Column(
+          Text(
+            'XDBM Life Stories',
+            style: context.general.textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Discover inspiring life journey',
+            style: context.general.textTheme.bodySmall,
+          ),
+          const SizedBox(height: 24),
+          UizardTextForm(
+            label: 'Email',
+            controller: loginViewModel.emailController,
+            obscure: false,
+          ),
+          const SizedBox(height: 20),
+          UizardTextForm(
+            label: 'Password',
+            controller: loginViewModel.passwordController,
+            obscure: true,
+          ),
+          const SizedBox(height: 18),
+          SizedBox(
+            width: context.general.mediaSize.width,
+            child: CustomLoginButton(
+              onOperation: loginViewModel.buttonloading,
+              title: 'Login',
+            ),
+          ),
+          Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(top: heightScale * 40),
-                child: SizedBox(
-                  width: 128 * widthScale,
-                  height: 128 * heightScale,
-                  child: Assets.images.imgLog2.image(package: 'gen'),
-                ),
-              ),
-              Center(
-                child: Container(
+              SizedBox(
+                height: 20,
+                child: TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    alignment: Alignment.centerLeft,
+                    padding: WidgetStateProperty.all(EdgeInsets.zero),
+                    minimumSize: WidgetStateProperty.all(const Size(0, 16)),
+                  ),
                   child: Text(
-                    'XDBM Life Stories',
-                    style: context.general.textTheme.headlineMedium,
+                    'Forgot your password ?',
+                    style: context.general.textTheme.labelSmall
+                        ?.copyWith(color: Colors.red),
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
-              Center(
-                child: Container(
-                  child: Text(
-                    'Discover inspiring life journey',
-                    style: context.general.textTheme.bodySmall,
-                  ),
-                ),
+            ],
+          ),
+          const SizedBox(height: 37),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 141,
+                child: Divider(thickness: 1, color: Colors.grey),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Text('or'),
               ),
               SizedBox(
-                height: heightScale * 24,
+                width: 141,
+                child: Divider(thickness: 1, color: Colors.grey),
               ),
-              Center(
-                child: UizardTextForm(
-                  heightScale: heightScale,
-                  widthScale: widthScale,
-                  label: 'Email',
-                  controller: loginViewModel.emailController,
-                  obscure: false,
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomLoginButton(
+                onOperation: loginViewModel.buttonloading,
+                title: 'Facebook',
+                icon: Assets.icons.facebook.svg(
+                  package: 'gen',
+                  width: 25,
                 ),
               ),
-              SizedBox(
-                height: heightScale * 20,
-              ),
-              Center(
-                child: UizardTextForm(
-                  heightScale: heightScale,
-                  widthScale: widthScale,
-                  label: 'Password',
-                  controller: loginViewModel.passwordController,
-                  obscure: true,
-                ),
-              ),
-              SizedBox(
-                height: heightScale * 8,
-              ),
-              Center(
-                child: SizedBox(
-                  width: widthScale * 327,
-                  height: heightScale * 13,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      overlayColor: WidgetStateProperty.all(
-                        Colors.transparent,
-                      ),
-                      alignment: Alignment.centerRight,
-                      padding: WidgetStateProperty.all(
-                        EdgeInsets.zero,
-                      ),
-                    ),
-                    child: Text(
-                      'Forgot your password ?',
-                      style: context.general.textTheme.labelSmall,
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: heightScale * 37,
-              ),
-              Center(
-                child: CustomLoginButton(
-                  onOperation: loginViewModel.buttonloading,
-                  widthScale: widthScale * 327,
-                  heightScale: heightScale * 48,
-                  title: 'Login',
-                ),
-              ),
-              SizedBox(
-                height: heightScale * 20,
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: widthScale * 141, // Çizginin uzunluğunu ayarla
-                      child: const Divider(
-                        thickness: 1,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text('or'),
-                    ),
-                    SizedBox(
-                      width: widthScale * 141, // Çizginin uzunluğunu ayarla
-                      child: const Divider(
-                        thickness: 1,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: heightScale * 16,
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // Ortalamak için
-
-                  children: [
-                    CustomLoginButton(
-                      onOperation: loginViewModel.buttonloading,
-                      widthScale: widthScale * 157,
-                      heightScale: heightScale * 48,
-                      title: 'Facebook',
-                      icon: Assets.icons.facebook.svg(
-                        package: 'gen',
-                        width: 25,
-                      ),
-                    ),
-                    SizedBox(width: widthScale * 13),
-                    CustomLoginButton(
-                      onOperation: loginViewModel.buttonloading,
-                      widthScale: widthScale * 157,
-                      heightScale: heightScale * 48,
-                      title: 'Google',
-                      icon: Assets.icons.google.svg(
-                        package: 'gen',
-                        width: 20,
-                      ),
-                    ),
-                  ],
+              const SizedBox(width: 13),
+              CustomLoginButton(
+                onOperation: loginViewModel.buttonloading,
+                title: 'Google',
+                icon: Assets.icons.google.svg(
+                  package: 'gen',
+                  width: 20,
                 ),
               ),
             ],

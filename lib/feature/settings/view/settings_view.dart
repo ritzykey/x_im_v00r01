@@ -1,17 +1,15 @@
-import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
+import 'package:x_im_v00r01/feature/settings/view/utils/appearance_modal.dart';
+import 'package:x_im_v00r01/feature/settings/view/utils/language_modal.dart';
 import 'package:x_im_v00r01/feature/settings/view/widget/LoginSignupWidget.dart';
 import 'package:x_im_v00r01/feature/settings/view/widget/SingleChoice.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
-import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
-import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
@@ -48,7 +46,7 @@ class _SettingsViewState extends BaseState<SettingsView>
             ];
           },
           body: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,9 +62,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 16),
 
-                      /// This [LoginSignupWidget] is where the login/signup widget is placed
+                      /// This is where the login/signup widget is placed
                       const LoginSignupWidget(),
-                      const SizedBox(height: 32),
+
+                      const SizedBox(height: 16),
+
                       Text(
                         'settings.title'.tr(),
                         style: context.general.textTheme.headlineSmall
@@ -81,10 +81,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                             capitalizeLanguageName(context),
                             Colors.purple,
                             context.watch<ProductViewModel>().state.themeMode,
-                            onTab: () => _showAppearanceModal(
+                            onTab: () => showAppearanceModal(
                               context,
                               context.general.appTheme,
                               capitalizeThemeModeName(context),
+                              settingsViewModel,
                             ),
                           );
                           // return Text(_.theme);
@@ -99,10 +100,11 @@ class _SettingsViewState extends BaseState<SettingsView>
                             context.locale.languageCode.toUpperCase(),
                             Colors.orange,
                             context.general.appTheme,
-                            onTab: () => _showLanguageModal(
+                            onTab: () => showLanguageModal(
                               context,
                               context.general.appTheme,
                               context.locale.languageCode.toUpperCase(),
+                              settingsViewModel,
                             ),
                           );
                         },
@@ -145,7 +147,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                         ),
                         title: Text('settings.textSize'.tr()),
                         trailing: const SizedBox(
-                          width: 206,
+                          width: 190,
                           height: 34,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -222,233 +224,5 @@ class _SettingsViewState extends BaseState<SettingsView>
       ),
       onTap: onTab,
     );
-  }
-
-  void _showAppearanceModal(
-    BuildContext context,
-    ThemeData theme,
-    String current,
-  ) {
-    showModalBottomSheet<Container>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          height: 320,
-          decoration: BoxDecoration(
-            color: context.watch<ProductViewModel>().state.themeMode ==
-                    ThemeMode.dark
-                ? Colors.grey.shade900
-                : Colors.grey.shade200,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'settings.appearance.showModal'.tr(),
-                style: theme.textTheme.titleLarge,
-              ),
-              const SizedBox(height: 32),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_5,
-                  color: Colors.blue,
-                ),
-                title: Text(
-                  'settings.light'.tr(),
-                  style: theme.textTheme.bodyLarge,
-                ),
-                onTap: () {
-                  settingsViewModel.userCacheOperation.put(
-                    'themeMode',
-                    UserCacheModel(themeMode: ThemeMode.light),
-                  );
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.light);
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'Light' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_2,
-                  color: Colors.orange,
-                ),
-                title: Text(
-                  'settings.dark'.tr(),
-                  style: theme.textTheme.bodyLarge,
-                ),
-                onTap: () {
-                  settingsViewModel.userCacheOperation.put(
-                    'themeMode',
-                    UserCacheModel(themeMode: ThemeMode.dark),
-                  );
-                  context
-                      .read<ProductViewModel>()
-                      .changeThemeMode(ThemeMode.dark);
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'Dark' ? Colors.orange : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.brightness_6,
-                  color: Colors.blueGrey,
-                ),
-                title: Text(
-                  'settings.system'.tr(),
-                  style: theme.textTheme.bodyLarge,
-                ),
-                onTap: () {
-                  settingsViewModel.userCacheOperation.put(
-                    'themeMode',
-                    UserCacheModel(themeMode: ThemeMode.system),
-                  );
-                  final themeModeSystem = context
-                      .read<ProductViewModel>()
-                      .getPlatformBrightness(context);
-                  context.read<ProductViewModel>().changeThemeMode(
-                        themeModeSystem,
-                      );
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'System'
-                      ? Colors.blueGrey
-                      : Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    return;
-  }
-
-  void _showLanguageModal(
-    BuildContext context,
-    ThemeData theme,
-    String current,
-  ) {
-    showModalBottomSheet<Container>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          height: 320,
-          decoration: BoxDecoration(
-            color: context.watch<ProductViewModel>().state.themeMode ==
-                    ThemeMode.dark
-                ? Colors.grey.shade900
-                : Colors.grey.shade200,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'settings.language.showModal'.tr(),
-                style: context.general.textTheme.titleLarge,
-              ),
-              const SizedBox(height: 32),
-              ListTile(
-                title: Text('TR', style: theme.textTheme.bodyLarge),
-                onTap: () {
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: const Locale('tr'),
-                  );
-                  settingsViewModel.userCacheOperation.put(
-                    'lang',
-                    UserCacheModel(language: const Locale('tr')),
-                  );
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'TR' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                title: Text('EN', style: theme.textTheme.bodyLarge),
-                onTap: () {
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: const Locale('en'),
-                  );
-                  settingsViewModel.userCacheOperation.put(
-                    'lang',
-                    UserCacheModel(language: const Locale('en')),
-                  );
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current == 'EN' ? Colors.blue : Colors.transparent,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ListTile(
-                leading: const Icon(
-                  Icons.language,
-                  color: Colors.orange,
-                ),
-                title: Text(
-                  'settings.system'.tr(),
-                  style: theme.textTheme.bodyLarge,
-                ),
-                onTap: () {
-                  final systemLocale = PlatformDispatcher.instance.locale;
-
-                  settingsViewModel.userCacheOperation.put(
-                    'lang',
-                    UserCacheModel(),
-                  );
-                  ProductLocalization.updateLanguage(
-                    context: context,
-                    value: settingsViewModel.userCacheOperation
-                            .get('lang')
-                            ?.language ??
-                        systemLocale,
-                  );
-
-                  Navigator.pop(context);
-                },
-                trailing: Icon(
-                  Icons.check,
-                  color: current ==
-                          PlatformDispatcher.instance.locale.languageCode
-                              .toUpperCase()
-                      ? Colors.blue
-                      : Colors.transparent,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    return;
   }
 }
