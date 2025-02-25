@@ -125,7 +125,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                         '',
                         Colors.green,
                         context.general.appTheme,
-                        onTab: () {},
+                        onTab: () {
+                          settingsViewModel.onboardingPutHive();
+                          // deneme amaçlı onboarngi truye çeker
+                        },
                       ),
                       const SizedBox(height: 8),
                       ListTile(
@@ -224,5 +227,5 @@ class _SettingsViewState extends BaseState<SettingsView>
       ),
       onTap: onTab,
     );
-  }
+  }  
 }

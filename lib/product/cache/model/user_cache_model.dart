@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
+import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class UserCacheModel with CacheModel {
   UserCacheModel({
@@ -22,6 +23,7 @@ final class UserCacheModel with CacheModel {
   final ThemeMode? themeMode;
   final Locale? language;
 
+
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
     final jsonMap = json as Map<String, dynamic>?;
@@ -36,6 +38,7 @@ final class UserCacheModel with CacheModel {
       language: jsonMap['language'] != null
           ? Locale(jsonMap['language'].toString())
           : null,
+
     );
   }
 
@@ -57,12 +60,14 @@ final class UserCacheModel with CacheModel {
     bool? isFirstTime,
     ThemeMode? themeMode,
     Locale? language,
+
   }) {
     return UserCacheModel(
       user: user ?? this.user,
       isFirstTime: isFirstTime ?? this.isFirstTime,
       themeMode: themeMode ?? this.themeMode,
       language: language ?? this.language,
+
     );
   }
 

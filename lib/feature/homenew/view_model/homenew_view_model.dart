@@ -55,6 +55,9 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     return true;
   }
 
+  void favoritesButtton() {}
+  void loadStorys() {}
+
   void _initScrollListener() {
     scrollController.addListener(() {
       scrollOffset = scrollController.offset;

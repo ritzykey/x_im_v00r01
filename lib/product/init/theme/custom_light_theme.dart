@@ -44,6 +44,8 @@ final class CustomLightTheme implements CustomTheme {
 
   @override
   FloatingActionButtonThemeData get floatingActionButtonThemeData =>
-      const FloatingActionButtonThemeData();
+      const FloatingActionButtonThemeData(
+        backgroundColor: Colors.pink,
+      );
   //özelleştrimek istediğin komponentin değerlerini gir
 }

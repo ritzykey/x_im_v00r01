@@ -22,6 +22,5 @@ class FirstTimeGuard extends AutoRouteGuard {
     } else {
       resolver.next(); // Direkt devam et
     }
-    print('isFirstTimefinaly: $isFirstTime');
   }
 }
