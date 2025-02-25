@@ -1,8 +1,10 @@
 import 'package:core/core.dart';
+import 'package:flutter/material.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/project_operation.dart';
 import 'package:x_im_v00r01/product/state/base/base_cubit.dart';
+import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class SettingsViewModel extends BaseCubit<SettingsState> {
   /// [ProjectOperation] service
@@ -19,5 +21,39 @@ final class SettingsViewModel extends BaseCubit<SettingsState> {
   /// Change loading state
   void changeLoading() {
     emit(state.copyWith(isLoading: !state.isLoading));
+  }
+
+  void themeModePutHive(ThemeMode mode) {
+    userCacheOperation.remove('boxthemeMode'); // Önce eski veriyi sil
+    // ignore: cascade_invocations
+    userCacheOperation.put(
+      'boxthemeMode',
+      UserCacheModel(
+        themeMode: mode,
+      ),
+    );
+  }
+
+  void localesPutHive(Locales locale) {
+    userCacheOperation.remove('boxlocale'); // Önce eski veriyi sil
+    // ignore: cascade_invocations
+    userCacheOperation.put(
+      'boxlocale',
+      UserCacheModel(
+        locale: locale,
+      ),
+    );
+  }
+
+  void onboardingPutHive() {
+    userCacheOperation.remove('isFirstTime'); // Önce eski veriyi sil
+    userCacheOperation.put(
+      'isFirstTime',
+      UserCacheModel(
+        isFirstTime: true,
+      ),
+    );
+    final isfirstime = userCacheOperation.get('isFirstTime')?.isFirstTime;
+    print('onboardingisfirstime:' '$isfirstime');
   }
 }

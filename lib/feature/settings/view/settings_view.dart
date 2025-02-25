@@ -138,7 +138,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                           return _buildListTile(
                             'settings.language.title'.tr(),
                             Icons.language,
-                            'EN',
+                            context.locale.languageCode.toUpperCase(),
                             Colors.orange,
                             context.general.appTheme,
                             onTab: () => _showLanguageModal(
@@ -165,7 +165,10 @@ class _SettingsViewState extends BaseState<SettingsView>
                         '',
                         Colors.green,
                         context.general.appTheme,
-                        onTab: () {},
+                        onTab: () {
+                          settingsViewModel.onboardingPutHive();
+                          // deneme amaçlı onboarngi truye çeker
+                        },
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
@@ -264,7 +267,7 @@ class _SettingsViewState extends BaseState<SettingsView>
             children: [
               Text(
                 'settings.appearance.showModal'.tr(),
-                style: theme.textTheme.titleLarge,
+                style: theme.textTheme.titleMedium,
               ),
               const SizedBox(height: 32),
               ListTile(
@@ -280,6 +283,8 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.light);
+                  settingsViewModel.themeModePutHive(ThemeMode.light);
+
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -301,6 +306,8 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.dark);
+                  settingsViewModel.themeModePutHive(ThemeMode.dark);
+
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -322,6 +329,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                   context
                       .read<ProductViewModel>()
                       .changeThemeMode(ThemeMode.system);
+                  settingsViewModel.themeModePutHive(ThemeMode.system);
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -373,10 +381,13 @@ class _SettingsViewState extends BaseState<SettingsView>
               ListTile(
                 title: Text('TR', style: theme.textTheme.bodyMedium),
                 onTap: () {
+                  settingsViewModel.localesPutHive(Locales.tr);
+
                   ProductLocalization.updateLanguage(
                     context: context,
                     value: Locales.tr,
                   );
+
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -392,6 +403,8 @@ class _SettingsViewState extends BaseState<SettingsView>
                     context: context,
                     value: Locales.en,
                   );
+                  settingsViewModel.localesPutHive(Locales.en);
+
                   Navigator.pop(context);
                 },
                 trailing: Icon(
@@ -414,6 +427,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                     context: context,
                     value: Locales.en,
                   );
+                  settingsViewModel.localesPutHive(Locales.en);
                   Navigator.pop(context);
                 },
                 trailing: Icon(

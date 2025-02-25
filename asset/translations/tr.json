@@ -38,5 +38,26 @@
                 "title": "Bir Bildirim Türü Seçin"
             }
         }
+    },
+    "onboardings": {
+        "skip": "Atla",
+        "next": "İlerle",
+        "start": "Başla",
+        "step1": {
+            "title": "XDBM'e Hoş Geldiniz!",
+            "content": "Burada ünlü ve başarılı insanların hayatlarından ilham alabilirsiniz."
+        },
+        "step2": {
+            "title": "Motivasyonel Tavsiyeler",
+            "content": "Dünyaca ünlü isimlerin deneyimlerini keşfedin ve ilham alın!"
+        },
+        "step3": {
+            "title": "Favorilerinizi Kaydedin!",
+            "content": "Sevdiğiniz kişilerin hikayelerini kaydedin ve daha sonra okuyun."
+        },
+        "step4": {
+            "title": "Hemen Başlayın!",
+            "content": "Sizi bekleyen binlerce ilham verici hikayeyi keşfetmeye hazır mısınız?"
+        }
     }
 }

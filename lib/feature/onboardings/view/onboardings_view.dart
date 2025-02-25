@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_im_v00r01/feature/onboardings/view/mixin/onboardings_view_mixin.dart';
@@ -11,8 +12,6 @@ import 'package:x_im_v00r01/product/state/base/base_state.dart';
 @RoutePage()
 class OnboardingsView extends StatefulWidget {
   const OnboardingsView({super.key});
-
-  
 
   @override
   State<OnboardingsView> createState() => _OnboardingsViewState();
@@ -54,11 +53,11 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                               ),
                               child: Text(
                                 page.title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'fallingskysebd',
-                                  color: Color(int.parse('0xFF041839')),
+                                  //color: Color(int.parse('0xFF041839')),
                                 ),
                                 textAlign: TextAlign.left,
                               ),
@@ -70,11 +69,11 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                               ),
                               child: Text(
                                 page.description,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'lilgrotesk',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,
-                                  color: Color(int.parse('0xFF000000')),
+                                  //color: Color(int.parse('0xFF000000')),
                                 ),
                               ),
                             ),
@@ -89,11 +88,11 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                               ),
                               child: Text(
                                 page.title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'fallingskysebd',
-                                  color: Color(int.parse('0xFF041839')),
+                                  //color: Color(int.parse('0xFF041839')),
                                 ),
                                 textAlign: TextAlign.left,
                               ),
@@ -105,11 +104,11 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                               ),
                               child: Text(
                                 page.description,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'lilgrotesk',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,
-                                  color: Color(int.parse('0xFF000000')),
+                                  //color: Color(int.parse('0xFF000000')),
                                 ),
                               ),
                             ),
@@ -130,7 +129,7 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                           height: 12,
                           decoration: BoxDecoration(
                             color: state.currentPage == index
-                                ? const Color(0xFF0B0E43)
+                                ? const Color.fromARGB(255, 179, 134, 2)
                                 : const Color(0xFFC9CCD2),
                             shape: BoxShape.circle,
                           ),
@@ -144,7 +143,6 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                     right: 20,
                     bottom: 20,
                     child: FloatingActionButton(
-                      backgroundColor: const Color(0xFF0B0E43),
                       elevation: 0,
                       onPressed: () {
                         if (state.currentPage == onboardingPages.length - 1) {
@@ -156,13 +154,12 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                       },
                       child: Text(
                         state.currentPage == onboardingPages.length - 1
-                            ? 'Start'
-                            : 'Next',
+                            ? 'onboardings.start'.tr()
+                            : 'onboardings.next'.tr(),
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontFamily: 'fallingskysebd',
                           fontSize: 18,
-                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -172,7 +169,6 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                         ? IconButton(
                             icon: const Icon(
                               Icons.arrow_back,
-                              color: Color(0xFF000000),
                             ),
                             onPressed: () {
                               onboardingsViewModel.previousPage();
@@ -188,12 +184,11 @@ class _OnboardingsViewState extends BaseState<OnboardingsView>
                         onboardingsViewModel.completeOnboarding();
                         context.router.replaceAll([const NavigationRoute()]);
                       },
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
+                      child: Text(
+                        'onboardings.skip'.tr(),
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontFamily: 'fallingskysebd',
-                          color: Color(0xFF000000),
                         ),
                       ),
                     ),

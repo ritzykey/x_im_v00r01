@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:x_im_v00r01/feature/onboardings/view/onboardings_view.dart';
@@ -29,41 +30,36 @@ mixin OnboardingsViewMixin on BaseState<OnboardingsView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
     );
-    
   }
 
   final List<OnboardingPage> onboardingPages = [
     OnboardingPage(
-      title: '''XDBM'e Hoş Geldiniz! ''',
-      description:
-          '''Burada ünlü ve başarılı insanların hayatlarından ilham alabilirsiniz.''',
+      title: 'onboardings.step1.title'.tr(),
+      description: 'onboardings.step1.content'.tr(),
       imageAsset: Assets.lottie.onboardscreen1.lottie(
         package: 'gen',
       ),
       titlePosition: 'top',
     ),
     OnboardingPage(
-      title: 'Motivasyonel Tavsiyeler',
-      description:
-          'Dünyaca ünlü isimlerin deneyimlerini keşfedin ve ilham alın!',
+      title: 'onboardings.step2.title'.tr(),
+      description: 'onboardings.step2.content'.tr(),
       imageAsset: Assets.lottie.onboardscreen2.lottie(
         package: 'gen',
       ),
       titlePosition: 'bottom',
     ),
     OnboardingPage(
-      title: 'Favorilerinizi Kaydedin!',
-      description:
-          'Sevdiğiniz kişilerin hikayelerini kaydedin ve daha sonra okuyun.',
+      title: 'onboardings.step3.title'.tr(),
+      description: 'onboardings.step3.content'.tr(),
       imageAsset: Assets.lottie.onboardscreen3.lottie(
         package: 'gen',
       ),
       titlePosition: 'top',
     ),
     OnboardingPage(
-      title: 'Hemen Başlayın!',
-      description:
-          '''Sizi bekleyen binlerce ilham verici hikayeyi keşfetmeye hazır mısınız?''',
+      title: 'onboardings.step4.title'.tr(),
+      description: 'onboardings.step4.content'.tr(),
       imageAsset: Assets.lottie.onboardscreen4.lottie(
         package: 'gen',
       ),

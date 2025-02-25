@@ -102,3 +102,16 @@ final class CustomColorScheme {
     surfaceContainerHighest: Color(0xff33353a),
   );
 }
+// onSurface: Color(0xffe2e2e9)  
+// Açıklama: Genel olarak metin rengi olarak kullanılır.  
+// Kullanım Alanı: "Skip" butonu ve onboarding sayfasındaki başlık (title) ve içerik (content) metinleri bu rengi kullanır.
+
+
+// surface: Color(0xff111318)  
+// Açıklama: Arka plan (background) rengi olarak kullanılır.  
+// Kullanım Alanı: Onboarding ekranlarının genel arka plan rengi bu renktir.
+
+
+// onPrimaryContainer: Color(0xffd6e3ff)  
+// Açıklama: "Primary Container" renginin üzerindeki metin rengi olarak kullanılır.  
+// Kullanım Alanı: Floating Action Button (FAB) içindeki "Next" (İlerle) butonunun metin rengi olarak kullanılır.

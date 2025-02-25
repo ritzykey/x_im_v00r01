@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
 import 'package:x_im_v00r01/feature/homenew/view/widget/FeadAnimation.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
@@ -41,10 +42,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                               ((constraints.scrollOffset - kToolbarHeight) /
                                       kToolbarHeight)
                                   .clamp(0.0, 1.0);
-
-                        print(
-                          'scroloffset: ${constraints.scrollOffset} , toolbar: $kToolbarHeight',
-                        );
                         return SliverPadding(
                           padding: const EdgeInsets.all(8),
                           sliver: SliverAppBar(
@@ -59,14 +56,13 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                               title: AnimatedOpacity(
                                 opacity: opacity,
                                 duration: const Duration(milliseconds: 300),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 20),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20),
                                   child: Text(
                                     'Emma Watson',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
+                                    style:
+                                        context.general.textTheme.bodySmall ??
+                                            const TextStyle(),
                                   ),
                                 ),
                               ),
@@ -108,7 +104,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                               ),
                                             ),
                                           ),
-                                          child: const Column(
+                                          child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
@@ -116,17 +112,17 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                                 1,
                                                 Text(
                                                   'Emma Watson',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 40,
-                                                  ),
+                                                  style: context
+                                                          .general
+                                                          .textTheme
+                                                          .bodySmall ??
+                                                      const TextStyle(),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
-                                              Row(
+                                              const Row(
                                                 children: <Widget>[
                                                   FadeAnimation(
                                                     1.2,
@@ -366,9 +362,6 @@ class HomenewPage2 extends StatelessWidget {
               slivers: [
                 SliverLayoutBuilder(
                   builder: (context, constraints) {
-                    print(
-                      'scrollOffsetttt: ${homenewViewModel.scrollOffset} , titleSize: ${homenewViewModel.titleSize} , opacity: ${homenewViewModel.opacity}, titlemaxline: ${homenewViewModel.titlemaxline}, dynamicPadding: ${homenewViewModel.dynamicPadding}',
-                    );
                     return SliverAppBar(
                       backgroundColor: Colors.blueGrey[900],
                       expandedHeight: 500,
@@ -562,7 +555,6 @@ class HomenewPage2 extends StatelessWidget {
                 ),
                 SliverLayoutBuilder(
                   builder: (context, constraints) {
-                    print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
