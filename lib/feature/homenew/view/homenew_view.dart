@@ -18,267 +18,351 @@ class HomenewView extends StatefulWidget {
 
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   int selectedIndex = 1;
+  final ScrollController _scrollController = ScrollController();
+  double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
+  final double _scrollOffset = 0; // Kaydırma mesafesi
+  bool isAnimating = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      print(_scrollController.offset);
+      if (_scrollController.offset > 100 &&
+          _scrollController.offset < 105 &&
+          !isAnimating) {
+        isAnimating = true;
+
+        if (_scrollController.offset >=
+                _scrollController.position.minScrollExtent &&
+            _scrollController.offset <=
+                _scrollController.position.maxScrollExtent) {
+          if (!_scrollController.position.outOfRange) {
+            print(_scrollController.offset);
+            print('_mediaSizeHeight : $_mediaSizeHeight');
+            _scrollController
+                .animateTo(
+              _mediaSizeHeight * 0.6, // Hedef kaydırma mesafesi
+              duration: const Duration(seconds: 1),
+              curve: Curves.easeInOut,
+            )
+                .then((_) {
+              setState(() {
+                isAnimating = false;
+              });
+            });
+          }
+        }
+      }
+
+      if (_scrollController.offset > (_mediaSizeHeight * 0.6 - 55) &&
+          _scrollController.offset < (_mediaSizeHeight * 0.6 - 50) &&
+          !isAnimating) {
+        isAnimating = true;
+
+        if (_scrollController.offset >=
+                _scrollController.position.minScrollExtent &&
+            _scrollController.offset <=
+                _scrollController.position.maxScrollExtent) {
+          if (!_scrollController.position.outOfRange) {
+            print('afasdasdasdasds');
+            print(_scrollController.offset);
+            print('_mediaSizeHeight : $_mediaSizeHeight');
+            _scrollController
+                .animateTo(
+              0, // Hedef kaydırma mesafesi
+              duration: const Duration(seconds: 1),
+              curve: Curves.easeInOut,
+            )
+                .then((_) {
+              setState(() {
+                isAnimating = false;
+              });
+            });
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose(); // Kaydırma denetleyicisini temizliyoruz
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _mediaSizeHeight = context.general.mediaSize.height;
     return BlocProvider(
       create: (context) => homenewViewModel,
       child: Scaffold(
-        body: SafeArea(
-          child: PageView.builder(
-            reverse: true,
-            controller: homenewViewModel.pageController,
-            itemCount: 3,
-            onPageChanged: (index) {},
-            itemBuilder: (context, index) {
-              return CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    elevation: 1,
-                    expandedHeight: context.general.mediaSize.height * 0.6,
-                    automaticallyImplyLeading: false,
-                    flexibleSpace: FlexibleSpaceBar(
-                      expandedTitleScale: 1,
-                      titlePadding: const EdgeInsets.only(top: 10),
-                      title: Transform.translate(
-                        offset: const Offset(0, 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(20),
+        body: Padding(
+          padding: const EdgeInsets.all(8),
+          child: SafeArea(
+            child: PageView.builder(
+              reverse: true,
+              controller: homenewViewModel.pageController,
+              itemCount: 3,
+              onPageChanged: (index) {},
+              itemBuilder: (context, index) {
+                return CustomScrollView(
+                  controller: _scrollController,
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      elevation: 1,
+                      expandedHeight: context.general.mediaSize.height * 0.6,
+                      automaticallyImplyLeading: false,
+                      flexibleSpace: FlexibleSpaceBar(
+                        expandedTitleScale: 1,
+                        titlePadding: const EdgeInsets.only(top: 10),
+                        title: Transform.translate(
+                          offset: const Offset(0, 20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                              color: context.general.colorScheme.surfaceDim,
                             ),
-                            color: context.general.colorScheme.surfaceDim,
-                          ),
-                          child: Transform.translate(
-                            offset: const Offset(0, -25),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: context
-                                          .general.colorScheme.surfaceBright,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                            child: Transform.translate(
+                              offset: const Offset(0, -25),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: context
+                                            .general.colorScheme.surfaceBright,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          'Bugün',
+                                          style: context
+                                              .general.textTheme.bodySmall,
+                                        ),
                                       ),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        'Bugün',
-                                        style:
-                                            context.general.textTheme.bodySmall,
-                                      ),
+                                    Row(
+                                      children: [
+                                        TextButton.icon(
+                                          onPressed: () {
+                                            return;
+                                          },
+                                          iconAlignment: IconAlignment.end,
+                                          icon: Icon(
+                                            Icons.favorite_border,
+                                            size: context.general.textTheme
+                                                    .bodySmall!.fontSize! +
+                                                5,
+                                          ),
+                                          label: const Text(
+                                            '1664',
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            iconColor: context.general.textTheme
+                                                .bodySmall?.color,
+                                            minimumSize: const Size(0, 32),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                            ),
+                                            textStyle: context
+                                                .general.textTheme.bodySmall,
+                                            foregroundColor: context.general
+                                                .textTheme.bodySmall?.color,
+                                            backgroundColor: context.general
+                                                .colorScheme.surfaceBright,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            return;
+                                          },
+                                          icon: Icon(
+                                            Icons.share,
+                                            size: context.general.textTheme
+                                                    .bodySmall!.fontSize! +
+                                                5,
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            iconColor: context.general.textTheme
+                                                .bodySmall?.color,
+                                            minimumSize: const Size(0, 32),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                            ),
+                                            textStyle: context
+                                                .general.textTheme.bodySmall,
+                                            foregroundColor: context.general
+                                                .textTheme.bodySmall?.color,
+                                            backgroundColor: context.general
+                                                .colorScheme.surfaceBright,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      TextButton.icon(
-                                        onPressed: () {
-                                          return;
-                                        },
-                                        iconAlignment: IconAlignment.end,
-                                        icon: Icon(
-                                          Icons.favorite_border,
-                                          size: context.general.textTheme
-                                                  .bodySmall!.fontSize! +
-                                              5,
-                                        ),
-                                        label: const Text(
-                                          '1664',
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          iconColor: context.general.textTheme
-                                              .bodySmall?.color,
-                                          minimumSize: const Size(0, 32),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          textStyle: context
-                                              .general.textTheme.bodySmall,
-                                          foregroundColor: context.general
-                                              .textTheme.bodySmall?.color,
-                                          backgroundColor: context.general
-                                              .colorScheme.surfaceBright,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          return;
-                                        },
-                                        icon: Icon(
-                                          Icons.share,
-                                          size: context.general.textTheme
-                                                  .bodySmall!.fontSize! +
-                                              5,
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          iconColor: context.general.textTheme
-                                              .bodySmall?.color,
-                                          minimumSize: const Size(0, 32),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          textStyle: context
-                                              .general.textTheme.bodySmall,
-                                          foregroundColor: context.general
-                                              .textTheme.bodySmall?.color,
-                                          backgroundColor: context.general
-                                              .colorScheme.surfaceBright,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        background: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                'asset/images/pexels1.jpg',
                               ),
                             ),
                           ),
                         ),
                       ),
-                      background: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              'asset/images/pexels1.jpg',
+                    ),
+                    SliverAppBar(
+                      backgroundColor: context.general.colorScheme.surfaceDim,
+                      elevation: 5,
+                      scrolledUnderElevation: 10,
+                      shadowColor: context.general.colorScheme.surfaceDim,
+                      surfaceTintColor: context.general.colorScheme.surfaceDim,
+                      foregroundColor: context.general.colorScheme.surfaceDim,
+                      automaticallyImplyLeading: false,
+                      pinned: true,
+                      flexibleSpace: const FlexibleSpaceBar(
+                        title: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            'Emma Watson',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    pinned: true,
-                    flexibleSpace: FlexibleSpaceBar(
-                      title: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          'Emma Watson',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'Born',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'April, 15th 1990, Paris, France',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'Nationality',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'British',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const FadeAnimation(
+                              1.6,
+                              Text(
+                                'Videos',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            FadeAnimation(
+                              1.8,
+                              SizedBox(
+                                height: 200,
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: <Widget>[
+                                    makeVideo(
+                                      image: 'assets/images/emma-1.jpg',
+                                    ),
+                                    makeVideo(
+                                      image: 'assets/images/emma-2.jpg',
+                                    ),
+                                    makeVideo(
+                                      image: 'assets/images/emma-3.jpg',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 120,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
-                              style: TextStyle(
-                                fontSize: 12,
-                                height: 1.4,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'Born',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'April, 15th 1990, Paris, France',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'Nationality',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'British',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const FadeAnimation(
-                            1.6,
-                            Text(
-                              'Videos',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          FadeAnimation(
-                            1.8,
-                            SizedBox(
-                              height: 200,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  makeVideo(
-                                    image: 'assets/images/emma-1.jpg',
-                                  ),
-                                  makeVideo(
-                                    image: 'assets/images/emma-2.jpg',
-                                  ),
-                                  makeVideo(
-                                    image: 'assets/images/emma-3.jpg',
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 120,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
