@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
@@ -28,5 +29,20 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       scrollController: ScrollController(),
       pageController: PageController(),
     );
+  }
+
+  double calculateTextHeight(String text, BuildContext context) {
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: context.general.textTheme.headlineSmall,
+      ),
+      textDirection: TextDirection.ltr,
+      maxLines: 2, // Kaç satır olabileceğini belirle
+    )..layout(
+        maxWidth: MediaQuery.of(context).size.width - 32,
+      ); // Kenar boşluklarını hesaba kat
+
+    return textPainter.height;
   }
 }

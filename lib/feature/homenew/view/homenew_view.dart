@@ -17,20 +17,28 @@ class HomenewView extends StatefulWidget {
 }
 
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
+  final String title = 'Harry Potter 20th Anniversary: Retu...';
+  final String title2 = 'Harry Potter';
+
   int selectedIndex = 1;
   final ScrollController _scrollController = ScrollController();
   double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
   final double _scrollOffset = 0; // Kaydırma mesafesi
   bool isAnimating = false;
 
+  double textHeight = 50;
+  // ignore: prefer_final_locals
+  late double expandedHeight;
+
   @override
   void initState() {
     super.initState();
 
+    expandedHeight = textHeight;
+
     _scrollController.addListener(() {
-      print(_scrollController.offset);
-      if (_scrollController.offset > 100 &&
-          _scrollController.offset < 105 &&
+      if (_scrollController.offset > 110 &&
+          _scrollController.offset < 135 &&
           !isAnimating) {
         isAnimating = true;
 
@@ -39,11 +47,10 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
             _scrollController.offset <=
                 _scrollController.position.maxScrollExtent) {
           if (!_scrollController.position.outOfRange) {
-            print(_scrollController.offset);
-            print('_mediaSizeHeight : $_mediaSizeHeight');
             _scrollController
                 .animateTo(
-              _mediaSizeHeight * 0.6, // Hedef kaydırma mesafesi
+              _mediaSizeHeight * 0.6 +
+                  expandedHeight, // Hedef kaydırma mesafesi
               duration: const Duration(seconds: 1),
               curve: Curves.easeInOut,
             )
@@ -56,7 +63,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
         }
       }
 
-      if (_scrollController.offset > (_mediaSizeHeight * 0.6 - 55) &&
+      if (_scrollController.offset > (_mediaSizeHeight * 0.6 - 65) &&
           _scrollController.offset < (_mediaSizeHeight * 0.6 - 50) &&
           !isAnimating) {
         isAnimating = true;
@@ -66,9 +73,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
             _scrollController.offset <=
                 _scrollController.position.maxScrollExtent) {
           if (!_scrollController.position.outOfRange) {
-            print('afasdasdasdasds');
-            print(_scrollController.offset);
-            print('_mediaSizeHeight : $_mediaSizeHeight');
             _scrollController
                 .animateTo(
               0, // Hedef kaydırma mesafesi
@@ -229,26 +233,91 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                         ),
                       ),
                     ),
+                    SliverLayoutBuilder(
+                      builder: (context, constraints) {
+                        // ignore: prefer_final_locals
+                        textHeight = calculateTextHeight(title2, context);
+                        // ignore: prefer_final_locals
+                        expandedHeight = textHeight + 35;
+
+                        print(expandedHeight);
+                        return SliverAppBar(
+                          backgroundColor:
+                              context.general.colorScheme.surfaceDim,
+                          elevation: 0,
+                          scrolledUnderElevation: 0,
+                          shadowColor: context.general.colorScheme.surfaceDim,
+                          surfaceTintColor:
+                              context.general.colorScheme.surfaceDim,
+                          foregroundColor:
+                              context.general.colorScheme.surfaceDim,
+                          automaticallyImplyLeading: false,
+                          expandedHeight: expandedHeight,
+                          collapsedHeight: 45,
+                          toolbarHeight: 0,
+                          pinned: true,
+                          flexibleSpace: FlexibleSpaceBar(
+                            title: Transform.translate(
+                              offset: const Offset(0, 5),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                  title2,
+                                  style:
+                                      context.general.textTheme.headlineSmall,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     SliverAppBar(
                       backgroundColor: context.general.colorScheme.surfaceDim,
-                      elevation: 5,
-                      scrolledUnderElevation: 10,
+                      elevation: 0,
+                      scrolledUnderElevation: 0,
                       shadowColor: context.general.colorScheme.surfaceDim,
                       surfaceTintColor: context.general.colorScheme.surfaceDim,
                       foregroundColor: context.general.colorScheme.surfaceDim,
                       automaticallyImplyLeading: false,
                       pinned: true,
-                      flexibleSpace: const FlexibleSpaceBar(
-                        title: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            'Emma Watson',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                      title: Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () {
+                              return;
+                            },
+                            icon: const CircleAvatar(
+                              radius: 12,
+                              backgroundImage: NetworkImage(
+                                'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
+                              ),
+                            ),
+                            label: const Text(
+                              'Emma Watson',
+                            ),
+                            style: TextButton.styleFrom(
+                              iconColor:
+                                  context.general.textTheme.bodySmall?.color,
+                              minimumSize: const Size(0, 32),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              textStyle: context.general.textTheme.bodySmall,
+                              foregroundColor:
+                                  context.general.textTheme.bodySmall?.color,
+                              backgroundColor:
+                                  context.general.colorScheme.surfaceBright,
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              '1990',
+                              style: context.general.textTheme.labelMedium,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SliverToBoxAdapter(
