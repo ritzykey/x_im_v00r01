@@ -10,7 +10,6 @@ import 'package:x_im_v00r01/product/init/index.dart';
 import 'package:x_im_v00r01/product/state/base/base_cubit.dart';
 import 'package:x_im_v00r01/product/state/container/index.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class ProductViewModel extends BaseCubit<ProductState> {
   ProductViewModel()
@@ -51,7 +50,6 @@ final class ProductViewModel extends BaseCubit<ProductState> {
 
   void setTextSize(double textSize) {
     emit(state.copyWith(fontSize: textSize));
-
   }
 
   void screenSize(double widthScale, double heightScale) {
@@ -80,7 +78,9 @@ final class ProductViewModel extends BaseCubit<ProductState> {
               .userCacheOperation
               .get('lang')
               ?.language ??
-          systemLocale,);}
+          systemLocale,
+    );
+  }
 
   void themeModeRead() {
     final usercachemodel = userCacheOperation.get('boxthemeMode');
@@ -91,21 +91,5 @@ final class ProductViewModel extends BaseCubit<ProductState> {
     } else {
       changeThemeMode(thememode);
     }
-  }
-
-  void languageModeRead(BuildContext context) {
-    final usercachemodel = userCacheOperation.get('boxlocale');
-    final locale = usercachemodel?.locale ?? Locales.tr;
-    ProductLocalization.updateLanguage(context: context, value: locale);
-  }
-
-  void localesPutHive(Locales locale) {
-    userCacheOperation.remove('boxlocale'); // Önce eski veriyi sil
-    // ignore: cascade_invocations
-    userCacheOperation.put(
-      'boxlocale',
-      UserCacheModel(
-        locale: locale,
-      ),
   }
 }
