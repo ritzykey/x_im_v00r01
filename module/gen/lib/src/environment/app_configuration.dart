@@ -6,4 +6,6 @@ abstract class AppConfiguration {
   String get supaURL;
 
   String get anonKey;
+
+  String get webclientID;
 }

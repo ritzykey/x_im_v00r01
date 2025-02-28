@@ -17,7 +17,8 @@ enum AppEnvironmentItems {
   baseurl,
   apiKey,
   supaUrl,
-  anonKey;
+  anonKey,
+  webclientID;
 
   String get value {
     try {
@@ -30,6 +31,8 @@ enum AppEnvironmentItems {
           return AppEnvironment._config.supaURL;
         case AppEnvironmentItems.anonKey:
           return AppEnvironment._config.anonKey;
+        case AppEnvironmentItems.webclientID:
+          return AppEnvironment._config.webclientID;
       }
     } catch (e) {
       throw Exception('AppEnvironment yüklenemedi');

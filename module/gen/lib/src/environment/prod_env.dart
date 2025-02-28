@@ -31,6 +31,10 @@ final class ProdEnv implements AppConfiguration {
   @override
   // TODO: implement supaURL
   String get supaURL => throw UnimplementedError();
+  
+  @override
+  // TODO: implement webclientID
+  String get webclientID => throw UnimplementedError();
 
 }
 

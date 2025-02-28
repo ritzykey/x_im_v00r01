@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
 import 'package:x_im_v00r01/feature/login/view_model/login_view_model.dart';
+import 'package:x_im_v00r01/product/init/config/app_environment.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 import 'package:x_im_v00r01/product/service/login_service.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
@@ -57,8 +58,7 @@ mixin LoginViewMixin on BaseState<LoginView> {
     /// TODO: update the Web client ID with your own.
     ///
     /// Web Client ID that you registered with Google Cloud.
-    const webClientId =
-        '854580902884-si8t5bml5ebeo5arc56p0fa8lc649hfh.apps.googleusercontent.com';
+    final webClientId = AppEnvironmentItems.webclientID.value;
 
     /// TODO: update the iOS client ID with your own.
     ///

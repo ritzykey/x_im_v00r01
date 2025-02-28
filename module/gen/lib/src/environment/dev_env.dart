@@ -20,6 +20,9 @@ final class DevEnv implements AppConfiguration {
   @EnviedField(varName: 'SUPABASE_ANON_KEY')
   static final String _anonkey = _DevEnv._anonkey;
 
+  @EnviedField(varName: 'WEB_CLIENT_ID')
+  static final String _webclientID = _DevEnv._webclientID;
+
   @override
   String get ApiKey => _apikey;
 
@@ -31,6 +34,9 @@ final class DevEnv implements AppConfiguration {
 
   @override
   String get anonKey => _anonkey;
+
+  @override
+  String get webclientID => _webclientID;
 }
 
 // 'envied' paketini import ediyoruz. Bu paket, ortam değişkenlerini (environment variables)
