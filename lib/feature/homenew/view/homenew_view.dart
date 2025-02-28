@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
-import 'package:x_im_v00r01/feature/homenew/view/widget/FeadAnimation.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
@@ -19,8 +18,6 @@ class HomenewView extends StatefulWidget {
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   final String title = 'Harry Potter 20th Anniversary: Retu...';
   final String title2 = 'Harry Potter';
-
-  
 
   int selectedIndex = 1;
   final ScrollController _scrollController = ScrollController();
@@ -39,57 +36,34 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
     expandedHeight = textHeight;
 
     _scrollController.addListener(() {
-      if (_scrollController.offset > 110 &&
-          _scrollController.offset < 135 &&
-          !isAnimating) {
-        isAnimating = true;
+      if (!isAnimating) {
+        final offset = _scrollController.offset;
 
-        if (_scrollController.offset >=
-                _scrollController.position.minScrollExtent &&
-            _scrollController.offset <=
-                _scrollController.position.maxScrollExtent) {
-          if (!_scrollController.position.outOfRange) {
-            _scrollController
-                .animateTo(
-              _mediaSizeHeight * 0.6 +
-                  expandedHeight, // Hedef kaydırma mesafesi
-              duration: const Duration(seconds: 1),
-              curve: Curves.easeInOut,
-            )
-                .then((_) {
-              setState(() {
-                isAnimating = false;
-              });
-            });
-          }
-        }
-      }
-
-      if (_scrollController.offset > (_mediaSizeHeight * 0.6 - 65) &&
-          _scrollController.offset < (_mediaSizeHeight * 0.6 - 50) &&
-          !isAnimating) {
-        isAnimating = true;
-
-        if (_scrollController.offset >=
-                _scrollController.position.minScrollExtent &&
-            _scrollController.offset <=
-                _scrollController.position.maxScrollExtent) {
-          if (!_scrollController.position.outOfRange) {
-            _scrollController
-                .animateTo(
-              0, // Hedef kaydırma mesafesi
-              duration: const Duration(seconds: 1),
-              curve: Curves.easeInOut,
-            )
-                .then((_) {
-              setState(() {
-                isAnimating = false;
-              });
-            });
-          }
+        if (offset > 110 && offset < 135) {
+          _triggerScroll(_mediaSizeHeight * 0.6 + (expandedHeight - 45));
+        } else if (offset > (_mediaSizeHeight * 0.6 - 65) &&
+            offset < (_mediaSizeHeight * 0.6 - 50)) {
+          _triggerScroll(0);
         }
       }
     });
+  }
+
+  void _triggerScroll(double targetOffset) {
+    if (_scrollController.hasClients) {
+      isAnimating = true;
+      _scrollController
+          .animateTo(
+        targetOffset,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      )
+          .then((_) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          isAnimating = false;
+        });
+      });
+    }
   }
 
   @override
@@ -328,99 +302,78 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.4,
-                                ),
+                            const Text(
+                              'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1.4,
                               ),
                             ),
                             const SizedBox(
                               height: 40,
                             ),
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'Born',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            const Text(
+                              'Born',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'April, 15th 1990, Paris, France',
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                            const Text(
+                              'April, 15th 1990, Paris, France',
+                              style: TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(
                               height: 20,
                             ),
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'Nationality',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            const Text(
+                              'Nationality',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'British',
-                                style: TextStyle(color: Colors.grey),
+                            const Text(
+                              'British',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Videos',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(
                               height: 20,
                             ),
-                            const FadeAnimation(
-                              1.6,
-                              Text(
-                                'Videos',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              1.8,
-                              SizedBox(
-                                height: 200,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: <Widget>[
-                                    makeVideo(
-                                      image: 'assets/images/emma-1.jpg',
-                                    ),
-                                    makeVideo(
-                                      image: 'assets/images/emma-2.jpg',
-                                    ),
-                                    makeVideo(
-                                      image: 'assets/images/emma-3.jpg',
-                                    ),
-                                  ],
-                                ),
+                            SizedBox(
+                              height: 200,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: <Widget>[
+                                  makeVideo(
+                                    image: 'assets/images/emma-1.jpg',
+                                  ),
+                                  makeVideo(
+                                    image: 'assets/images/emma-2.jpg',
+                                  ),
+                                  makeVideo(
+                                    image: 'assets/images/emma-3.jpg',
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(

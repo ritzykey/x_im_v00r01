@@ -24,10 +24,11 @@ final class ProductContainer {
       url: AppEnvironmentItems.supaUrl.value,
       anonKey: AppEnvironmentItems.anonKey.value,
     );
+
     _getIt
-      ..registerSingleton<SupabaseClient>(Supabase.instance.client)
       ..registerSingleton(ProductCache(cacheManager: HiveCacheManager()))
       ..registerSingleton<ProductNetworkManager>(ProductNetworkManager.base())
+      ..registerLazySingleton<SupabaseClient>(() => Supabase.instance.client)
       ..registerLazySingleton<ProductViewModel>(
         ProductViewModel.new,
       );

@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:x_im_v00r01/feature/settings/view/settings_view.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
@@ -17,8 +19,6 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
 
   late final SettingsViewModel settingsViewModel;
 
-  final Supabase supabase = Supabase.instance;
-
   @override
   void initState() {
     // TODO: implement activate
@@ -32,7 +32,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
 
-    supabase.client.auth.onAuthStateChange.listen((data) {
+    context.read<SupabaseClient>().auth.onAuthStateChange.listen((data) {
       print('data data $data');
 
       switch (data) {
@@ -106,5 +106,17 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
       }
     }
     return themeModeName;
+  }
+
+  // E-posta gönderme işlevi
+  Future<void> launchEmail() async {
+    final emailLaunchUri = Uri.parse(
+      'mailto:info_xdbm@gmail.com?subject=Support Request&body=Hello, I need help with...',
+    );
+
+    // URL'yi başlatmayı deneyin
+    if (!await launchUrl(
+      emailLaunchUri,
+    )) print('Could not launch email');
   }
 }

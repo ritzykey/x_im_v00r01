@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
@@ -20,7 +21,6 @@ mixin LoginViewMixin on BaseState<LoginView> {
 
   late final LoginViewModel loginViewModel;
 
-  final Supabase supabase = Supabase.instance;
 
   @override
   void initState() {
@@ -87,11 +87,11 @@ mixin LoginViewMixin on BaseState<LoginView> {
       throw 'No ID Token found.';
     }
 
-    await supabase.client.auth.signInWithIdToken(
-      provider: OAuthProvider.google,
-      idToken: idToken,
-      accessToken: accessToken,
-    );
+    await context.read<SupabaseClient>().auth.signInWithIdToken(
+          provider: OAuthProvider.google,
+          idToken: idToken,
+          accessToken: accessToken,
+        );
 
     print('object');
     print('Google sign-in successful');

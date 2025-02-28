@@ -185,10 +185,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                         '',
                         Colors.green,
                         context.general.appTheme,
-                        onTab: () {
-                          settingsViewModel.onboardingPutHive();
-                          // deneme amaçlı onboarngi truye çeker
-                        },
+                        onTab: launchEmail,
                       ),
                     ],
                   ),
