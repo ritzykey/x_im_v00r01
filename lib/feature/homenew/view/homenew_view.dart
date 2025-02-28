@@ -212,7 +212,10 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                     SliverLayoutBuilder(
                       builder: (context, constraints) {
                         // ignore: prefer_final_locals
-                        textHeight = calculateTextHeight(title2, context);
+                        textHeight = calculateTextHeight(
+                          title2,
+                          context,
+                        );
                         // ignore: prefer_final_locals
                         expandedHeight = textHeight + 35;
 
@@ -238,7 +241,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8),
                                 child: Text(
-                                  title2,
+                                  title2 + index.toString().padLeft(2),
                                   style:
                                       context.general.textTheme.headlineSmall,
                                 ),

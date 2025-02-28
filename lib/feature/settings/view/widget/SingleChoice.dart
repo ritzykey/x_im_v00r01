@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
@@ -17,7 +18,11 @@ class SingleChoice extends StatefulWidget {
 class _SingleChoiceState extends State<SingleChoice> {
   TextSize calendarView = TextSize.def;
 
-  final TextSize _selectedSize = TextSize.def; // Başlangıçta varsayılan seçili
+  final List<bool> _selectedTextSize = [
+    false,
+    false,
+    false,
+  ]; // Başlangıçta varsayılan seçili
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +40,35 @@ class _SingleChoiceState extends State<SingleChoice> {
           color: context.general.textTheme.displaySmall?.color, // Yazı rengi
           selectedColor: Colors.blue, // Seçili yazı rengi
           fillColor: Colors.transparent,
-          isSelected: [
-            state.fontSize == 12.0,
-            state.fontSize == 10.0,
-            state.fontSize == 16.0,
-          ],
+          isSelected: context
+                  .read<ProductViewModel>()
+                  .userCacheOperation
+                  .get('settingsBox')
+                  ?.selectedTextSize ??
+              [true, false, false],
           onPressed: (int index) {
             final sizes = [12.0, 10.0, 16.0];
             context.read<ProductViewModel>().setTextSize(sizes[index]);
+
+            context.read<ProductViewModel>().userCacheOperation.put(
+                  'fontSize',
+                  UserCacheModel(fontSize: sizes[index]),
+                );
+
+            // UserCacheModel'e List<bool> gönder
+            final updatedSelectedTextSize = [
+              false,
+              false,
+              false,
+            ]; // İlk önce hepsi false
+            updatedSelectedTextSize[index] =
+                true; // Seçili olan index'i true yap
+
+            // Cache'e güncellenmiş değeri kaydet
+            context.read<ProductViewModel>().userCacheOperation.put(
+                  'settingsBox',
+                  UserCacheModel(selectedTextSize: updatedSelectedTextSize),
+                );
           },
           children: <Widget>[
             Padding(

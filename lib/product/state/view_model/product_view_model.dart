@@ -17,6 +17,7 @@ final class ProductViewModel extends BaseCubit<ProductState> {
           const ProductState(),
         ) {
     _monitorConnection();
+    setTextSize(userCacheOperation.get('fontSize')?.fontSize ?? 12.0);
   }
 
   int selectedindex = 0;
@@ -26,7 +27,7 @@ final class ProductViewModel extends BaseCubit<ProductState> {
   final Connectivity _connectivity = Connectivity();
 
   Future<UserCacheModel> getSettings() async {
-    final settings = userCacheOperation.get('settings');
+    final settings = userCacheOperation.get('fontSize');
     return settings ?? UserCacheModel(user: LoginResponseModel2());
   }
 

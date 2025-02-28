@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class UserCacheModel with CacheModel {
   UserCacheModel({
@@ -10,19 +9,24 @@ final class UserCacheModel with CacheModel {
     this.isFirstTime,
     this.themeMode,
     this.language,
+    this.selectedTextSize,
+    this.fontSize,
   });
 
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
         isFirstTime = true,
         themeMode = null,
-        language = null;
+        language = null,
+        selectedTextSize = null,
+        fontSize = 12.0;
 
   final LoginResponseModel2? user;
   final bool? isFirstTime; // Opsiyonel alan
   final ThemeMode? themeMode;
   final Locale? language;
-
+  final List<bool>? selectedTextSize;
+  final double? fontSize;
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -38,7 +42,10 @@ final class UserCacheModel with CacheModel {
       language: jsonMap['language'] != null
           ? Locale(jsonMap['language'].toString())
           : null,
-
+      selectedTextSize: (jsonMap['selectedTextSize'] as List<dynamic>?)
+          ?.map((e) => e as bool)
+          .toList(),
+      fontSize: jsonMap['fontSize'] as double?,
     );
   }
 
@@ -52,6 +59,8 @@ final class UserCacheModel with CacheModel {
       'isFirstTime': isFirstTime,
       'themeMode': themeMode.toString().split('.').last,
       'language': language?.languageCode,
+      'selectedTextSize': selectedTextSize,
+      'fontSize': fontSize,
     };
   }
 
@@ -60,14 +69,16 @@ final class UserCacheModel with CacheModel {
     bool? isFirstTime,
     ThemeMode? themeMode,
     Locale? language,
-
+    List<bool>? selectedTextSize,
+    double? fontSize,
   }) {
     return UserCacheModel(
       user: user ?? this.user,
       isFirstTime: isFirstTime ?? this.isFirstTime,
       themeMode: themeMode ?? this.themeMode,
       language: language ?? this.language,
-
+      selectedTextSize: selectedTextSize ?? this.selectedTextSize,
+      fontSize: fontSize ?? this.fontSize,
     );
   }
 
