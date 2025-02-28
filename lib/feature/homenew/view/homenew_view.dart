@@ -20,6 +20,8 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   final String title = 'Harry Potter 20th Anniversary: Retu...';
   final String title2 = 'Harry Potter';
 
+  
+
   int selectedIndex = 1;
   final ScrollController _scrollController = ScrollController();
   double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği

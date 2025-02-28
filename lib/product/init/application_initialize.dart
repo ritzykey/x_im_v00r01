@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kartal/kartal.dart';
 import 'package:logger/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/product/init/config/app_environment.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_container.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
@@ -34,11 +35,9 @@ final class AplicationInitiliaze {
       Logger().e(details.exceptionAsString());
     };
 
-    _productEnvironmentWithContainer();
+    await _productEnvironmentWithContainer();
 
     await ProductStateItems.productCache.init();
-
-    
 
     FlutterNativeSplash.remove();
 
@@ -47,11 +46,11 @@ final class AplicationInitiliaze {
   }
 
   /// DO NOT CHANGE THIS METHOD
-  void _productEnvironmentWithContainer() {
+  Future<void> _productEnvironmentWithContainer() async {
     AppEnvironment.general();
 
     /// It must be call after [AppEnvironment.general()]
-    ProductContainer.setup();
+    await ProductContainer.setup();
   }
   /*
   burada uygulama açılışı esnasındaki initiliazler yapıldı

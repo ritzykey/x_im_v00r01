@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
 import 'package:x_im_v00r01/feature/settings/view/utils/appearance_modal.dart';
@@ -63,7 +64,16 @@ class _SettingsViewState extends BaseState<SettingsView>
                       const SizedBox(height: 16),
 
                       /// This is where the login/signup widget is placed
-                      const LoginSignupWidget(),
+                      BlocSelector<SettingsViewModel, SettingsState, User?>(
+                        selector: (state) =>
+                            state.user, // Sadece user değişimlerini dinler
+                        builder: (context, user) {
+                          return LoginSignupWidget(
+                            avatarURL: user?.avatar_url ?? '',
+                            fullName: user?.full_name,
+                          );
+                        },
+                      ),
 
                       const SizedBox(height: 16),
 
@@ -72,7 +82,9 @@ class _SettingsViewState extends BaseState<SettingsView>
                         style: context.general.textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.w400),
                       ),
+
                       const SizedBox(height: 16),
+
                       BlocBuilder<SettingsViewModel, SettingsState>(
                         builder: (contextAppearance, dynamic) {
                           return _buildListTile(
@@ -119,18 +131,6 @@ class _SettingsViewState extends BaseState<SettingsView>
                         onTab: () {},
                       ),
                       const SizedBox(height: 8),
-                      _buildListTile(
-                        'settings.help'.tr(),
-                        Icons.help,
-                        '',
-                        Colors.green,
-                        context.general.appTheme,
-                        onTab: () {
-                          settingsViewModel.onboardingPutHive();
-                          // deneme amaçlı onboarngi truye çeker
-                        },
-                      ),
-                      const SizedBox(height: 8),
                       ListTile(
                         contentPadding: const EdgeInsets.all(0),
                         leading: Container(
@@ -162,12 +162,33 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 8),
                       _buildListTile(
-                        'settings.logout'.tr(),
-                        Icons.exit_to_app,
+                        'settings.legal.title'.tr(),
+                        Icons.gavel,
                         '',
-                        Colors.red,
+                        Colors.blue,
                         context.general.appTheme,
                         onTab: () {},
+                      ),
+                      const SizedBox(height: 8),
+                      _buildListTile(
+                        'settings.rateApp'.tr(),
+                        Icons.star,
+                        '',
+                        Colors.yellow,
+                        context.general.appTheme,
+                        onTab: () {},
+                      ),
+                      const SizedBox(height: 8),
+                      _buildListTile(
+                        'settings.help'.tr(),
+                        Icons.help,
+                        '',
+                        Colors.green,
+                        context.general.appTheme,
+                        onTab: () {
+                          settingsViewModel.onboardingPutHive();
+                          // deneme amaçlı onboarngi truye çeker
+                        },
                       ),
                     ],
                   ),
@@ -207,7 +228,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           ),
         ),
       ),
-      title: Text(title, style: context.general.textTheme.titleLarge),
+      title: Text(title, style: context.general.textTheme.bodyMedium),
       trailing: SizedBox(
         width: 90,
         child: Row(
@@ -215,7 +236,7 @@ class _SettingsViewState extends BaseState<SettingsView>
           children: [
             Text(
               trailing,
-              style: context.general.appTheme.textTheme.bodyMedium
+              style: context.general.appTheme.textTheme.bodySmall
                   ?.copyWith(color: Colors.grey.shade600),
             ),
             const Icon(
@@ -227,5 +248,5 @@ class _SettingsViewState extends BaseState<SettingsView>
       ),
       onTap: onTab,
     );
-  }  
+  }
 }

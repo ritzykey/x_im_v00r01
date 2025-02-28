@@ -14,11 +14,23 @@ final class DevEnv implements AppConfiguration {
   @EnviedField(varName: 'API_KEY')
   static final String _apikey = _DevEnv._apikey;
 
+  @EnviedField(varName: 'SUPABASE_URL')
+  static final String _supaurl = _DevEnv._supaurl;
+
+  @EnviedField(varName: 'SUPABASE_ANON_KEY')
+  static final String _anonkey = _DevEnv._anonkey;
+
   @override
   String get ApiKey => _apikey;
 
   @override
   String get baseurl => _baseurl;
+
+  @override
+  String get supaURL => _supaurl;
+
+  @override
+  String get anonKey => _anonkey;
 }
 
 // 'envied' paketini import ediyoruz. Bu paket, ortam değişkenlerini (environment variables)

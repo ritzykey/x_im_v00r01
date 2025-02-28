@@ -10,6 +10,7 @@ part 'prod_env.g.dart';
 final class ProdEnv implements AppConfiguration {
   @EnviedField(varName: 'BASE_URL')
   static final String _baseurl = _ProdEnv._baseurl;
+
   @EnviedField(varName: 'API_KEY')
   static final String _apikey = _ProdEnv._apikey;
 
@@ -22,6 +23,15 @@ final class ProdEnv implements AppConfiguration {
   // Şifrelenmiş 'BASE_URL' değerini çözümledikten sonra onu döndürüyoruz.
   @override
   String get baseurl => _baseurl;
+  
+  @override
+  // TODO: implement anonKey
+  String get anonKey => throw UnimplementedError();
+  
+  @override
+  // TODO: implement supaURL
+  String get supaURL => throw UnimplementedError();
+
 }
 
 

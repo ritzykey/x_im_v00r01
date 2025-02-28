@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/settings/view/settings_view.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
@@ -8,7 +8,6 @@ import 'package:x_im_v00r01/product/service/manager/index.dart';
 import 'package:x_im_v00r01/product/service/project_service.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
-import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 // manage your home view screen
 mixin SettingsViewMixin on BaseState<SettingsView> {
@@ -17,6 +16,8 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
   late final SettingsViewModel settingsViewModel;
+
+  final Supabase supabase = Supabase.instance;
 
   @override
   void initState() {
@@ -30,6 +31,41 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
+
+    supabase.client.auth.onAuthStateChange.listen((data) {
+      print('data data $data');
+
+      switch (data) {
+        case AuthState(
+            session: Session(
+              user: User(
+                userMetadata: {
+                  'full_name': final String full,
+                  'avatar_url': final String avatarURL
+                }
+              )
+            )
+          ):
+          print('case ici');
+          settingsViewModel.setUserID(avatarUrl: avatarURL, fullName: full);
+        case AuthState(event: AuthChangeEvent.signedOut):
+          settingsViewModel.setUserID();
+        default:
+          print('Kullanıcı giriş yapmamış veya metadata eksik.');
+      }
+
+      /// avatar_url
+      // final fullName =
+      //     data.session?.user.userMetadata?['full_name']?.toString();
+      // final avatarUrl =
+      //     data.session?.user.userMetadata?['avatar_url']?.toString();
+
+      // if (fullName != null || avatarUrl != null) {
+      //   settingsViewModel.setUserID(avatarUrl: avatarUrl, fullName: fullName);
+      // } else {
+      //   print("⚠️ Kullanıcı metadata içinde 'full' bulunamadı!");
+      // }
+    });
   }
 
   late String themeModeName;
@@ -41,9 +77,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
 
   String capitalizeThemeModeName(BuildContext context) {
     return capitalize(
-      (settingsViewModel
-                  .userCacheOperation
-                  .get('themeMode') ??
+      (settingsViewModel.userCacheOperation.get('themeMode') ??
               UserCacheModel(themeMode: ThemeMode.system))
           .themeMode
           .toString()
@@ -54,9 +88,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
 
   String capitalizeLanguageName(BuildContext context) {
     themeModeName = capitalize(
-      (settingsViewModel
-                  .userCacheOperation
-                  .get('themeMode') ??
+      (settingsViewModel.userCacheOperation.get('themeMode') ??
               UserCacheModel(themeMode: ThemeMode.system))
           .themeMode
           .toString()

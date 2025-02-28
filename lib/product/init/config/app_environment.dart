@@ -7,6 +7,7 @@ final class AppEnvironment {
   }
 
   AppEnvironment.general() {
+    print('kDebugMode $kDebugMode');
     _config = kDebugMode ? DevEnv() : ProdEnv();
   }
   static late final AppConfiguration _config;
@@ -14,7 +15,9 @@ final class AppEnvironment {
 
 enum AppEnvironmentItems {
   baseurl,
-  apiKey;
+  apiKey,
+  supaUrl,
+  anonKey;
 
   String get value {
     try {
@@ -23,6 +26,10 @@ enum AppEnvironmentItems {
           return AppEnvironment._config.baseurl;
         case AppEnvironmentItems.apiKey:
           return AppEnvironment._config.ApiKey;
+        case AppEnvironmentItems.supaUrl:
+          return AppEnvironment._config.supaURL;
+        case AppEnvironmentItems.anonKey:
+          return AppEnvironment._config.anonKey;
       }
     } catch (e) {
       throw Exception('AppEnvironment yüklenemedi');
