@@ -1,4 +1,11 @@
 {
+    "bottomNavigation": {
+        "home": "Ana Sayfa",
+        "discover": "Keşfet",
+        "search": "Arama",
+        "favorites": "Favoriler",
+        "profile": "Profil"
+    },
     "home": {
         "title": "Ana Sayfa"
     },
@@ -11,6 +18,69 @@
                 "title": "Versiyon",
                 "content": "Versiyon Bilgisi"
             }
+        }
+    },
+    "snackbar": {
+        "successfulSignOUT": "Çıkış başarılı!",
+        "successfulSignIN": "Giriş başarılı!"
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "account": "Hesap",
+        "login": "Giriş",
+        "register": "Kayıt",
+        "signOut": "Çıkış Yap",
+        "light": "Açık",
+        "dark": "Koyu",
+        "system": "Sistem",
+        "help": "Yardım",
+        "logout": "Çıkış",
+        "textSize": "Yazı Boyutu",
+        "default": "Varsayılan",
+        "small": "Küçük",
+        "large": "Büyük",
+        "legal": {
+            "title": "Yasal",
+            "termOfService": "Kullanım Şartları",
+            "privacyPolicy": "Gizlilik Politikası"
+        },
+        "rateApp": "Rate App",
+        "contactSupport": "Destek ekibiyle iletişime geçin",
+        "appearance": {
+            "title": "Görünüm",
+            "showModal": "Bir Tema Seçin"
+        },
+        "language": {
+            "title": "Dil",
+            "content": "Dil Seçimi",
+            "showModal": "Bir Dil Seçin"
+        },
+        "notifications": {
+            "title": "Bildirimler",
+            "showModal": {
+                "title": "Bir Bildirim Türü Seçin"
+            }
+        }
+    },
+    "onboardings": {
+        "skip": "Atla",
+        "next": "İlerle",
+        "start": "Başla",
+        "step1": {
+            "title": "XDBM'e Hoş Geldiniz!",
+            "content": "Burada ünlü ve başarılı insanların hayatlarından ilham alabilirsiniz."
+        },
+        "step2": {
+            "title": "Motivasyonel Tavsiyeler",
+            "content": "Dünyaca ünlü isimlerin deneyimlerini keşfedin ve ilham alın!"
+        },
+        "step3": {
+            "title": "Favorilerinizi Kaydedin!",
+            "content": "Sevdiğiniz kişilerin hikayelerini kaydedin ve daha sonra okuyun."
+        },
+        "step4": {
+            "title": "Hemen Başlayın!",
+            "content": "Sizi bekleyen binlerce ilham verici hikayeyi keşfetmeye hazır mısınız?"
         }
     }
 }

@@ -147,7 +147,7 @@ class _StoryyViewState extends BaseState<StoryyView> with StoryViewMixin {
 }
 
 class _InfoCard extends StatelessWidget {
-  const _InfoCard({required this.label, required this.value, super.key});
+  const _InfoCard({required this.label, required this.value});
   final String label;
   final String value;
 

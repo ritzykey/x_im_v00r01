@@ -1,4 +1,6 @@
 // android/build.gradle (Root-Level)
+
+// Ensure no non-existent initialization script is referenced
 buildscript {
     repositories {
         google()

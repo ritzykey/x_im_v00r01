@@ -10,9 +10,11 @@ import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 
 Future<void> main() async {
   await AplicationInitiliaze().make();
-  runApp(DevicePreview(
-    builder: (context) => ProductLocalization(child: const MyApp()),
-  ));
+  runApp(
+    DevicePreview(
+      builder: (context) => ProductLocalization(child: const MyApp()),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

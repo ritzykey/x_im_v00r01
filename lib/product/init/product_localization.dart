@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 @immutable
 
@@ -14,16 +13,18 @@ final class ProductLocalization extends EasyLocalization {
         );
 
   static final List<Locale> _supportedItems = [
-    Locales.en.locale,
-    Locales.tr.locale,
+    const Locale.fromSubtags(languageCode: 'en'),
+    const Locale.fromSubtags(languageCode: 'tr'),
+    const Locale.fromSubtags(countryCode: 'US', languageCode: 'en'),
+    const Locale.fromSubtags(countryCode: 'TR', languageCode: 'tr'),
   ];
 
   static const String _translationsPath = 'asset/translations';
 
   static Future<void> updateLanguage({
     required BuildContext context,
-    required Locales value,
+    required Locale value,
   }) async {
-    context.setLocale(value.locale);
+    await context.setLocale(value);
   }
 }

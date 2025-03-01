@@ -94,6 +94,25 @@ class HomenewRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LoadingView]
+class LoadingRoute extends PageRouteInfo<void> {
+  const LoadingRoute({List<PageRouteInfo>? children})
+      : super(
+          LoadingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoadingRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoadingView();
+    },
+  );
+}
+
+/// generated route for
 /// [LoginView]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
@@ -108,6 +127,63 @@ class LoginRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const LoginView();
+    },
+  );
+}
+
+/// generated route for
+/// [NavigationView]
+class NavigationRoute extends PageRouteInfo<void> {
+  const NavigationRoute({List<PageRouteInfo>? children})
+      : super(
+          NavigationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NavigationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NavigationView();
+    },
+  );
+}
+
+/// generated route for
+/// [NoConnectionView]
+class NoConnectionRoute extends PageRouteInfo<void> {
+  const NoConnectionRoute({List<PageRouteInfo>? children})
+      : super(
+          NoConnectionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NoConnectionRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NoConnectionView();
+    },
+  );
+}
+
+/// generated route for
+/// [OnboardingsView]
+class OnboardingsRoute extends PageRouteInfo<void> {
+  const OnboardingsRoute({List<PageRouteInfo>? children})
+      : super(
+          OnboardingsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OnboardingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OnboardingsView();
     },
   );
 }

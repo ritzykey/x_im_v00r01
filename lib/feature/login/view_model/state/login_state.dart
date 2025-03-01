@@ -10,8 +10,11 @@ final class LoginState extends Equatable {
   @override
   List<Object?> get props => [isLoading, users, model];
 
-  LoginState copyWith(
-      {bool? isLoading, List<User>? users, LoginResponseModel2? model}) {
+  LoginState copyWith({
+    bool? isLoading,
+    List<User>? users,
+    LoginResponseModel2? model,
+  }) {
     return LoginState(
       model: model ?? this.model,
       isLoading: isLoading ?? this.isLoading,

@@ -34,20 +34,22 @@ final class AplicationInitiliaze {
       Logger().e(details.exceptionAsString());
     };
 
-    _productEnvironmentWithContainer();
+    await _productEnvironmentWithContainer();
 
     await ProductStateItems.productCache.init();
+
+    FlutterNativeSplash.remove();
 
     //await ProductStateItems.productCache.loadData();
     //await ProductStateItems.productCache.updateData();
   }
 
   /// DO NOT CHANGE THIS METHOD
-  void _productEnvironmentWithContainer() {
+  Future<void> _productEnvironmentWithContainer() async {
     AppEnvironment.general();
 
     /// It must be call after [AppEnvironment.general()]
-    ProductContainer.setup();
+    await ProductContainer.setup();
   }
   /*
   burada uygulama açılışı esnasındaki initiliazler yapıldı

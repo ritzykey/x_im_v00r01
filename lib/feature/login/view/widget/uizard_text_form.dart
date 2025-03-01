@@ -3,25 +3,19 @@ import 'package:kartal/kartal.dart';
 
 class UizardTextForm extends StatelessWidget {
   const UizardTextForm({
-    required this.heightScale,
-    required this.widthScale,
     required this.label,
     required this.controller,
     required this.obscure,
     super.key,
   });
 
-  final double heightScale;
-  final double widthScale;
   final String label;
   final TextEditingController controller;
   final bool obscure;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widthScale * 327,
-      height: heightScale * 48,
+    return Material(
       child: TextFormField(
         style: context.general.textTheme.bodyMedium,
         controller: controller,
