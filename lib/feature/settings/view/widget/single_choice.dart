@@ -76,7 +76,7 @@ class _SingleChoiceState extends State<SingleChoice> {
               child: Text(
                 'settings.default'.tr(),
                 style: context.general.appTheme.textTheme.bodySmall
-                    ?.copyWith(fontSize: 10),
+                    ?.copyWith(fontSize: 9),
               ),
             ),
             Text(

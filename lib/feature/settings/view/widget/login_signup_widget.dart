@@ -102,7 +102,10 @@ class LoginSignupWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text('settings.signOut'.tr()),
+                            Text(
+                              'settings.signOut'.tr(),
+                              style: context.general.textTheme.bodySmall,
+                            ),
                             const SizedBox(width: 8),
                             const Icon(
                               Icons.exit_to_app,

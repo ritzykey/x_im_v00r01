@@ -79,17 +79,6 @@ class AppRouter extends RootStackRouter {
       ];
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /*     List<AutoRoute> get routes => [
         AutoRoute(
           page: HomeRoute.page,

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
-import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
-import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 
 /// This file contains the implementation of the `HomeNewView` class, which is
@@ -88,315 +86,313 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(8),
-          child: SafeArea(
-            child: PageView.builder(
-              reverse: true,
-              controller: homenewViewModel.pageController,
-              itemCount: 3,
-              onPageChanged: (index) {},
-              itemBuilder: (context, index) {
-                return CustomScrollView(
-                  controller: _scrollController,
-                  slivers: <Widget>[
-                    SliverAppBar(
-                      elevation: 1,
-                      expandedHeight: context.general.mediaSize.height * 0.6,
-                      automaticallyImplyLeading: false,
-                      flexibleSpace: FlexibleSpaceBar(
-                        expandedTitleScale: 1,
-                        titlePadding: const EdgeInsets.only(top: 10),
-                        title: Transform.translate(
-                          offset: const Offset(0, 20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                              color: context.general.colorScheme.surfaceDim,
+          child: PageView.builder(
+            reverse: true,
+            controller: homenewViewModel.pageController,
+            itemCount: 3,
+            onPageChanged: (index) {},
+            itemBuilder: (context, index) {
+              return CustomScrollView(
+                controller: _scrollController,
+                slivers: <Widget>[
+                  SliverAppBar(
+                    elevation: 1,
+                    expandedHeight: context.general.mediaSize.height * 0.6,
+                    automaticallyImplyLeading: false,
+                    flexibleSpace: FlexibleSpaceBar(
+                      expandedTitleScale: 1,
+                      titlePadding: const EdgeInsets.only(top: 10),
+                      title: Transform.translate(
+                        offset: const Offset(0, 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(20),
                             ),
-                            child: Transform.translate(
-                              offset: const Offset(0, -25),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: context
-                                            .general.colorScheme.surfaceBright,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(20),
-                                        ),
+                            color: context.general.colorScheme.surfaceDim,
+                          ),
+                          child: Transform.translate(
+                            offset: const Offset(0, -25),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: context
+                                          .general.colorScheme.surfaceBright,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: Text(
-                                          'Bugün',
-                                          style: context
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(
+                                        'Bugün',
+                                        style: context
+                                            .general.textTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        iconAlignment: IconAlignment.end,
+                                        icon: Icon(
+                                          Icons.favorite_border,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
+                                        ),
+                                        label: const Text(
+                                          '1664',
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          textStyle: context
                                               .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
                                         ),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        TextButton.icon(
-                                          onPressed: () {
-                                            return;
-                                          },
-                                          iconAlignment: IconAlignment.end,
-                                          icon: Icon(
-                                            Icons.favorite_border,
-                                            size: context.general.textTheme
-                                                    .bodySmall!.fontSize! +
-                                                5,
-                                          ),
-                                          label: const Text(
-                                            '1664',
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            iconColor: context.general.textTheme
-                                                .bodySmall?.color,
-                                            minimumSize: const Size(0, 32),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                            ),
-                                            textStyle: context
-                                                .general.textTheme.bodySmall,
-                                            foregroundColor: context.general
-                                                .textTheme.bodySmall?.color,
-                                            backgroundColor: context.general
-                                                .colorScheme.surfaceBright,
-                                          ),
+                                      IconButton(
+                                        onPressed: () {
+                                          return;
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          size: context.general.textTheme
+                                                  .bodySmall!.fontSize! +
+                                              5,
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            return;
-                                          },
-                                          icon: Icon(
-                                            Icons.share,
-                                            size: context.general.textTheme
-                                                    .bodySmall!.fontSize! +
-                                                5,
+                                        style: TextButton.styleFrom(
+                                          iconColor: context.general.textTheme
+                                              .bodySmall?.color,
+                                          minimumSize: const Size(0, 32),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
                                           ),
-                                          style: TextButton.styleFrom(
-                                            iconColor: context.general.textTheme
-                                                .bodySmall?.color,
-                                            minimumSize: const Size(0, 32),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                            ),
-                                            textStyle: context
-                                                .general.textTheme.bodySmall,
-                                            foregroundColor: context.general
-                                                .textTheme.bodySmall?.color,
-                                            backgroundColor: context.general
-                                                .colorScheme.surfaceBright,
-                                          ),
+                                          textStyle: context
+                                              .general.textTheme.bodySmall,
+                                          foregroundColor: context.general
+                                              .textTheme.bodySmall?.color,
+                                          backgroundColor: context.general
+                                              .colorScheme.surfaceBright,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        background: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'asset/images/pexels1.jpg',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SliverLayoutBuilder(
-                      builder: (context, constraints) {
-                        // ignore: prefer_final_locals
-                        textHeight = calculateTextHeight(
-                          title2,
-                          context,
-                        );
-                        // ignore: prefer_final_locals
-                        expandedHeight = textHeight + 35;
-
-                        return SliverAppBar(
-                          backgroundColor:
-                              context.general.colorScheme.surfaceDim,
-                          elevation: 0,
-                          scrolledUnderElevation: 0,
-                          shadowColor: context.general.colorScheme.surfaceDim,
-                          surfaceTintColor:
-                              context.general.colorScheme.surfaceDim,
-                          foregroundColor:
-                              context.general.colorScheme.surfaceDim,
-                          automaticallyImplyLeading: false,
-                          expandedHeight: expandedHeight,
-                          collapsedHeight: 45,
-                          toolbarHeight: 0,
-                          pinned: true,
-                          flexibleSpace: FlexibleSpaceBar(
-                            title: Transform.translate(
-                              offset: const Offset(0, 5),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Text(
-                                  title2 + index.toString().padLeft(2),
-                                  style:
-                                      context.general.textTheme.headlineSmall,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    SliverAppBar(
-                      backgroundColor: context.general.colorScheme.surfaceDim,
-                      elevation: 0,
-                      scrolledUnderElevation: 0,
-                      shadowColor: context.general.colorScheme.surfaceDim,
-                      surfaceTintColor: context.general.colorScheme.surfaceDim,
-                      foregroundColor: context.general.colorScheme.surfaceDim,
-                      automaticallyImplyLeading: false,
-                      pinned: true,
-                      title: Row(
-                        children: [
-                          TextButton.icon(
-                            onPressed: () {
-                              return;
-                            },
-                            icon: const CircleAvatar(
-                              radius: 12,
-                              backgroundImage: NetworkImage(
-                                'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
-                              ),
-                            ),
-                            label: const Text(
-                              'Emma Watson',
-                            ),
-                            style: TextButton.styleFrom(
-                              iconColor:
-                                  context.general.textTheme.bodySmall?.color,
-                              minimumSize: const Size(0, 32),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              textStyle: context.general.textTheme.bodySmall,
-                              foregroundColor:
-                                  context.general.textTheme.bodySmall?.color,
-                              backgroundColor:
-                                  context.general.colorScheme.surfaceBright,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              '1990',
-                              style: context.general.textTheme.labelMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
-                              style: TextStyle(
-                                fontSize: 12,
-                                height: 1.4,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 40,
-                            ),
-                            const Text(
-                              'Born',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'April, 15th 1990, Paris, France',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              'Nationality',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              'British',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              'Videos',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: 200,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  _makeVideo(
-                                    image: 'assets/images/emma-1.jpg',
-                                  ),
-                                  _makeVideo(
-                                    image: 'assets/images/emma-2.jpg',
-                                  ),
-                                  _makeVideo(
-                                    image: 'assets/images/emma-3.jpg',
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 120,
+                          ),
+                        ),
+                      ),
+                      background: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              'asset/images/pexels1.jpg',
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                  SliverLayoutBuilder(
+                    builder: (context, constraints) {
+                      // ignore: prefer_final_locals
+                      textHeight = calculateTextHeight(
+                        title2,
+                        context,
+                      );
+                      // ignore: prefer_final_locals
+                      expandedHeight = textHeight + 35;
+          
+                      return SliverAppBar(
+                        backgroundColor:
+                            context.general.colorScheme.surfaceDim,
+                        elevation: 0,
+                        scrolledUnderElevation: 0,
+                        shadowColor: context.general.colorScheme.surfaceDim,
+                        surfaceTintColor:
+                            context.general.colorScheme.surfaceDim,
+                        foregroundColor:
+                            context.general.colorScheme.surfaceDim,
+                        automaticallyImplyLeading: false,
+                        expandedHeight: expandedHeight,
+                        collapsedHeight: 45,
+                        toolbarHeight: 0,
+                        pinned: true,
+                        flexibleSpace: FlexibleSpaceBar(
+                          title: Transform.translate(
+                            offset: const Offset(0, 5),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                title2 + index.toString().padLeft(2),
+                                style:
+                                    context.general.textTheme.headlineSmall,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  SliverAppBar(
+                    backgroundColor: context.general.colorScheme.surfaceDim,
+                    elevation: 0,
+                    scrolledUnderElevation: 0,
+                    shadowColor: context.general.colorScheme.surfaceDim,
+                    surfaceTintColor: context.general.colorScheme.surfaceDim,
+                    foregroundColor: context.general.colorScheme.surfaceDim,
+                    automaticallyImplyLeading: false,
+                    pinned: true,
+                    title: Row(
+                      children: [
+                        TextButton.icon(
+                          onPressed: () {
+                            return;
+                          },
+                          icon: const CircleAvatar(
+                            radius: 12,
+                            backgroundImage: NetworkImage(
+                              'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
+                            ),
+                          ),
+                          label: const Text(
+                            'Emma Watson',
+                          ),
+                          style: TextButton.styleFrom(
+                            iconColor:
+                                context.general.textTheme.bodySmall?.color,
+                            minimumSize: const Size(0, 32),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            textStyle: context.general.textTheme.bodySmall,
+                            foregroundColor:
+                                context.general.colorScheme.onTertiary,
+                            backgroundColor:
+                                context.general.colorScheme.tertiary,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            '1990',
+                            style: context.general.textTheme.labelMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.4,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          const Text(
+                            'Born',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'April, 15th 1990, Paris, France',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            'Nationality',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'British',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            'Videos',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            height: 200,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: <Widget>[
+                                _makeVideo(
+                                  image: 'assets/images/emma-1.jpg',
+                                ),
+                                _makeVideo(
+                                  image: 'assets/images/emma-2.jpg',
+                                ),
+                                _makeVideo(
+                                  image: 'assets/images/emma-3.jpg',
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 120,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

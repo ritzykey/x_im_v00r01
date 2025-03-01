@@ -15,29 +15,17 @@ final class CustomLightTheme implements CustomTheme {
       );
 
   TextTheme textTheme(double fontSize) {
-    return GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme).copyWith(
-      titleSmall: ThemeData.light()
-          .textTheme
-          .titleSmall
-          ?.copyWith(fontSize: fontSize + 2),
-      titleMedium: ThemeData.light()
-          .textTheme
-          .titleSmall
-          ?.copyWith(fontSize: fontSize + 2),
-      titleLarge: ThemeData.light()
-          .textTheme
-          .titleSmall
-          ?.copyWith(fontSize: fontSize + 8),
-      bodySmall:
-          ThemeData.light().textTheme.bodySmall?.copyWith(fontSize: fontSize),
-      bodyMedium: ThemeData.light()
-          .textTheme
-          .bodyMedium
-          ?.copyWith(fontSize: fontSize + 2),
-      bodyLarge: ThemeData.light()
-          .textTheme
-          .bodyLarge
-          ?.copyWith(fontSize: fontSize + 4),
+    // GoogleFonts.poppinsTextTheme'i kullanarak temel bir textTheme oluşturuyoruz
+    final baseTextTheme =
+        GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme);
+
+    return baseTextTheme.copyWith(
+      titleSmall: baseTextTheme.titleSmall?.copyWith(fontSize: fontSize + 2),
+      titleMedium: baseTextTheme.titleMedium?.copyWith(fontSize: fontSize + 4),
+      titleLarge: baseTextTheme.titleLarge?.copyWith(fontSize: fontSize + 8),
+      bodySmall: baseTextTheme.bodySmall?.copyWith(fontSize: fontSize),
+      bodyMedium: baseTextTheme.bodyMedium?.copyWith(fontSize: fontSize + 2),
+      bodyLarge: baseTextTheme.bodyLarge?.copyWith(fontSize: fontSize + 4),
     );
   }
 
