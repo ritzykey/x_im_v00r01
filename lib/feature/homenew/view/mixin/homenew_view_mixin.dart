@@ -17,7 +17,6 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
 
   @override
   void initState() {
-    // TODO: implement activate
     super.initState();
     productNetworkErrorManager = ProductNetworkErrorManager(context);
     ProductStateItems.productNetworkManager.listenErrorState(

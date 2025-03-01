@@ -5,7 +5,7 @@ class NoStretchScrollBehavior extends ScrollBehavior {
   Widget buildOverscrollIndicator(
     BuildContext context,
     Widget child,
-    ScrollableDetails ScrollableDetails,
+    ScrollableDetails details,
   ) {
     return child; // Stretch efektini tamamen kaldırır
   }

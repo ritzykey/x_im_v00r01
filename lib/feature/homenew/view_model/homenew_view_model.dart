@@ -81,7 +81,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
             titleSize = scrollOffset / (maxHeaderHeight - minHeaderHeight);
             if (titleSize > 0.8) titleSize = 0.8;
             titlemaxline = 1;
-            dynamicPadding = const EdgeInsets.only();
+            dynamicPadding = EdgeInsets.zero;
 
             _animateScroll(maxHeaderHeight);
           }

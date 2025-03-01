@@ -41,8 +41,8 @@ final class SettingsViewModel extends BaseCubit<SettingsState> {
   }
 
   void onboardingPutHive() {
-    userCacheOperation.remove('isFirstTime'); // Önce eski veriyi sil
-    userCacheOperation.put(
+    userCacheOperation..remove('isFirstTime') // Önce eski veriyi sil
+    ..put(
       'isFirstTime',
       UserCacheModel(
         isFirstTime: true,

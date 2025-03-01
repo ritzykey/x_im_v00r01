@@ -7,8 +7,8 @@ import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/settings/view/mixin/settings_view_mixin.dart';
 import 'package:x_im_v00r01/feature/settings/view/utils/appearance_modal.dart';
 import 'package:x_im_v00r01/feature/settings/view/utils/language_modal.dart';
-import 'package:x_im_v00r01/feature/settings/view/widget/LoginSignupWidget.dart';
-import 'package:x_im_v00r01/feature/settings/view/widget/SingleChoice.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/login_signup_widget.dart';
+import 'package:x_im_v00r01/feature/settings/view/widget/single_choice.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/settings_view_model.dart';
 import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
@@ -132,7 +132,7 @@ class _SettingsViewState extends BaseState<SettingsView>
                       ),
                       const SizedBox(height: 8),
                       ListTile(
-                        contentPadding: const EdgeInsets.all(0),
+                        contentPadding: EdgeInsets.zero,
                         leading: Container(
                           width: 34,
                           height: 34,
@@ -212,7 +212,7 @@ class _SettingsViewState extends BaseState<SettingsView>
     VoidCallback? onTab,
   }) {
     return ListTile(
-      contentPadding: const EdgeInsets.all(0),
+      contentPadding: EdgeInsets.zero,
       leading: Container(
         width: 34,
         height: 34,

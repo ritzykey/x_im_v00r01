@@ -11,9 +11,9 @@ class AuthInitial extends BaseAuthState {}
 
 // Kullanıcı oturum açtığında
 class AuthAuthenticated extends BaseAuthState {
-  final User user;
 
   AuthAuthenticated(this.user);
+  final User user;
 
   @override
   List<Object?> get props => [user];
@@ -24,9 +24,9 @@ class AuthUnauthenticated extends BaseAuthState {}
 
 // Hata durumu
 class AuthError extends BaseAuthState {
-  final String message;
 
   AuthError(this.message);
+  final String message;
 
   @override
   List<Object?> get props => [message];

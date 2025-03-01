@@ -5,7 +5,7 @@ import 'package:kartal/kartal.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
-import 'package:x_im_v00r01/product/utility/constans/ColorConstants.dart';
+import 'package:x_im_v00r01/product/utility/constans/color_constants.dart';
 
 class LoginSignupWidget extends StatelessWidget {
   const LoginSignupWidget({
@@ -92,6 +92,7 @@ class LoginSignupWidget extends StatelessWidget {
                           await context.read<SupabaseClient>().auth.signOut();
 
                           // Çıkış işlemi başarılı olduğunda kullanıcıya bilgi verme
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('snackbar.successfulSignOUT'.tr()),

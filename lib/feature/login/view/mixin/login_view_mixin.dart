@@ -21,10 +21,8 @@ mixin LoginViewMixin on BaseState<LoginView> {
 
   late final LoginViewModel loginViewModel;
 
-
   @override
   void initState() {
-    // TODO: implement activate
     super.initState();
 
     productNetworkErrorManager = ProductNetworkErrorManager(context);
@@ -46,22 +44,19 @@ mixin LoginViewMixin on BaseState<LoginView> {
     final isValid = await loginViewModel.tokenCheck();
 
     if (isValid) {
-      context.router.navigate(const NavigationRoute());
+      if (!mounted) return;
+      await context.router.navigate(const NavigationRoute());
     }
     // Token geçersizse başka bir sayfaya yönlendirme yapılabilir
     if (!isValid) {
-      context.router.navigate(const LoginRoute());
+      if (!mounted) return;
+      await context.router.navigate(const LoginRoute());
     }
   }
 
   Future<bool> googleSignIn(BuildContext context) async {
-    /// TODO: update the Web client ID with your own.
-    ///
-    /// Web Client ID that you registered with Google Cloud.
     final webClientId = AppEnvironmentItems.webclientID.value;
 
-    /// TODO: update the iOS client ID with your own.
-    ///
     /// iOS Client ID that you registered with Google Cloud.
     //const iosClientId = 'my-ios.apps.googleusercontent.com';
 
@@ -81,26 +76,34 @@ mixin LoginViewMixin on BaseState<LoginView> {
     final idToken = googleAuth.idToken;
 
     if (accessToken == null) {
-      throw 'No Access Token found.';
+      throw Exception('No Access Token found.');
     }
     if (idToken == null) {
-      throw 'No ID Token found.';
+      throw Exception('No ID Token found.');
     }
 
-    await context.read<SupabaseClient>().auth.signInWithIdToken(
+    if (!context.mounted) return true;
+    await context
+        .read<SupabaseClient>()
+        .auth
+        .signInWithIdToken(
           provider: OAuthProvider.google,
           idToken: idToken,
           accessToken: accessToken,
+        )
+        .then(
+      (value) {
+        print('object');
+        print('Google sign-in successful');
+
+        if (!context.mounted) return true;
+        context.router.popUntilRoot();
+
+        // SnackBar ile kullanıcıya bilgi verme
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('snackbar.successfulSignIN'.tr())),
         );
-
-    print('object');
-    print('Google sign-in successful');
-
-    context.router.popUntilRoot();
-
-    // SnackBar ile kullanıcıya bilgi verme
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('snackbar.successfulSignIN'.tr())),
+      },
     );
 
     return true;

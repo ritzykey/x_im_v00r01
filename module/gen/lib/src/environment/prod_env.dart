@@ -25,15 +25,12 @@ final class ProdEnv implements AppConfiguration {
   String get baseurl => _baseurl;
   
   @override
-  // TODO: implement anonKey
   String get anonKey => throw UnimplementedError();
   
   @override
-  // TODO: implement supaURL
   String get supaURL => throw UnimplementedError();
   
   @override
-  // TODO: implement webclientID
   String get webclientID => throw UnimplementedError();
 
 }

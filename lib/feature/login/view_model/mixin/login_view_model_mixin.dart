@@ -1,19 +1,22 @@
+
+
+/// Mixin for login view model functionality.
 mixin LoginViewModelMixin {
-  bool isLoading = false;
+  bool _isLoading = false;
 
   void startLoading() {
-    isLoading = true;
+    _isLoading = true;
   }
 
   void stopLoading() {
-    isLoading = false;
+    _isLoading = false;
   }
 
-  Future<void> performLogin(String username, String password) async {
+  Future<void> _performLogin(String username, String password) async {
     startLoading();
     try {
       // Add your login logic here
-      await Future.delayed(Duration(seconds: 2)); // Simulate a network call
+      await Future<void>.delayed(const Duration(seconds: 2));
       print('Login successful');
     } catch (e) {
       print('Login failed: $e');

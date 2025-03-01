@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/login/view/mixin/login_view_mixin.dart';
-import 'package:x_im_v00r01/feature/login/view/widget/UizardTextForm.dart';
+import 'package:x_im_v00r01/feature/login/view/widget/uizard_text_form.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 import 'package:x_im_v00r01/product/widget/button/custom_login/custom_login_button.dart';
