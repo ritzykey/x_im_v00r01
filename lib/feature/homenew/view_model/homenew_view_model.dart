@@ -45,14 +45,29 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   }
 
   void favoritesButtton() {}
-  void loadStorys() {}
 
-  void setImageHeight(double imageHeight, double screenHeight) {
+  void setData(List<Map<String, dynamic>>? data) {
+    emit(state.copyWith(data: data));
+  }
+
+  void setImageHeight(double imageHeight, double screenHeight, Image image) {
     if (imageHeight > screenHeight) {
-      emit(state.copyWith(imageHeight: screenHeight * 0.6, isLoading: true));
+      emit(
+        state.copyWith(
+          imageHeight: screenHeight * 0.6,
+          isLoading: true,
+          image: image,
+        ),
+      );
       return;
     }
-    emit(state.copyWith(imageHeight: imageHeight, isLoading: true));
+    emit(
+      state.copyWith(
+        imageHeight: imageHeight,
+        isLoading: true,
+        image: image,
+      ),
+    );
   }
 
   void increaseFav() {

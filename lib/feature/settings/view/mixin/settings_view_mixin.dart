@@ -13,8 +13,6 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
 // manage your home view screen
 mixin SettingsViewMixin on BaseState<SettingsView> {
-  @override
-  late final ProductNetworkManager productNetworkManager;
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
   late final SettingsViewModel settingsViewModel;
@@ -31,7 +29,7 @@ mixin SettingsViewMixin on BaseState<SettingsView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
 
-    context.read<SupabaseClient>().auth.onAuthStateChange.listen((data) {
+    supabaseClient.auth.onAuthStateChange.listen((data) {
       print('data data $data');
 
       switch (data) {

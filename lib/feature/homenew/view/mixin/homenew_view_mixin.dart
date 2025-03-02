@@ -11,11 +11,12 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
 // manage your home view screen
 mixin HomenewViewMixin on BaseState<HomenewView> {
-  @override
-  late final ProductNetworkManager productNetworkManager;
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
   late final HomenewViewModel homenewViewModel;
+
+  final String _imageUrl =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/SteveJobsMacbookAir.JPG/640px-SteveJobsMacbookAir.JPG';
 
   @override
   void initState() {
@@ -29,9 +30,20 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
     );
+    fetchData();
   }
 
-  double calculateTextHeight(String text, BuildContext context) {
+  Future<void> fetchData() async {
+    final data = await supabaseClient.from('daily_stories').select();
+
+    print('data $data');
+
+    homenewViewModel.setData(data);
+
+    await loadImageHeight(0, data: data);
+  }
+
+  double calculateTextHeight(String text) {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,
@@ -46,7 +58,7 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
     return textPainter.height;
   }
 
-  Future<double> fetchImageHeight(String imageUrl) async {
+  Future<Map<String, dynamic>> fetchImageHeight(String imageUrl) async {
     final image = Image.network(imageUrl);
     final completer = Completer<double>();
 
@@ -56,6 +68,24 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       }),
     );
 
-    return completer.future;
+    final height = await completer.future;
+    return {'height': height, 'image': image};
+  }
+
+  Future<void> loadImageHeight(
+    int index, {
+    List<Map<String, dynamic>>? data,
+  }) async {
+    print('index $index');
+    await fetchImageHeight(data?.elementAt(index)['photo_url'] as String)
+        .then((result) {
+      final height = result['height'] as double;
+      final image = result['image'] as Image;
+      homenewViewModel.setImageHeight(
+        height,
+        context.general.mediaSize.height,
+        image,
+      );
+    });
   }
 }

@@ -26,8 +26,6 @@ class HomenewView extends StatefulWidget {
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   final String title = 'Harry Potter 20th Anniversary: Retu...';
   final String title2 = 'Harry Potter';
-  final String _imageUrl =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/SteveJobsMacbookAir.JPG/640px-SteveJobsMacbookAir.JPG';
 
   int selectedIndex = 1;
   final ScrollController _scrollController = ScrollController();
@@ -56,8 +54,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
         }
       }
     });
-
-    _loadImageHeight();
   }
 
   void _triggerScroll(double targetOffset) {
@@ -75,12 +71,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
         });
       });
     }
-  }
-
-  void _loadImageHeight() {
-    fetchImageHeight(_imageUrl).then((height) {
-      homenewViewModel.setImageHeight(height, context.general.mediaSize.height);
-    });
   }
 
   @override
@@ -101,19 +91,23 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
             reverse: true,
             controller: homenewViewModel.pageController,
             itemCount: 3,
-            onPageChanged: (index) {},
+            onPageChanged: (value) =>
+                loadImageHeight(value, data: homenewViewModel.state.data),
             itemBuilder: (context, index) {
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: <Widget>[
-                  BlocSelector<HomenewViewModel, HomenewState, double>(
+                  BlocSelector<HomenewViewModel, HomenewState, (double, Image)>(
                     selector: (state) {
-                      return state.imageHeight ?? 250;
+                      return (
+                        state.imageHeight ?? 250,
+                        state.image ?? Image.network('')
+                      );
                     },
                     builder: (context, state) {
                       return SliverAppBar(
                         elevation: 1,
-                        expandedHeight: state,
+                        expandedHeight: state.$1,
                         automaticallyImplyLeading: false,
                         flexibleSpace: FlexibleSpaceBar(
                           expandedTitleScale: 1,
@@ -236,9 +230,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                     ),
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        _imageUrl,
-                                      ),
+                                      image: state.$2.image,
                                     ),
                                   ),
                                 ),
@@ -251,7 +243,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       // ignore: prefer_final_locals
                       textHeight = calculateTextHeight(
                         title2,
-                        context,
                       );
                       // ignore: prefer_final_locals
                       expandedHeight = textHeight + 35;
@@ -305,8 +296,18 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                               'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
                             ),
                           ),
-                          label: const Text(
-                            'Emma Watson',
+                          label: BlocSelector<HomenewViewModel, HomenewState,
+                              String>(
+                            selector: (state) {
+                              return state.data?.elementAt(index)['name']
+                                      as String? ??
+                                  'null';
+                            },
+                            builder: (context, name) {
+                              return Text(
+                                name,
+                              );
+                            },
                           ),
                           style: TextButton.styleFrom(
                             iconColor:

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
+import 'package:x_im_v00r01/product/state/container/index.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 import 'package:x_im_v00r01/product/utility/constans/color_constants.dart';
 
@@ -17,6 +18,8 @@ class LoginSignupWidget extends StatelessWidget {
   final String? avatarURL;
 
   final String? fullName;
+
+  SupabaseClient get _supabaseClient => ProductStateItems.supabaseClient;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +92,7 @@ class LoginSignupWidget extends StatelessWidget {
                         ),
                         onPressed: () async {
                           // Supabase ile çıkış yapma
-                          await context.read<SupabaseClient>().auth.signOut();
+                          await _supabaseClient.auth.signOut();
 
                           // Çıkış işlemi başarılı olduğunda kullanıcıya bilgi verme
                           if (!context.mounted) return;
