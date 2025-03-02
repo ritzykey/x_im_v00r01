@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
@@ -25,7 +27,6 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
     homenewViewModel = HomenewViewModel(
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
-      scrollController: ScrollController(),
       pageController: PageController(),
     );
   }
@@ -43,5 +44,18 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       ); // Kenar boşluklarını hesaba kat
 
     return textPainter.height;
+  }
+
+  Future<double> fetchImageHeight(String imageUrl) async {
+    final image = Image.network(imageUrl);
+    final completer = Completer<double>();
+
+    image.image.resolve(ImageConfiguration.empty).addListener(
+      ImageStreamListener((ImageInfo info, bool _) {
+        completer.complete(info.image.height.toDouble());
+      }),
+    );
+
+    return completer.future;
   }
 }

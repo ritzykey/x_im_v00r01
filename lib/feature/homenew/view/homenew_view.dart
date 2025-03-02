@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
+import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
+import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 
 /// This file contains the implementation of the `HomeNewView` class, which is
@@ -24,11 +26,12 @@ class HomenewView extends StatefulWidget {
 class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   final String title = 'Harry Potter 20th Anniversary: Retu...';
   final String title2 = 'Harry Potter';
+  final String _imageUrl =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/SteveJobsMacbookAir.JPG/640px-SteveJobsMacbookAir.JPG';
 
   int selectedIndex = 1;
   final ScrollController _scrollController = ScrollController();
   double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
-  final double _scrollOffset = 0; // Kaydırma mesafesi
   bool isAnimating = false;
 
   double textHeight = 50;
@@ -53,6 +56,8 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
         }
       }
     });
+
+    _loadImageHeight();
   }
 
   void _triggerScroll(double targetOffset) {
@@ -72,6 +77,12 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
     }
   }
 
+  void _loadImageHeight() {
+    fetchImageHeight(_imageUrl).then((height) {
+      homenewViewModel.setImageHeight(height, context.general.mediaSize.height);
+    });
+  }
+
   @override
   void dispose() {
     _scrollController.dispose(); // Kaydırma denetleyicisini temizliyoruz
@@ -85,7 +96,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
       create: (context) => homenewViewModel,
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 22),
           child: PageView.builder(
             reverse: true,
             controller: homenewViewModel.pageController,
@@ -95,124 +106,145 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: <Widget>[
-                  SliverAppBar(
-                    elevation: 1,
-                    expandedHeight: context.general.mediaSize.height * 0.6,
-                    automaticallyImplyLeading: false,
-                    flexibleSpace: FlexibleSpaceBar(
-                      expandedTitleScale: 1,
-                      titlePadding: const EdgeInsets.only(top: 10),
-                      title: Transform.translate(
-                        offset: const Offset(0, 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                            color: context.general.colorScheme.surfaceDim,
-                          ),
-                          child: Transform.translate(
-                            offset: const Offset(0, -25),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: context
-                                          .general.colorScheme.surfaceBright,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        'Bugün',
-                                        style: context
-                                            .general.textTheme.bodySmall,
-                                      ),
-                                    ),
+                  BlocSelector<HomenewViewModel, HomenewState, double>(
+                    selector: (state) {
+                      return state.imageHeight ?? 250;
+                    },
+                    builder: (context, state) {
+                      return SliverAppBar(
+                        elevation: 1,
+                        expandedHeight: state,
+                        automaticallyImplyLeading: false,
+                        flexibleSpace: FlexibleSpaceBar(
+                          expandedTitleScale: 1,
+                          titlePadding: const EdgeInsets.only(top: 10),
+                          title: Transform.translate(
+                            offset: const Offset(0, 20),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                                color: context.general.colorScheme.surfaceDim,
+                              ),
+                              child: Transform.translate(
+                                offset: const Offset(0, -25),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
                                   ),
-                                  Row(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextButton.icon(
-                                        onPressed: () {
-                                          return;
-                                        },
-                                        iconAlignment: IconAlignment.end,
-                                        icon: Icon(
-                                          Icons.favorite_border,
-                                          size: context.general.textTheme
-                                                  .bodySmall!.fontSize! +
-                                              5,
-                                        ),
-                                        label: const Text(
-                                          '1664',
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          iconColor: context.general.textTheme
-                                              .bodySmall?.color,
-                                          minimumSize: const Size(0, 32),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: context.general.colorScheme
+                                              .surfaceBright,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(20),
                                           ),
-                                          textStyle: context
-                                              .general.textTheme.bodySmall,
-                                          foregroundColor: context.general
-                                              .textTheme.bodySmall?.color,
-                                          backgroundColor: context.general
-                                              .colorScheme.surfaceBright,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Text(
+                                            'Bugün',
+                                            style: context
+                                                .general.textTheme.bodySmall,
+                                          ),
                                         ),
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          return;
-                                        },
-                                        icon: Icon(
-                                          Icons.share,
-                                          size: context.general.textTheme
-                                                  .bodySmall!.fontSize! +
-                                              5,
-                                        ),
-                                        style: TextButton.styleFrom(
-                                          iconColor: context.general.textTheme
-                                              .bodySmall?.color,
-                                          minimumSize: const Size(0, 32),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
+                                      Row(
+                                        children: [
+                                          TextButton.icon(
+                                            onPressed: () {
+                                              homenewViewModel.increaseFav();
+                                              return;
+                                            },
+                                            iconAlignment: IconAlignment.end,
+                                            icon: Icon(
+                                              Icons.favorite_border,
+                                              size: context.general.textTheme
+                                                      .bodySmall!.fontSize! +
+                                                  5,
+                                            ),
+                                            label: const Text(
+                                              '1664',
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              iconColor: context.general
+                                                  .textTheme.bodySmall?.color,
+                                              minimumSize: const Size(0, 32),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                              ),
+                                              textStyle: context
+                                                  .general.textTheme.bodySmall,
+                                              foregroundColor: context.general
+                                                  .textTheme.bodySmall?.color,
+                                              backgroundColor: context.general
+                                                  .colorScheme.surfaceBright,
+                                            ),
                                           ),
-                                          textStyle: context
-                                              .general.textTheme.bodySmall,
-                                          foregroundColor: context.general
-                                              .textTheme.bodySmall?.color,
-                                          backgroundColor: context.general
-                                              .colorScheme.surfaceBright,
-                                        ),
+                                          IconButton(
+                                            onPressed: () {
+                                              return;
+                                            },
+                                            icon: Icon(
+                                              Icons.share,
+                                              size: context.general.textTheme
+                                                      .bodySmall!.fontSize! +
+                                                  5,
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              iconColor: context.general
+                                                  .textTheme.bodySmall?.color,
+                                              minimumSize: const Size(0, 32),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                              ),
+                                              textStyle: context
+                                                  .general.textTheme.bodySmall,
+                                              foregroundColor: context.general
+                                                  .textTheme.bodySmall?.color,
+                                              backgroundColor: context.general
+                                                  .colorScheme.surfaceBright,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
+                          background: (!homenewViewModel.state.isLoading)
+                              ? Container(
+                                  color: Colors
+                                      .grey[300], // Arka plan placeholder rengi
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        _imageUrl,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ),
-                      ),
-                      background: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              'asset/images/pexels1.jpg',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   SliverLayoutBuilder(
                     builder: (context, constraints) {
@@ -223,17 +255,15 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       );
                       // ignore: prefer_final_locals
                       expandedHeight = textHeight + 35;
-          
+
                       return SliverAppBar(
-                        backgroundColor:
-                            context.general.colorScheme.surfaceDim,
+                        backgroundColor: context.general.colorScheme.surfaceDim,
                         elevation: 0,
                         scrolledUnderElevation: 0,
                         shadowColor: context.general.colorScheme.surfaceDim,
                         surfaceTintColor:
                             context.general.colorScheme.surfaceDim,
-                        foregroundColor:
-                            context.general.colorScheme.surfaceDim,
+                        foregroundColor: context.general.colorScheme.surfaceDim,
                         automaticallyImplyLeading: false,
                         expandedHeight: expandedHeight,
                         collapsedHeight: 45,
@@ -246,8 +276,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                               padding: const EdgeInsets.only(left: 8),
                               child: Text(
                                 title2 + index.toString().padLeft(2),
-                                style:
-                                    context.general.textTheme.headlineSmall,
+                                style: context.general.textTheme.headlineSmall,
                               ),
                             ),
                           ),
