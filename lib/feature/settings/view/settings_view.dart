@@ -28,176 +28,174 @@ class _SettingsViewState extends BaseState<SettingsView>
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => settingsViewModel,
-      child: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 100,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  titlePadding: const EdgeInsets.symmetric(horizontal: 16),
-                  title: Text(
-                    'settings.title'.tr(),
-                    style: context.general.textTheme.headlineSmall,
-                  ),
+      child: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 100,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: false,
+                titlePadding: const EdgeInsets.symmetric(horizontal: 16),
+                title: Text(
+                  'settings.title'.tr(),
+                  style: context.general.textTheme.headlineSmall,
                 ),
               ),
-            ];
-          },
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      Text(
-                        'settings.account.title'.tr(),
-                        style: context.general.textTheme.headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w400),
-                      ),
-                      const SizedBox(height: 16),
-
-                      /// This is where the login/signup widget is placed
-                      BlocSelector<SettingsViewModel, SettingsState, User?>(
-                        selector: (state) =>
-                            state.user, // Sadece user değişimlerini dinler
-                        builder: (context, user) {
-                          return LoginSignupWidget(
-                            avatarURL: user?.avatar_url ?? '',
-                            fullName: user?.full_name,
-                          );
-                        },
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      Text(
-                        'settings.title'.tr(),
-                        style: context.general.textTheme.headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w400),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      BlocBuilder<SettingsViewModel, SettingsState>(
-                        builder: (contextAppearance, dynamic) {
-                          return _buildListTile(
-                            'settings.appearance.title'.tr(),
-                            Icons.dark_mode,
-                            capitalizeLanguageName(context),
-                            Colors.purple,
-                            context.watch<ProductViewModel>().state.themeMode,
-                            onTab: () => showAppearanceModal(
-                              context,
-                              context.general.appTheme,
-                              capitalizeThemeModeName(context),
-                              settingsViewModel,
-                            ),
-                          );
-                          // return Text(_.theme);
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      BlocBuilder<SettingsViewModel, SettingsState>(
-                        builder: (contextLanguage, state) {
-                          return _buildListTile(
-                            'settings.language.title'.tr(),
-                            Icons.language,
-                            context.locale.languageCode.toUpperCase(),
-                            Colors.orange,
+            ),
+          ];
+        },
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      'settings.account.title'.tr(),
+                      style: context.general.textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(height: 16),
+      
+                    /// This is where the login/signup widget is placed
+                    BlocSelector<SettingsViewModel, SettingsState, User?>(
+                      selector: (state) =>
+                          state.user, // Sadece user değişimlerini dinler
+                      builder: (context, user) {
+                        return LoginSignupWidget(
+                          avatarURL: user?.avatar_url ?? '',
+                          fullName: user?.full_name,
+                        );
+                      },
+                    ),
+      
+                    const SizedBox(height: 16),
+      
+                    Text(
+                      'settings.title'.tr(),
+                      style: context.general.textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w400),
+                    ),
+      
+                    const SizedBox(height: 16),
+      
+                    BlocBuilder<SettingsViewModel, SettingsState>(
+                      builder: (contextAppearance, dynamic) {
+                        return _buildListTile(
+                          'settings.appearance.title'.tr(),
+                          Icons.dark_mode,
+                          capitalizeLanguageName(context),
+                          Colors.purple,
+                          context.watch<ProductViewModel>().state.themeMode,
+                          onTab: () => showAppearanceModal(
+                            context,
                             context.general.appTheme,
-                            onTab: () => showLanguageModal(
-                              context,
-                              context.general.appTheme,
-                              context.locale.languageCode.toUpperCase(),
-                              settingsViewModel,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      _buildListTile(
-                        'settings.notifications.title'.tr(),
-                        Icons.notifications_outlined,
-                        '',
-                        Colors.blue,
-                        context.general.appTheme,
-                        onTab: () {},
-                      ),
-                      const SizedBox(height: 8),
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Container(
-                          width: 34,
-                          height: 34,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color.fromARGB(255, 90, 81, 216)
-                                .withAlpha(30),
+                            capitalizeThemeModeName(context),
+                            settingsViewModel,
                           ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.text_fields_rounded,
-                              color: Color.fromARGB(255, 90, 81, 216),
-                            ),
+                        );
+                        // return Text(_.theme);
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    BlocBuilder<SettingsViewModel, SettingsState>(
+                      builder: (contextLanguage, state) {
+                        return _buildListTile(
+                          'settings.language.title'.tr(),
+                          Icons.language,
+                          context.locale.languageCode.toUpperCase(),
+                          Colors.orange,
+                          context.general.appTheme,
+                          onTab: () => showLanguageModal(
+                            context,
+                            context.general.appTheme,
+                            context.locale.languageCode.toUpperCase(),
+                            settingsViewModel,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    _buildListTile(
+                      'settings.notifications.title'.tr(),
+                      Icons.notifications_outlined,
+                      '',
+                      Colors.blue,
+                      context.general.appTheme,
+                      onTab: () {},
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color.fromARGB(255, 90, 81, 216)
+                              .withAlpha(30),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.text_fields_rounded,
+                            color: Color.fromARGB(255, 90, 81, 216),
                           ),
                         ),
-                        title: Text('settings.textSize'.tr()),
-                        trailing: const SizedBox(
-                          width: 190,
-                          height: 34,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SingleChoice(),
-                            ],
-                          ),
+                      ),
+                      title: Text('settings.textSize'.tr()),
+                      trailing: const SizedBox(
+                        width: 190,
+                        height: 34,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SingleChoice(),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      _buildListTile(
-                        'settings.legal.title'.tr(),
-                        Icons.gavel,
-                        '',
-                        Colors.blue,
-                        context.general.appTheme,
-                        onTab: () {},
-                      ),
-                      const SizedBox(height: 8),
-                      _buildListTile(
-                        'settings.rateApp'.tr(),
-                        Icons.star,
-                        '',
-                        Colors.yellow,
-                        context.general.appTheme,
-                        onTab: () {},
-                      ),
-                      const SizedBox(height: 8),
-                      _buildListTile(
-                        'settings.help'.tr(),
-                        Icons.help,
-                        '',
-                        Colors.green,
-                        context.general.appTheme,
-                        onTab: launchEmail,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '${'general.dialog.version.title'.tr()} 1.0.0',
-                    style: context.general.appTheme.textTheme.bodyMedium
-                        ?.copyWith(color: Colors.grey.shade500),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildListTile(
+                      'settings.legal.title'.tr(),
+                      Icons.gavel,
+                      '',
+                      Colors.blue,
+                      context.general.appTheme,
+                      onTab: () {},
+                    ),
+                    const SizedBox(height: 8),
+                    _buildListTile(
+                      'settings.rateApp'.tr(),
+                      Icons.star,
+                      '',
+                      Colors.yellow,
+                      context.general.appTheme,
+                      onTab: () {},
+                    ),
+                    const SizedBox(height: 8),
+                    _buildListTile(
+                      'settings.help'.tr(),
+                      Icons.help,
+                      '',
+                      Colors.green,
+                      context.general.appTheme,
+                      onTab: launchEmail,
+                    ),
+                  ],
+                ),
+                Text(
+                  '${'general.dialog.version.title'.tr()} 1.0.0',
+                  style: context.general.appTheme.textTheme.bodyMedium
+                      ?.copyWith(color: Colors.grey.shade500),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
