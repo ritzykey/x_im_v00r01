@@ -14,7 +14,7 @@ import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 final class ProductViewModel extends BaseCubit<ProductState> {
   ProductViewModel()
       : super(
-          const ProductState(),
+          ProductState(),
         ) {
     _monitorConnection();
     setTextSize(userCacheOperation.get('fontSize')?.fontSize ?? 12.0);
@@ -92,5 +92,12 @@ final class ProductViewModel extends BaseCubit<ProductState> {
     } else {
       changeThemeMode(thememode);
     }
+  }
+
+
+  void readDate(BuildContext context) {
+    final now = DateTime.now();
+    emit(state.copyWith(currentDate: now));
+    print('readDate: $now');
   }
 }

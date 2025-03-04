@@ -14,3 +14,6 @@ User
 Isfirstime
 50 adet story
 
+BASE_URL=https://ifire.onrender.com/
+API_KEY=PROD1122
+

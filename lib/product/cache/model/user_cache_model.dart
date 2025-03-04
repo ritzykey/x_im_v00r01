@@ -11,6 +11,7 @@ final class UserCacheModel with CacheModel {
     this.language,
     this.selectedTextSize,
     this.fontSize,
+
   });
 
   UserCacheModel.empty()
@@ -27,6 +28,7 @@ final class UserCacheModel with CacheModel {
   final Locale? language;
   final List<bool>? selectedTextSize;
   final double? fontSize;
+
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -46,6 +48,7 @@ final class UserCacheModel with CacheModel {
           ?.map((e) => e as bool)
           .toList(),
       fontSize: jsonMap['fontSize'] as double?,
+
     );
   }
 
@@ -61,6 +64,7 @@ final class UserCacheModel with CacheModel {
       'language': language?.languageCode,
       'selectedTextSize': selectedTextSize,
       'fontSize': fontSize,
+
     };
   }
 
@@ -71,6 +75,7 @@ final class UserCacheModel with CacheModel {
     Locale? language,
     List<bool>? selectedTextSize,
     double? fontSize,
+
   }) {
     return UserCacheModel(
       user: user ?? this.user,
@@ -79,6 +84,7 @@ final class UserCacheModel with CacheModel {
       language: language ?? this.language,
       selectedTextSize: selectedTextSize ?? this.selectedTextSize,
       fontSize: fontSize ?? this.fontSize,
+
     );
   }
 

@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     final height = size.height;
     final widthScale = size.width / 375; // Ekran genişliğine göre ölçek
     final heightScale = size.height / 643; // Ekran yüksekliğine göre ölçek
-
     //context.read<ProductViewModel>().userCacheOperation.clear();
 
     context.read<ProductViewModel>().changeThemeMode(

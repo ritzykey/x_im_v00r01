@@ -10,6 +10,25 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [DiscoverView]
+class DiscoverRoute extends PageRouteInfo<void> {
+  const DiscoverRoute({List<PageRouteInfo>? children})
+      : super(
+          DiscoverRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DiscoverRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DiscoverView();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeDetailView]
 class HomeDetailRoute extends PageRouteInfo<HomeDetailRouteArgs> {
   HomeDetailRoute({

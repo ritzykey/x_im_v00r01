@@ -81,6 +81,7 @@ final class _ProdEnv {
     4073234246,
     1287575342,
     3686455163,
+
   ];
 
   static final String _baseurl = String.fromCharCodes(List<int>.generate(
@@ -97,6 +98,7 @@ final class _ProdEnv {
   static const List<int> _envieddata_apikey = <int>[
     1259785694,
     2829986126,
+
   ];
 
   static final String _apikey = String.fromCharCodes(List<int>.generate(

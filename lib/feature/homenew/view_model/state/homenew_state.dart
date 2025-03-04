@@ -22,6 +22,7 @@ final class HomenewState extends Equatable {
   List<Object?> get props =>
       [isLoading, users, content, opacity, imageHeight, data];
 
+
   HomenewState copyWith({
     bool? isLoading,
     List<User>? users,
@@ -29,6 +30,7 @@ final class HomenewState extends Equatable {
     double? opacity,
     double? imageHeight,
     List<Map<String, dynamic>>? data,
+
   }) {
     return HomenewState(
       isLoading: isLoading ?? this.isLoading,
@@ -37,6 +39,7 @@ final class HomenewState extends Equatable {
       opacity: opacity ?? this.opacity,
       imageHeight: imageHeight ?? this.imageHeight,
       data: data ?? this.data,
+
     );
   }
 }
