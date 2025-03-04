@@ -89,8 +89,5 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     );
   }
 
-  void increaseFav() {
-    print(state.imageHeight);
-    emit(state.copyWith(imageHeight: state.imageHeight! + 5));
-  }
+  void increaseFav() {}
 }
