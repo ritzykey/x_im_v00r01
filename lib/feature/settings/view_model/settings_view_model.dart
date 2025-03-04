@@ -4,7 +4,6 @@ import 'package:x_im_v00r01/feature/settings/view_model/state/settings_state.dar
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/project_operation.dart';
 import 'package:x_im_v00r01/product/state/base/base_cubit.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class SettingsViewModel extends BaseCubit<SettingsState> {
   /// [ProjectOperation] service
@@ -30,17 +29,6 @@ final class SettingsViewModel extends BaseCubit<SettingsState> {
       'boxthemeMode',
       UserCacheModel(
         themeMode: mode,
-      ),
-    );
-  }
-
-  void localesPutHive(Locales locale) {
-    userCacheOperation.remove('boxlocale'); // Önce eski veriyi sil
-    // ignore: cascade_invocations
-    userCacheOperation.put(
-      'boxlocale',
-      UserCacheModel(
-        locale: locale,
       ),
     );
   }

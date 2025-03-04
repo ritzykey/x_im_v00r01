@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
-import 'package:x_im_v00r01/product/utility/constans/enums/locales.dart';
 
 final class UserCacheModel with CacheModel {
   UserCacheModel({
@@ -10,19 +9,21 @@ final class UserCacheModel with CacheModel {
     this.isFirstTime,
     this.themeMode,
     this.language,
+    this.storyslist,
   });
 
   UserCacheModel.empty()
       : user = LoginResponseModel2(),
         isFirstTime = true,
         themeMode = null,
-        language = null;
+        language = null,
+        storyslist = null;
 
   final LoginResponseModel2? user;
   final bool? isFirstTime; // Opsiyonel alan
   final ThemeMode? themeMode;
   final Locale? language;
-
+  final List<StoryModel>? storyslist; // Opsiyonel alan
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -38,7 +39,9 @@ final class UserCacheModel with CacheModel {
       language: jsonMap['language'] != null
           ? Locale(jsonMap['language'].toString())
           : null,
-
+      storyslist: (jsonMap['storyslist'] as List<dynamic>?)
+          ?.map((item) => StoryModel.fromJson(item as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -52,6 +55,8 @@ final class UserCacheModel with CacheModel {
       'isFirstTime': isFirstTime,
       'themeMode': themeMode.toString().split('.').last,
       'language': language?.languageCode,
+      'storyslist': storyslist?.map((story) => story.toJson()).toList() ??
+          [], // storyslist'i al!
     };
   }
 
@@ -60,14 +65,14 @@ final class UserCacheModel with CacheModel {
     bool? isFirstTime,
     ThemeMode? themeMode,
     Locale? language,
-
+    List<StoryModel>? storyslist,
   }) {
     return UserCacheModel(
       user: user ?? this.user,
       isFirstTime: isFirstTime ?? this.isFirstTime,
       themeMode: themeMode ?? this.themeMode,
       language: language ?? this.language,
-
+      storyslist: storyslist ?? this.storyslist,
     );
   }
 

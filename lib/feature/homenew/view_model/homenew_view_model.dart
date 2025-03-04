@@ -56,7 +56,27 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   }
 
   void favoritesButtton() {}
-  void loadStorys() {}
+  Future<void> fetchStorysV(BuildContext context) async {
+    var response = userCacheOperation.get('storyslist')?.storyslist;
+    final now = DateTime.now();
+    print('viewmodel: $now');
+    //final firststory = response?[0];
+
+    if (response == null /*|| now != firststory?.createdAt*/) {
+      emit(state.copyWith(placeholder: true));
+      response = await _projectOperationService.fetchStorys();
+      emit(state.copyWith(storyslist: response));
+      userCacheOperation
+        ..remove('storyslist')
+        ..put(
+          'storyslist',
+          UserCacheModel(storyslist: response),
+        );
+    } else {
+      emit(state.copyWith(storyslist: response));
+      emit(state.copyWith(placeholder: false));
+    }
+  }
 
   void _initScrollListener() {
     scrollController.addListener(() {

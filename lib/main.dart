@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,13 +25,6 @@ class MyApp extends StatelessWidget {
     final height = size.height;
     final widthScale = size.width / 375; // Ekran genişliğine göre ölçek
     final heightScale = size.height / 643; // Ekran yüksekliğine göre ölçek
-    print('height: $height, width: $width');
-    context.read<ProductViewModel>().screenSize(widthScale, heightScale);
-    context.read<ProductViewModel>().themeModeRead();
-    context.read<ProductViewModel>().languageModeRead(context);
-    final systemLocale = PlatformDispatcher.instance.locale;
-    print('system locale: $systemLocale');
-
     //context.read<ProductViewModel>().userCacheOperation.clear();
 
     context.read<ProductViewModel>().changeThemeMode(

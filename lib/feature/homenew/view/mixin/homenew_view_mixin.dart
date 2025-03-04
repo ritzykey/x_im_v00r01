@@ -28,5 +28,10 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       scrollController: ScrollController(),
       pageController: PageController(),
     );
+    _initializeAsyncWork();
+  }
+
+  Future<void> _initializeAsyncWork() async {
+    homenewViewModel.fetchStorysV(context);
   }
 }

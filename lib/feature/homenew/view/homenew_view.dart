@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
 import 'package:x_im_v00r01/feature/homenew/view/widget/FeadAnimation.dart';
@@ -68,10 +69,21 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8),
-                                      child: Text(
-                                        'Bugün',
-                                        style:
-                                            context.general.textTheme.bodySmall,
+                                      child: BlocListener<HomenewViewModel,
+                                          HomenewState>(
+                                        listener: (context, state) {},
+                                        child: BlocSelector<HomenewViewModel,
+                                            HomenewState, List<StoryModel>>(
+                                          selector: (state) {
+                                            return state.storyslist ?? [];
+                                          },
+                                          builder: (context, state) {
+                                            if (state.isEmpty)
+                                              return const SizedBox.shrink();
+
+                                            return Text(state[0].title ?? '');
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -152,16 +164,16 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       ),
                     ),
                   ),
-                  const SliverAppBar(
+                  SliverAppBar(
                     automaticallyImplyLeading: false,
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       title: Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           'Emma Watson',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: context.general.textTheme.bodySmall?.color,
                             fontSize: 16,
                           ),
                         ),

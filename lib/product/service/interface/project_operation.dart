@@ -7,4 +7,5 @@ abstract class ProjectOperation {
   // Future<LoginResponseModel2?> inlogin(String email, String password);
   Future<EmptyModel?> tokencheck(String token);
   // Future<LoginResponseModel2?> inloginWithHttp(String email, String password);
+  Future<List<StoryModel>?> fetchStorys();
 }

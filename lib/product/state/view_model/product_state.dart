@@ -6,14 +6,15 @@ import 'package:x_im_v00r01/product/init/theme/custom_light_theme.dart';
 enum NetworkStatus { connected, disconnected }
 
 final class ProductState extends Equatable {
-  const ProductState({
+  ProductState({
     this.widthScale = 1,
     this.heightScale = 1,
     this.themeMode = ThemeMode.light,
     this.selectedindex = 0,
     this.networkStatus = NetworkStatus.connected,
     this.fontSize = 12.0,
-  });
+    DateTime? currentDate,
+  }) : currentDate = currentDate ?? DateTime.now();
 
   final ThemeMode themeMode;
   final double widthScale;
@@ -21,6 +22,7 @@ final class ProductState extends Equatable {
   final int selectedindex;
   final NetworkStatus networkStatus;
   final double fontSize;
+  final DateTime currentDate;
 
   ThemeData get darkThemeData => CustomDarkTheme().themeData.copyWith(
         textTheme: CustomDarkTheme().textTheme(fontSize),
@@ -38,6 +40,7 @@ final class ProductState extends Equatable {
         selectedindex,
         networkStatus,
         fontSize,
+        currentDate,
       ];
 
   ProductState copyWith({
@@ -47,6 +50,7 @@ final class ProductState extends Equatable {
     int? selectedindex,
     NetworkStatus? networkStatus,
     double? fontSize,
+    DateTime? currentDate,
   }) {
     return ProductState(
       themeMode: themeMode ?? this.themeMode,
@@ -55,6 +59,7 @@ final class ProductState extends Equatable {
       selectedindex: selectedindex ?? this.selectedindex,
       networkStatus: networkStatus ?? this.networkStatus,
       fontSize: fontSize ?? this.fontSize,
+      currentDate: currentDate ?? this.currentDate,
     );
   }
 }
