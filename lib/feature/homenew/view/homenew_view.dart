@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
@@ -89,19 +92,30 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
           padding: const EdgeInsets.only(left: 8, right: 8, top: 22),
           child: PageView.builder(
             reverse: true,
-            controller: homenewViewModel.pageController,
-            itemCount: 3,
-            onPageChanged: (value) =>
-                loadImageHeight(value, data: homenewViewModel.state.data),
+            controller: PageController(initialPage: 1),
+            itemCount: 4,
+            onPageChanged: (value) {
+              if (value != 0)
+                loadImageHeight(value, data: homenewViewModel.state.data);
+            },
             itemBuilder: (context, index) {
+              if (index == 0) {
+                return Expanded(
+                  child: Container(
+                    child: const Center(child: Text('adfasdasfasdas')),
+                  ),
+                );
+              }
+
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: <Widget>[
-                  BlocSelector<HomenewViewModel, HomenewState, (double, Image)>(
+                  BlocSelector<HomenewViewModel, HomenewState,
+                      (double, String)>(
                     selector: (state) {
                       return (
                         state.imageHeight ?? 250,
-                        state.image ?? Image.network('')
+                        state.data?.elementAt(index - 1)['photo_url'] ?? ''
                       );
                     },
                     builder: (context, state) {
@@ -230,7 +244,9 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                     ),
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: state.$2.image,
+                                      image: MemoryImage(
+                                        base64Decode(state.$2),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -238,40 +254,51 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       );
                     },
                   ),
-                  SliverLayoutBuilder(
-                    builder: (context, constraints) {
-                      // ignore: prefer_final_locals
-                      textHeight = calculateTextHeight(
-                        title2,
-                      );
-                      // ignore: prefer_final_locals
-                      expandedHeight = textHeight + 35;
+                  BlocSelector<HomenewViewModel, HomenewState, String>(
+                    selector: (state) {
+                      return state.data?.elementAt(index - 1)['title']
+                          as String;
+                    },
+                    builder: (context, state) {
+                      return SliverLayoutBuilder(
+                        builder: (context, constraints) {
+                          // ignore: prefer_final_locals
+                          textHeight = calculateTextHeight(
+                            state,
+                          );
+                          // ignore: prefer_final_locals
+                          expandedHeight = textHeight + 35;
 
-                      return SliverAppBar(
-                        backgroundColor: context.general.colorScheme.surfaceDim,
-                        elevation: 0,
-                        scrolledUnderElevation: 0,
-                        shadowColor: context.general.colorScheme.surfaceDim,
-                        surfaceTintColor:
-                            context.general.colorScheme.surfaceDim,
-                        foregroundColor: context.general.colorScheme.surfaceDim,
-                        automaticallyImplyLeading: false,
-                        expandedHeight: expandedHeight,
-                        collapsedHeight: 45,
-                        toolbarHeight: 0,
-                        pinned: true,
-                        flexibleSpace: FlexibleSpaceBar(
-                          title: Transform.translate(
-                            offset: const Offset(0, 5),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Text(
-                                title2 + index.toString().padLeft(2),
-                                style: context.general.textTheme.headlineSmall,
+                          return SliverAppBar(
+                            backgroundColor:
+                                context.general.colorScheme.surfaceDim,
+                            elevation: 0,
+                            scrolledUnderElevation: 0,
+                            shadowColor: context.general.colorScheme.surfaceDim,
+                            surfaceTintColor:
+                                context.general.colorScheme.surfaceDim,
+                            foregroundColor:
+                                context.general.colorScheme.surfaceDim,
+                            automaticallyImplyLeading: false,
+                            expandedHeight: expandedHeight,
+                            collapsedHeight: 45,
+                            toolbarHeight: 0,
+                            pinned: true,
+                            flexibleSpace: FlexibleSpaceBar(
+                              title: Transform.translate(
+                                offset: const Offset(0, 5),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                    state,
+                                    style:
+                                        context.general.textTheme.headlineSmall,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -290,22 +317,25 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                           onPressed: () {
                             return;
                           },
-                          icon: const CircleAvatar(
-                            radius: 12,
-                            backgroundImage: NetworkImage(
-                              'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
-                            ),
-                          ),
+                          // icon: const CircleAvatar(
+                          //   radius: 12,
+                          //   backgroundImage: NetworkImage(
+                          //     'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
+                          //   ),
+                          // ),
                           label: BlocSelector<HomenewViewModel, HomenewState,
                               String>(
                             selector: (state) {
-                              return state.data?.elementAt(index)['name']
+                              return state.data?.elementAt(index - 1)['name']
                                       as String? ??
-                                  'null';
+                                  'Text Placeholder';
                             },
                             builder: (context, name) {
                               return Text(
                                 name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               );
                             },
                           ),
@@ -323,12 +353,22 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                 context.general.colorScheme.tertiary,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            '1990',
-                            style: context.general.textTheme.labelMedium,
-                          ),
+                        BlocSelector<HomenewViewModel, HomenewState, String>(
+                          selector: (state) {
+                            return state.data
+                                ?.elementAt(index - 1)['birth_date'] as String;
+                          },
+                          builder: (context, state) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                DateFormat.yMMMMd(context.locale.languageCode)
+                                    .format(DateTime.parse(state)),
+                                style: context.general.textTheme.labelMedium,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -339,12 +379,20 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Text(
-                            'Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.Emma Charlotte Duerre Watson was born in Paris, France, to English parents, Jacqueline Luesby and Chris Watson, both lawyers. She moved to Oxfordshire when she was five, where she attended the Dragon School.',
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.4,
-                            ),
+                          BlocSelector<HomenewViewModel, HomenewState, String>(
+                            selector: (state) {
+                              return state.data?.elementAt(index - 1)['story']
+                                  as String;
+                            },
+                            builder: (context, state) {
+                              return Text(
+                                state,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  height: 1.4,
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(
                             height: 40,

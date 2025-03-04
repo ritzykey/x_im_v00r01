@@ -22,6 +22,22 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
             isLoading: false,
             opacity: 0.00001,
             imageHeight: 250,
+            data: [
+              {
+                'name': 'Acun Ilıcalı',
+                'birth_date': '1969-05-29',
+                'photo_url': '',
+                'story': 'Acun Story',
+                'title': 'Story of Acun',
+              },
+              {
+                'name': 'Acun Ilıcalı',
+                'birth_date': '1969-05-29',
+                'photo_url': '',
+                'story': 'Acun Story',
+                'title': 'Story of Acun',
+              }
+            ],
           ),
         );
 
@@ -47,16 +63,20 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   void favoritesButtton() {}
 
   void setData(List<Map<String, dynamic>>? data) {
-    emit(state.copyWith(data: data));
+    emit(
+      state.copyWith(
+        data: data,
+        isLoading: true,
+      ),
+    );
   }
 
-  void setImageHeight(double imageHeight, double screenHeight, Image image) {
+  void setImageHeight(double imageHeight, double screenHeight) {
     if (imageHeight > screenHeight) {
       emit(
         state.copyWith(
           imageHeight: screenHeight * 0.6,
           isLoading: true,
-          image: image,
         ),
       );
       return;
@@ -65,7 +85,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       state.copyWith(
         imageHeight: imageHeight,
         isLoading: true,
-        image: image,
       ),
     );
   }

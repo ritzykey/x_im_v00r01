@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
@@ -34,13 +35,14 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
   }
 
   Future<void> fetchData() async {
-    final data = await supabaseClient.from('daily_stories').select();
+    final data =
+        await supabaseClient.from('daily_stories').select().order('created_at');
 
     print('data $data');
 
     homenewViewModel.setData(data);
 
-    await loadImageHeight(0, data: data);
+    await loadImageHeight(1, data: data);
   }
 
   double calculateTextHeight(String text) {
@@ -52,24 +54,26 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       textDirection: TextDirection.ltr,
       maxLines: 2, // Kaç satır olabileceğini belirle
     )..layout(
-        maxWidth: MediaQuery.of(context).size.width - 32,
+        maxWidth: MediaQuery.of(context).size.width,
       ); // Kenar boşluklarını hesaba kat
 
     return textPainter.height;
   }
 
-  Future<Map<String, dynamic>> fetchImageHeight(String imageUrl) async {
-    final image = Image.network(imageUrl);
-    final completer = Completer<double>();
+  Future<Map<String, dynamic>> fetchImageHeight(String base64String) async {
+    final imageBytes = base64Decode(base64String); // Base64 Decode
+    final image = Image.memory(imageBytes);
+
+    final completer = Completer<Map<String, dynamic>>();
 
     image.image.resolve(ImageConfiguration.empty).addListener(
       ImageStreamListener((ImageInfo info, bool _) {
-        completer.complete(info.image.height.toDouble());
+        final height = info.image.height.toDouble();
+        completer.complete({'height': height, 'image': image});
       }),
     );
 
-    final height = await completer.future;
-    return {'height': height, 'image': image};
+    return completer.future;
   }
 
   Future<void> loadImageHeight(
@@ -77,14 +81,12 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
     List<Map<String, dynamic>>? data,
   }) async {
     print('index $index');
-    await fetchImageHeight(data?.elementAt(index)['photo_url'] as String)
+    await fetchImageHeight(data?.elementAt(index - 1)['photo_url'] as String)
         .then((result) {
       final height = result['height'] as double;
-      final image = result['image'] as Image;
       homenewViewModel.setImageHeight(
         height,
         context.general.mediaSize.height,
-        image,
       );
     });
   }
