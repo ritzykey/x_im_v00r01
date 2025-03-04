@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_detail_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_view.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
@@ -30,7 +31,7 @@ class AppRouter extends RootStackRouter {
 
         AutoRoute(page: HomenewRoute.page),
 
-        AutoRoute(page: StoryyRoute.page, path: '/storyy/:id'),
+        AutoRoute(page: DiscoverRoute.page, path: '/discover/:id'),
 
         AutoRoute(page: SettingsRoute.page),
 
@@ -58,7 +59,7 @@ class AppRouter extends RootStackRouter {
               initial: true,
             ),
             CustomRoute<dynamic>(
-              page: StoryyRoute.page,
+              page: DiscoverRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),

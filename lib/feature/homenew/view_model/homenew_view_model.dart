@@ -62,6 +62,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
 
   void favoritesButtton() {}
 
+
   void setData(List<Map<String, dynamic>>? data) {
     emit(
       state.copyWith(
