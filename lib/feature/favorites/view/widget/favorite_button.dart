@@ -19,42 +19,45 @@ class FavoriteButton extends StatefulWidget {
 }
 
 class _FavoriteButtonState extends State<FavoriteButton> {
-  bool _isFavorite = false;
-  bool _isLoading = false;
+  late final ValueNotifier<bool> _isFavorite;
+  late final ValueNotifier<bool> _isLoading;
 
   @override
   void initState() {
     super.initState();
-    _checkFavoriteStatus();
+    _isFavorite = ValueNotifier<bool>(true);
+    _isLoading = ValueNotifier<bool>(false);
+    //_checkFavoriteStatus();
+  }
+
+  @override
+  void dispose() {
+    _isFavorite.dispose();
+    _isLoading.dispose();
+    super.dispose();
   }
 
   Future<void> _checkFavoriteStatus() async {
     final viewModel = context.read<FavoritesViewModel>();
     final isFav = await viewModel.isFavorite(widget.storyId);
     if (mounted) {
-      setState(() {
-        _isFavorite = isFav;
-      });
+      _isFavorite.value = isFav;
     }
   }
 
   Future<void> _toggleFavorite() async {
-    if (_isLoading) return;
+    if (_isLoading.value) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    _isLoading.value = true;
 
     final viewModel = context.read<FavoritesViewModel>();
     final result = await viewModel.toggleFavoriteRPC(widget.storyId);
 
     if (mounted) {
-      setState(() {
-        _isLoading = false;
-        if (result['success'] as bool) {
-          _isFavorite = result['favorited'] as bool;
-        }
-      });
+      _isLoading.value = false;
+      /* if (result['success'] as bool) {
+        _isFavorite.value = result['favorited'] as bool;
+      } */
     }
   }
 
@@ -62,22 +65,33 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   Widget build(BuildContext context) {
     final color = widget.color ?? Theme.of(context).iconTheme.color;
 
-    return IconButton(
-      icon: _isLoading
-          ? SizedBox(
-              width: widget.size,
-              height: widget.size,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(color ?? Colors.grey),
-              ),
-            )
-          : Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _isFavorite ? Colors.red : color,
-              size: widget.size,
-            ),
-      onPressed: _toggleFavorite,
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isLoading,
+      builder: (context, isLoading, _) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: _isFavorite,
+          builder: (context, isFavorite, _) {
+            return IconButton(
+              icon: isLoading
+                  ? SizedBox(
+                      width: widget.size,
+                      height: widget.size,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(color ?? Colors.grey),
+                      ),
+                    )
+                  : Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : color,
+                      size: widget.size,
+                    ),
+              onPressed: _toggleFavorite,
+            );
+          },
+        );
+      },
     );
   }
 }

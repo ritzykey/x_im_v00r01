@@ -62,41 +62,42 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   }
 
   final _supabase = Supabase.instance.client;
-  Future<void> toggleFavoriteRPC(String storyId) async {
+
+  Future<bool> isFavorite(String storyId) async {
     try {
       emit(state.copyWith(isLoadingFavRpc: true));
 
-      // Get the current favorites state
+      final response =
+          await _supabase.rpc('is_favorite', params: {'story_id': storyId});
       final currentFavorites = Map<String, bool>.from(state.favorites);
-      final isFavorited = currentFavorites[storyId] ?? false;
 
-      // Optimistically update UI
-      currentFavorites[storyId] = !isFavorited;
+      currentFavorites[storyId] = response as bool;
+      
       emit(
         state.copyWith(
           favorites: currentFavorites,
-          isLoadingFavRpc: true,
+          isLoadingFavRpc: false,
         ),
       );
+      return response;
+    } catch (e) {
+      print('Error checking favorite status: $e');
+      return false;
+    }
+  }
+
+  Future<void> toggleFavoriteRPC(String storyId) async {
+    try {
+      emit(state.copyWith(isLoadingFavRpc: true));
 
       // Make API call using Supabase RPC
       final response = await _supabase.rpc<Map<String, dynamic>>(
         'favorite_story',
         params: {'story_id': storyId},
       ); // If API call fails, revert the optimistic update
-      if (!(response['success'] as bool)) {
-        // Revert optimistic update
-        currentFavorites[storyId] = !currentFavorites[storyId]!;
-        emit(
-          state.copyWith(
-            favorites: currentFavorites,
-            isLoadingFavRpc: false,
-          ),
-        );
-      } else {
-        // Success case
-        emit(state.copyWith(isLoadingFavRpc: false));
-      }
+
+      await isFavorite(storyId);
+
     } catch (e) {
       // Revert optimistic update on error
       final currentFavorites = Map<String, bool>.from(state.favorites);
