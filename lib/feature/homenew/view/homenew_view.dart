@@ -4,9 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gen/gen.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
+import 'package:x_im_v00r01/feature/homenew/view/widget/home_favorite_button.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
@@ -112,11 +112,12 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                 controller: _scrollController,
                 slivers: <Widget>[
                   BlocSelector<HomenewViewModel, HomenewState,
-                      (double, String)>(
+                      (double, String, String)>(
                     selector: (state) {
                       return (
                         state.imageHeight ?? 250,
-                        state.data?.elementAt(index - 1)['photo_url'] ?? ''
+                        state.data?.elementAt(index - 1)['photo_url'] ?? '',
+                        state.data?.elementAt(index - 1)['id'] ?? '',
                       );
                     },
                     builder: (context, state) {
@@ -141,7 +142,6 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
-
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -166,36 +166,13 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                                       ),
                                       Row(
                                         children: [
-                                          TextButton.icon(
-                                            onPressed: () {
-                                              homenewViewModel.increaseFav();
-                                              return;
-                                            },
-                                            iconAlignment: IconAlignment.end,
-                                            icon: Icon(
-                                              Icons.favorite_border,
-                                              size: context.general.textTheme
-                                                      .bodySmall!.fontSize! +
-                                                  5,
-                                            ),
-                                            label: const Text(
-                                              '1664',
-                                            ),
-                                            style: TextButton.styleFrom(
-                                              iconColor: context.general
-                                                  .textTheme.bodySmall?.color,
-                                              minimumSize: const Size(0, 32),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                              ),
-                                              textStyle: context
-                                                  .general.textTheme.bodySmall,
-                                              foregroundColor: context.general
-                                                  .textTheme.bodySmall?.color,
-                                              backgroundColor: context.general
-                                                  .colorScheme.surfaceBright,
-                                            ),
+                                          HomeFavoriteButton(
+                                            storyId: state.$3,
+                                            size: context.general.textTheme
+                                                    .bodySmall!.fontSize! +
+                                                5,
+                                            color: context.general.textTheme
+                                                .bodySmall?.color,
                                           ),
                                           IconButton(
                                             onPressed: () {

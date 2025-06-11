@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/authenction_operation.dart';
@@ -60,8 +61,56 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     return true;
   }
 
-  void favoritesButtton() {}
+  final _supabase = Supabase.instance.client;
+  Future<void> toggleFavoriteRPC(String storyId) async {
+    try {
+      emit(state.copyWith(isLoadingFavRpc: true));
 
+      // Get the current favorites state
+      final currentFavorites = Map<String, bool>.from(state.favorites);
+      final isFavorited = currentFavorites[storyId] ?? false;
+
+      // Optimistically update UI
+      currentFavorites[storyId] = !isFavorited;
+      emit(
+        state.copyWith(
+          favorites: currentFavorites,
+          isLoadingFavRpc: true,
+        ),
+      );
+
+      // Make API call using Supabase RPC
+      final response = await _supabase.rpc<Map<String, dynamic>>(
+        'favorite_story',
+        params: {'story_id': storyId},
+      ); // If API call fails, revert the optimistic update
+      if (!(response['success'] as bool)) {
+        // Revert optimistic update
+        currentFavorites[storyId] = !currentFavorites[storyId]!;
+        emit(
+          state.copyWith(
+            favorites: currentFavorites,
+            isLoadingFavRpc: false,
+          ),
+        );
+      } else {
+        // Success case
+        emit(state.copyWith(isLoadingFavRpc: false));
+      }
+    } catch (e) {
+      // Revert optimistic update on error
+      final currentFavorites = Map<String, bool>.from(state.favorites);
+      currentFavorites[storyId] = !currentFavorites[storyId]!;
+      emit(
+        state.copyWith(
+          favorites: currentFavorites,
+          isLoadingFavRpc: false,
+        ),
+      );
+
+      print('Error toggling favorite: $e');
+    }
+  }
 
   void setData(List<Map<String, dynamic>>? data) {
     emit(
@@ -90,5 +139,8 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     );
   }
 
-  void increaseFav() {}
+  void increaseFav(String $3) {
+    if (state.data == null || state.data!.isEmpty) return;
+    toggleFavoriteRPC($3);
+  }
 }
