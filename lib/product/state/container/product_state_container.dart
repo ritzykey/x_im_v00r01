@@ -17,7 +17,7 @@ final class ProductContainer {
       'AppEnvironmentItems.anonKey.value ${AppEnvironmentItems.anonKey.value}',
     );
     print(
-      'AppEnvironmentItems.anonKey.value ${AppEnvironmentItems.supaUrl.value}',
+      'AppEnvironmentItems.supaUrl.value ${AppEnvironmentItems.supaUrl.value}',
     );
 
     await Supabase.initialize(

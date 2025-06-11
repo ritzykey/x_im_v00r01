@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
+import 'package:x_im_v00r01/feature/favorites/view/favorites_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_detail_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_view.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
@@ -65,6 +66,11 @@ class AppRouter extends RootStackRouter {
             ),
             CustomRoute<dynamic>(
               page: OnboardingsRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+            ),
+            CustomRoute<dynamic>(
+              page: FavoritesRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),

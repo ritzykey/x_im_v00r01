@@ -22,7 +22,8 @@
     },
     "snackbar": {
         "successfulSignOUT": "Çıkış başarılı!",
-        "successfulSignIN": "Giriş başarılı!"
+        "successfulSignIN": "Giriş başarılı!",
+        "googleSignInFailed": "Google ile giriş başarısız oldu!"
     },
     "settings": {
         "title": "Ayarlar",
