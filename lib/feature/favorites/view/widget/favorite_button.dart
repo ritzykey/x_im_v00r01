@@ -51,7 +51,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     _isLoading.value = true;
 
     final viewModel = context.read<FavoritesViewModel>();
-    final result = await viewModel.toggleFavoriteRPC(widget.storyId);
+    await viewModel.toggleFavoriteRPC(widget.storyId);
 
     if (mounted) {
       _isLoading.value = false;

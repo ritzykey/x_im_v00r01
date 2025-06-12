@@ -25,7 +25,7 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
     emit(state.copyWith(isLoading: state.isLoading));
   }
 
-  Future<void> fetchFavorites() async {
+Future<void> fetchFavorites() async {
     changeLoading();
     try {
       final userId = _supabase.auth.currentUser?.id;
@@ -34,27 +34,38 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
       final response = await _supabase
           .from('favorites')
           .select('story_id, daily_stories(*)')
-          .eq('user_id', userId) as List;
+          .eq('status', 'G')
+          .eq('user_id', userId);
+
+      if (response == null || response is! List) {
+        print('Unexpected response format: $response');
+        return;
+      }
+
       print('Favorites response: $response');
       print('Processing response to story models...');
-      final stories = response
-          .map(
-            (item) => StoryModel.fromJson(
-                item['daily_stories'] as Map<String, dynamic>),
-          )
-          .toList();
-      print('Converted $stories stories successfully');
 
+      final stories = response
+          .map((item) {
+            final storyData = item['daily_stories'];
+            if (storyData == null) return null;
+            return StoryModel.fromJson(storyData as Map<String, dynamic>);
+          })
+          .whereType<StoryModel>()
+          .toList();
+
+      print('Converted ${stories.length} stories successfully');
       emit(state.copyWith(favoriteStories: stories));
-    } catch (e) {
-      // Handle error
+    } catch (e, stack) {
       print('Error fetching favorites: $e');
+      print('Stack trace: $stack');
     } finally {
       changeLoading();
     }
   }
 
-  Future<void> toggleFavorite(String storyId) async {
+
+  /* Future<void> toggleFavorite(String storyId) async {
     try {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) return;
@@ -86,13 +97,13 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
     } catch (e) {
       print('Error toggling favorite: $e');
     }
-  }
+  } */
 
   Future<bool> isFavorite(String storyId) async {
     try {
-      final response =
-          await _supabase.rpc('is_favorite', params: {'story_id': storyId});
-      return response as bool;
+      final response = await _supabase
+          .rpc<bool>('is_favorite', params: {'story_id': storyId});
+      return response;
     } catch (e) {
       print('Error checking favorite status: $e');
       return false;
@@ -102,8 +113,9 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
   Future<Map<String, dynamic>> toggleFavoriteRPC(String storyId) async {
     try {
       final response = await _supabase.rpc<Map<String, dynamic>>(
-          'favorite_story',
-          params: {'story_id': storyId});
+        'favorite_story',
+        params: {'p_story_id': storyId},
+      );
 
       // No need to cast response since we specified the type above
       final typedResponse = response;

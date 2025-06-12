@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:x_im_v00r01/product/state/container/index.dart';
 
 @immutable
 
@@ -26,5 +27,17 @@ final class ProductLocalization extends EasyLocalization {
     required Locale value,
   }) async {
     await context.setLocale(value);
+    await ProductStateItems.supabaseClient.rpc<void>(
+      'f_set_language',
+      params: {
+        'p_requested_language': value.languageCode,
+      },
+    ).then((_) {
+      // Language updated successfully
+      print('Language updated to ${value.languageCode}');
+    }).catchError((error) {
+      // Handle error if needed
+      print('Error updating language: $error');
+    });
   }
 }

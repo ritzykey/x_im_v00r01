@@ -10,6 +10,7 @@
         "title": "Home Page"
     },
     "general": {
+        "unknown": "Unknown",
         "button": {
             "save": "Save {}"
         },

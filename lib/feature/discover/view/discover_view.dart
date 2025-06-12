@@ -63,7 +63,6 @@ class _DiscoverViewState extends BaseState<DiscoverView>
                         itemBuilder: (context, index) {
                           return ImageButton(
                             onTap: () {
-                              print('top: $index');
                             },
                             widthscale: index == 0 ? 2 : 1,
                             imagePath: 'asset/images/pexels1.jpg',
@@ -83,7 +82,6 @@ class _DiscoverViewState extends BaseState<DiscoverView>
                         itemBuilder: (context, index) {
                           return ImageButton(
                             onTap: () {
-                              print('bottom: $index');
                             },
                             widthscale: index == 0 ? 2 : 1,
                             imagePath: 'asset/images/pexels1.jpg',

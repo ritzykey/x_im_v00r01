@@ -30,6 +30,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'photo_url': '',
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
+                'birth_place': 'Turkey',
               },
               {
                 'name': 'Acun Ilıcalı',
@@ -37,6 +38,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'photo_url': '',
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
+                'birth_place': 'Turkey',
               }
             ],
           ),
@@ -68,7 +70,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       emit(state.copyWith(isLoadingFavRpc: true));
 
       final response =
-          await _supabase.rpc('is_favorite', params: {'story_id': storyId});
+          await _supabase.rpc<bool>('is_favorite', params: {'story_id': storyId});
       final currentFavorites = Map<String, bool>.from(state.favorites);
 
       currentFavorites[storyId] = response as bool;
@@ -93,7 +95,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       // Make API call using Supabase RPC
       final response = await _supabase.rpc<Map<String, dynamic>>(
         'favorite_story',
-        params: {'story_id': storyId},
+        params: {'p_story_id': storyId},
       ); // If API call fails, revert the optimistic update
 
       await isFavorite(storyId);

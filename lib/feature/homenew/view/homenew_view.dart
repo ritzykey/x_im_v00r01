@@ -94,17 +94,30 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
           child: PageView.builder(
             reverse: true,
             controller: PageController(initialPage: 1),
-            itemCount: 4,
+            itemCount: homenewViewModel.state.data!.length + 1 ?? 5,
             onPageChanged: (value) {
-              if (value != 0)
+              print('Page changed to: $value');
+              print(
+                'Page changed to lenhth: ${homenewViewModel.state.data?.length}',
+              );
+              if (value != 0 && value != 4) {
                 loadImageHeight(value, data: homenewViewModel.state.data);
+              }
             },
             itemBuilder: (context, index) {
+              print('Index: $index');
+
               if (index == 0) {
                 return Expanded(
                   child: Container(
                     child: const Center(child: Text('adfasdasfasdas')),
                   ),
+                );
+              }
+
+              if (index > homenewViewModel.state.data!.length) {
+                return const Center(
+                  child: Text('No more data'),
                 );
               }
 
@@ -376,49 +389,61 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                           const SizedBox(
                             height: 40,
                           ),
-                          const Text(
+                          Text(
                             'Born',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: context.general.textTheme.bodyMedium,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            'April, 15th 1990, Paris, France',
-                            style: TextStyle(color: Colors.grey),
+                          BlocSelector<HomenewViewModel, HomenewState,
+                              (String, String)>(
+                            selector: (state) {
+                              return (
+                                state.data?.elementAt(index - 1)['birth_date']
+                                    as String,
+                                state.data?.elementAt(index - 1)['birth_place']
+                                        as String? ??
+                                    '',
+                              );
+                            },
+                            builder: (context, state) {
+                              return Text(
+                                '${DateFormat.yMMMMd(context.locale.languageCode).format(DateTime.parse(state.$1))}, ${state.$2}',
+                                style: const TextStyle(color: Colors.grey),
+                              );
+                            },
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text(
+                          Text(
                             'Nationality',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: context.general.textTheme.bodyMedium,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            'British',
-                            style: TextStyle(color: Colors.grey),
+                          BlocSelector<HomenewViewModel, HomenewState, String>(
+                            selector: (state) {
+                              return state.data
+                                          ?.elementAt(index - 1)['nationality']
+                                      as String? ??
+                                  'general.unknown'.tr();
+                            },
+                            builder: (context, state) {
+                              return Text(
+                                state,
+                                style: const TextStyle(color: Colors.grey),
+                              );
+                            },
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text(
+                          Text(
                             'Videos',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: context.general.textTheme.bodyMedium,
                           ),
                           const SizedBox(
                             height: 20,
@@ -491,357 +516,357 @@ Widget _makeVideo({required String image}) {
   );
 }
 
-// class HomenewPage2 extends StatelessWidget {
-//   const HomenewPage2({
-//     required this.homenewViewModel,
-//     super.key,
-//   });
+/* class HomenewPage2 extends StatelessWidget {
+  const HomenewPage2({
+    required this.homenewViewModel,
+    super.key,
+  });
 
-//   final HomenewViewModel homenewViewModel;
+  final HomenewViewModel homenewViewModel;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: [
-//         Stack(
-//           children: [
-//             CustomScrollView(
-//               controller: homenewViewModel.scrollController,
-//               slivers: [
-//                 SliverLayoutBuilder(
-//                   builder: (context, constraints) {
-//                     return SliverAppBar(
-//                       backgroundColor: Colors.blueGrey[900],
-//                       expandedHeight: 500,
-//                       toolbarHeight: 100,
-//                       pinned: true,
-//                       leading: const SizedBox(),
-//                       bottom: PreferredSize(
-//                         preferredSize: const Size.fromHeight(0),
-//                         child: Stack(
-//                           clipBehavior: Clip.none,
-//                           children: [
-//                             TweenAnimationBuilder<double>(
-//                               duration: const Duration(
-//                                 milliseconds: 500,
-//                               ), // 🔥 Animasyon süresi
-//                               tween: Tween<double>(
-//                                 begin: 150,
-//                                 end: homenewViewModel.scrollOffset <= 100
-//                                     ? 150
-//                                     : 100,
-//                               ),
-//                               builder: (context, height, child) {
-//                                 return AppBar(
-//                                   shadowColor: Colors.transparent,
-//                                   backgroundColor: Colors.blueGrey[400],
-//                                   clipBehavior: Clip.none,
-//                                   toolbarHeight: height,
-//                                   leading: const SizedBox(),
-//                                   leadingWidth: 0,
-//                                   shape: const RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.only(
-//                                       topLeft: Radius.circular(20),
-//                                       topRight: Radius.circular(20),
-//                                     ),
-//                                   ),
-//                                   title: Text(
-//                                     'Başlık aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-//                                     softWrap: true,
-//                                     maxLines: homenewViewModel.titlemaxline,
-//                                     style: TextStyle(
-//                                       fontSize: 20 -
-//                                           (10 * homenewViewModel.titleSize),
-//                                       color: Colors.white,
-//                                     ),
-//                                   ),
-//                                 );
-//                               },
-//                             ),
-//                             Positioned(
-//                               top:
-//                                   -20, // İkonları yukarı kaydırıyoruz, böylece yarısı dışarıda kalır
-//                               left: 0,
-//                               right: 0,
-//                               child: Row(
-//                                 mainAxisAlignment:
-//                                     MainAxisAlignment.center, // Ortalamak için
-//                                 children: [
-//                                   AnimatedOpacity(
-//                                     duration: const Duration(
-//                                       milliseconds: 300,
-//                                     ),
-//                                     opacity: homenewViewModel.opacity,
-//                                     child: AppBarTopIcon(
-//                                       // Üstteki ikonlar
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Stack(
+          children: [
+            CustomScrollView(
+              controller: homenewViewModel.scrollController,
+              slivers: [
+                SliverLayoutBuilder(
+                  builder: (context, constraints) {
+                    return SliverAppBar(
+                      backgroundColor: Colors.blueGrey[900],
+                      expandedHeight: 500,
+                      toolbarHeight: 100,
+                      pinned: true,
+                      leading: const SizedBox(),
+                      bottom: PreferredSize(
+                        preferredSize: const Size.fromHeight(0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            TweenAnimationBuilder<double>(
+                              duration: const Duration(
+                                milliseconds: 500,
+                              ), // 🔥 Animasyon süresi
+                              tween: Tween<double>(
+                                begin: 150,
+                                end: homenewViewModel.scrollOffset <= 100
+                                    ? 150
+                                    : 100,
+                              ),
+                              builder: (context, height, child) {
+                                return AppBar(
+                                  shadowColor: Colors.transparent,
+                                  backgroundColor: Colors.blueGrey[400],
+                                  clipBehavior: Clip.none,
+                                  toolbarHeight: height,
+                                  leading: const SizedBox(),
+                                  leadingWidth: 0,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    'Başlık aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                                    softWrap: true,
+                                    maxLines: homenewViewModel.titlemaxline,
+                                    style: TextStyle(
+                                      fontSize: 20 -
+                                          (10 * homenewViewModel.titleSize),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            Positioned(
+                              top:
+                                  -20, // İkonları yukarı kaydırıyoruz, böylece yarısı dışarıda kalır
+                              left: 0,
+                              right: 0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center, // Ortalamak için
+                                children: [
+                                  AnimatedOpacity(
+                                    duration: const Duration(
+                                      milliseconds: 300,
+                                    ),
+                                    opacity: homenewViewModel.opacity,
+                                    child: AppBarTopIcon(
+                                      // Üstteki ikonlar
 
-//                                       color: Colors.black,
-//                                       iconSizeHeight: 30,
-//                                       iconSizeWidth: 50,
-//                                       icon: Icons.home,
-//                                       text: 'Home',
-//                                       onPressed: () {
-//                                         print('object');
-//                                       },
-//                                       iconColor: Colors.white,
-//                                     ),
-//                                   ),
-//                                   const SizedBox(
-//                                     width: 10,
-//                                   ), // İkonlar arası boşluk
-//                                   AnimatedOpacity(
-//                                     duration: const Duration(
-//                                       milliseconds: 300,
-//                                     ),
-//                                     opacity: homenewViewModel.opacity,
-//                                     child: AppBarTopIcon(
-//                                       // Üstteki ikonlar
+                                      color: Colors.black,
+                                      iconSizeHeight: 30,
+                                      iconSizeWidth: 50,
+                                      icon: Icons.home,
+                                      text: 'Home',
+                                      onPressed: () {
+                                        print('object');
+                                      },
+                                      iconColor: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ), // İkonlar arası boşluk
+                                  AnimatedOpacity(
+                                    duration: const Duration(
+                                      milliseconds: 300,
+                                    ),
+                                    opacity: homenewViewModel.opacity,
+                                    child: AppBarTopIcon(
+                                      // Üstteki ikonlar
 
-//                                       color: Colors.black,
-//                                       iconSizeHeight: 30,
-//                                       iconSizeWidth: 50,
-//                                       icon: Icons.home,
-//                                       text: 'Home',
-//                                       onPressed: () {
-//                                         print('object');
-//                                       },
-//                                       iconColor: Colors.white,
-//                                     ),
-//                                   ),
-//                                   const SizedBox(width: 10),
-//                                   AnimatedOpacity(
-//                                     duration: const Duration(
-//                                       milliseconds: 300,
-//                                     ),
-//                                     opacity: homenewViewModel.opacity,
-//                                     child: IconButton(
-//                                       // Üstteki ikonlar
-//                                       icon: const Icon(
-//                                         Icons.home,
-//                                         color: Colors.white,
-//                                       ),
-//                                       style: ButtonStyle(
-//                                         shape: WidgetStateProperty.all(
-//                                           RoundedRectangleBorder(
-//                                             borderRadius: BorderRadius.circular(
-//                                               50,
-//                                             ),
-//                                           ),
-//                                         ),
-//                                         backgroundColor:
-//                                             WidgetStateProperty.all(
-//                                           Colors.black,
-//                                         ),
-//                                       ),
+                                      color: Colors.black,
+                                      iconSizeHeight: 30,
+                                      iconSizeWidth: 50,
+                                      icon: Icons.home,
+                                      text: 'Home',
+                                      onPressed: () {
+                                        print('object');
+                                      },
+                                      iconColor: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  AnimatedOpacity(
+                                    duration: const Duration(
+                                      milliseconds: 300,
+                                    ),
+                                    opacity: homenewViewModel.opacity,
+                                    child: IconButton(
+                                      // Üstteki ikonlar
+                                      icon: const Icon(
+                                        Icons.home,
+                                        color: Colors.white,
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: WidgetStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              50,
+                                            ),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                          Colors.black,
+                                        ),
+                                      ),
 
-//                                       onPressed: () {
-//                                         print('object');
-//                                       },
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                       flexibleSpace: LayoutBuilder(
-//                         builder: (context, constraints) {
-//                           return Stack(
-//                             children: [
-//                               FlexibleSpaceBar(
-//                                 background: Stack(
-//                                   fit: StackFit
-//                                       .expand, // 📌 Tüm alanı kaplamasını sağlar
-//                                   children: [
-//                                     Padding(
-//                                       padding: homenewViewModel.dynamicPadding,
-//                                       child: Image.asset(
-//                                         'asset/images/pexels1.jpg',
-//                                         fit: BoxFit.cover,
-//                                       ),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               ),
-//                               // Başlığın üst kısmındaki semboller
-//                               Positioned(
-//                                 top: 50,
-//                                 right: 20,
-//                                 child: AnimatedOpacity(
-//                                   duration: const Duration(milliseconds: 300),
-//                                   opacity: homenewViewModel
-//                                       .opacity, // Kaydırıldıkça kaybolur
-//                                   child: Row(
-//                                     children: [
-//                                       IconButton(
-//                                         icon: const Icon(
-//                                           Icons.favorite,
-//                                           color: Colors.black,
-//                                         ),
-//                                         onPressed: () {
-//                                           print('tttt');
-//                                         },
-//                                       ),
-//                                       IconButton(
-//                                         icon: const Icon(
-//                                           Icons.share,
-//                                           color: Colors.white,
-//                                         ),
-//                                         onPressed: () {},
-//                                       ),
-//                                     ],
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           );
-//                         },
-//                       ),
-//                     );
-//                   },
-//                 ),
-//                 SliverLayoutBuilder(
-//                   builder: (context, constraints) {
-//                     return SliverList(
-//                       delegate: SliverChildBuilderDelegate(
-//                         (BuildContext context, int index) {
-//                           return Padding(
-//                             padding: homenewViewModel.scrollOffset <= 300
-//                                 ? const EdgeInsets.only(
-//                                     left: 8,
-//                                     right: 8,
-//                                   )
-//                                 : const EdgeInsets.only(),
-//                             child: const Card(
-//                               color: Colors.white,
-//                               child: Text('''
-//                         Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
-//                         Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
-//                         Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
-//                         Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
-//                         Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
-//                         Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
-//                         Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
-//                         Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
-//                         Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
-//                         Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
-//                         Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
-//                         Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
-//                         Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
-//                         Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
-//                         Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
-//                         Bunu `ScrollController` ile dinleyerek yapabilirsin.
-//                         '''),
-//                             ),
-//                           );
-//                         },
-//                         childCount: 1,
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
+                                      onPressed: () {
+                                        print('object');
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      flexibleSpace: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Stack(
+                            children: [
+                              FlexibleSpaceBar(
+                                background: Stack(
+                                  fit: StackFit
+                                      .expand, // 📌 Tüm alanı kaplamasını sağlar
+                                  children: [
+                                    Padding(
+                                      padding: homenewViewModel.dynamicPadding,
+                                      child: Image.asset(
+                                        'asset/images/pexels1.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Başlığın üst kısmındaki semboller
+                              Positioned(
+                                top: 50,
+                                right: 20,
+                                child: AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 300),
+                                  opacity: homenewViewModel
+                                      .opacity, // Kaydırıldıkça kaybolur
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.favorite,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          print('tttt');
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.share,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SliverLayoutBuilder(
+                  builder: (context, constraints) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Padding(
+                            padding: homenewViewModel.scrollOffset <= 300
+                                ? const EdgeInsets.only(
+                                    left: 8,
+                                    right: 8,
+                                  )
+                                : const EdgeInsets.only(),
+                            child: const Card(
+                              color: Colors.white,
+                              child: Text('''
+                        Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
+                        Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
+                        Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
+                        Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
+                        Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
+                        Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
+                        Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
+                        Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
+                        Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
+                        Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
+                        Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
+                        Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
+                        Bunu `ScrollController` ile dinleyerek yapabilirsin.Flutter'da `scrollOffset` kullanarak sayfa kaydırıldıkça içerik ve animasyonları değiştirebilirsin.  
+                        Bu, özellikle `SliverAppBar`, `PageView.builder`, `ListView.builder` ve sonsuz kaydırma (infinite scroll) gibi özelliklerle oldukça kullanışlıdır.  
+                        Örneğin, kullanıcı aşağı kaydırdıkça bir başlık görünmez hale gelebilir veya yeni veriler yüklenebilir.  
+                        Bunu `ScrollController` ile dinleyerek yapabilirsin.
+                        '''),
+                            ),
+                          );
+                        },
+                        childCount: 1,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
 
-//             // Sağ alt köşedeki semboller
-//             BlocSelector<HomenewViewModel, HomenewState, double>(
-//               selector: (state) {
-//                 return state.opacity ?? 0.0;
-//               },
-//               builder: (context, state) {
-//                 return Positioned(
-//                   bottom: 20,
-//                   right: 20,
-//                   child: AnimatedOpacity(
-//                     duration: const Duration(milliseconds: 300),
-//                     opacity: state < 0.1
-//                         ? 1.0
-//                         : 0.0, // Kaybolan semboller sağ alt köşede belirir
-//                     child: Row(
-//                       children: [
-//                         Builder(
-//                           builder: (context) {
-//                             if (state < 0.1) {
-//                               return IconButton(
-//                                 icon: const Icon(Icons.favorite),
-//                                 onPressed: () {
-//                                   print('bbbb');
-//                                 },
-//                               );
-//                             } else {
-//                               return const SizedBox();
-//                             }
-//                           },
-//                         ),
-//                         IconButton(
-//                           icon: const Icon(
-//                             Icons.share,
-//                             color: Colors.amber,
-//                           ),
-//                           onPressed: () {},
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }
+            // Sağ alt köşedeki semboller
+            BlocSelector<HomenewViewModel, HomenewState, double>(
+              selector: (state) {
+                return state.opacity ?? 0.0;
+              },
+              builder: (context, state) {
+                return Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: state < 0.1
+                        ? 1.0
+                        : 0.0, // Kaybolan semboller sağ alt köşede belirir
+                    child: Row(
+                      children: [
+                        Builder(
+                          builder: (context) {
+                            if (state < 0.1) {
+                              return IconButton(
+                                icon: const Icon(Icons.favorite),
+                                onPressed: () {
+                                  print('bbbb');
+                                },
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.share,
+                            color: Colors.amber,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
-// class AppBarTopIcon extends StatelessWidget {
-//   const AppBarTopIcon({
-//     required this.color,
-//     required this.iconSizeWidth,
-//     required this.iconSizeHeight,
-//     required this.text,
-//     required this.onPressed,
-//     required this.iconColor,
-//     this.icon,
-//     super.key,
-//   });
+class AppBarTopIcon extends StatelessWidget {
+  const AppBarTopIcon({
+    required this.color,
+    required this.iconSizeWidth,
+    required this.iconSizeHeight,
+    required this.text,
+    required this.onPressed,
+    required this.iconColor,
+    this.icon,
+    super.key,
+  });
 
-//   final Color color;
-//   final double? iconSizeWidth;
-//   final double? iconSizeHeight;
-//   final IconData? icon;
-//   final String text;
-//   final VoidCallback onPressed;
-//   final Color iconColor;
+  final Color color;
+  final double? iconSizeWidth;
+  final double? iconSizeHeight;
+  final IconData? icon;
+  final String text;
+  final VoidCallback onPressed;
+  final Color iconColor;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ElevatedButton(
-//       style: ButtonStyle(
-//         minimumSize: WidgetStateProperty.all(
-//           Size(iconSizeWidth ?? 30, iconSizeHeight ?? 30),
-//         ),
-//         shape: WidgetStateProperty.all(
-//           RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(10),
-//           ),
-//         ),
-//         backgroundColor: WidgetStateProperty.all(
-//           Colors.black,
-//         ),
-//       ),
-//       onPressed: onPressed,
-//       child: Row(
-//         mainAxisSize: MainAxisSize.min, // İçeriğin fazla genişlememesi için
-//         children: [
-//           Icon(icon, color: Colors.white), // İkon
-//           const SizedBox(width: 4), // İkon ile metin arasında boşluk
-//           Text(text, style: const TextStyle(color: Colors.white)), // Metin
-//         ],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        minimumSize: WidgetStateProperty.all(
+          Size(iconSizeWidth ?? 30, iconSizeHeight ?? 30),
+        ),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        backgroundColor: WidgetStateProperty.all(
+          Colors.black,
+        ),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisSize: MainAxisSize.min, // İçeriğin fazla genişlememesi için
+        children: [
+          Icon(icon, color: Colors.white), // İkon
+          const SizedBox(width: 4), // İkon ile metin arasında boşluk
+          Text(text, style: const TextStyle(color: Colors.white)), // Metin
+        ],
+      ),
+    );
+  }
+} */
 
 //----------------------------------------------------------------
 /*BlocProvider<HomenewViewModel> firstHomeNew(BuildContext context) {

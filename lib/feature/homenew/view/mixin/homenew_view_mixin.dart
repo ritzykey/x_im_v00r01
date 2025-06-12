@@ -31,10 +31,24 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Fetch data when the widget is built
     fetchData();
   }
 
   Future<void> fetchData() async {
+    // Önce dil ayarını set et
+    await supabaseClient.rpc<void>(
+      'f_set_language',
+      params: {
+        'p_requested_language': Localizations.localeOf(context).languageCode,
+      },
+    );
+
     final data =
         await supabaseClient.from('daily_stories').select().order('created_at');
 
@@ -42,7 +56,7 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
 
     homenewViewModel.setData(data);
 
-    await loadImageHeight(1, data: data);
+    loadImageHeight(1, data: data);
   }
 
   double calculateTextHeight(String text) {

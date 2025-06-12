@@ -10,6 +10,7 @@
         "title": "Ana Sayfa"
     },
     "general": {
+        "unknown": "Bilinmeyen",
         "button": {
             "save": "Kaydet {}"
         },

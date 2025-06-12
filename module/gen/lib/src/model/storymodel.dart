@@ -15,6 +15,9 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
     this.photoUrl,
     this.birthDate,
     this.createdAt,
+    this.birthPlace,
+    this.nationality,
+    this.language,
   });
 
   /// Get story from json
@@ -28,6 +31,9 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
   final String? photoUrl;
   final String? birthDate;
   final String? createdAt;
+  final String? birthPlace;
+  final String? nationality;
+  final String? language;
 
   @override
   List<Object?> get props => [
@@ -38,6 +44,9 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
         photoUrl,
         birthDate,
         createdAt,
+        birthPlace,
+        nationality,
+        language,
       ];
 
   /// Story model to map object
@@ -57,6 +66,9 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
     String? photoUrl,
     String? birthDate,
     String? createdAt,
+    String? birthPlace,
+    String? nationality,
+    String? language,
   }) {
     return StoryModel(
       id: id ?? this.id,
@@ -66,6 +78,9 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
       photoUrl: photoUrl ?? this.photoUrl,
       birthDate: birthDate ?? this.birthDate,
       createdAt: createdAt ?? this.createdAt,
+      birthPlace: birthPlace ?? this.birthPlace,
+      nationality: nationality ?? this.nationality,
+      language: language ?? this.language,
     );
   }
 }

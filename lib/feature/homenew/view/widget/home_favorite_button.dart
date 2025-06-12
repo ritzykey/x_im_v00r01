@@ -44,9 +44,9 @@ class _HomeFavoriteButtonState extends State<HomeFavoriteButton> {
         return TextButton.icon(
           onPressed: state.$2
               ? null
-              : () {
+              : () async {
                   final viewModel = context.read<HomenewViewModel>();
-                  viewModel.toggleFavoriteRPC(widget.storyId);
+                  await viewModel.toggleFavoriteRPC(widget.storyId);
                 },
           iconAlignment: IconAlignment.end,
           icon: state.$2
