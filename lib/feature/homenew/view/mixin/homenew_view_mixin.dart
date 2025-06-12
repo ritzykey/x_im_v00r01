@@ -49,7 +49,6 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       final data = await supabaseClient
           .from('daily_stories')
           .select()
-          .eq('language', languageCode)
           .order('created_at');
 
       print('Fetched data: $data');

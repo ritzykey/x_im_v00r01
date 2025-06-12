@@ -31,6 +31,22 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
                 'birth_place': 'Turkey',
+                'translations': {
+                  'en': {
+                    'title': 'Story of Acun Ilıcalı',
+                    'content':
+                        'Acun Ilıcalı has achieved great success in the world of television. Starting his career at MTV Turkey, he eventually transformed it into a media empire by purchasing TV8.',
+                    'birthPlace': 'Istanbul',
+                    'nationality': 'Turkish',
+                  },
+                  'tr': {
+                    'title': 'Acun Ilıcalı Hikayesi',
+                    'content':
+                        'Acun Ilıcalı televizyon dünyasında büyük başarılara imza atmıştır. MTV Türkiye’de başladığı kariyeri, TV8’i satın alarak büyük bir medya imparatorluğuna dönüşmüştür.',
+                    'birthPlace': 'isntanbul',
+                    'nationality': 'Türk',
+                  },
+                },
               },
               {
                 'name': 'Acun Ilıcalı',
@@ -39,7 +55,23 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
                 'birth_place': 'Turkey',
-              }
+                'translations': {
+                  'en': {
+                    'title': 'Story of Acun Ilıcalı',
+                    'content':
+                        'Acun Ilıcalı has achieved great success in the world of television. Starting his career at MTV Turkey, he eventually transformed it into a media empire by purchasing TV8.',
+                    'birthPlace': 'Istanbul',
+                    'nationality': 'Turkish',
+                  },
+                  'tr': {
+                    'title': 'Acun Ilıcalı Hikayesi',
+                    'content':
+                        'Acun Ilıcalı televizyon dünyasında büyük başarılara imza atmıştır. MTV Türkiye’de başladığı kariyeri, TV8’i satın alarak büyük bir medya imparatorluğuna dönüşmüştür.',
+                    'birthPlace': 'isntanbul',
+                    'nationality': 'Türk',
+                  },
+                },
+              },
             ],
           ),
         );
@@ -69,12 +101,12 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     try {
       emit(state.copyWith(isLoadingFavRpc: true));
 
-      final response =
-          await _supabase.rpc<bool>('is_favorite', params: {'story_id': storyId});
+      final response = await _supabase
+          .rpc<bool>('is_favorite', params: {'story_id': storyId});
       final currentFavorites = Map<String, bool>.from(state.favorites);
 
-      currentFavorites[storyId] = response as bool;
-      
+      currentFavorites[storyId] = response;
+
       emit(
         state.copyWith(
           favorites: currentFavorites,
@@ -99,7 +131,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       ); // If API call fails, revert the optimistic update
 
       await isFavorite(storyId);
-
     } catch (e) {
       // Revert optimistic update on error
       final currentFavorites = Map<String, bool>.from(state.favorites);

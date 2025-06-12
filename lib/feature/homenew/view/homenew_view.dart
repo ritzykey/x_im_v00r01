@@ -94,13 +94,13 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
           child: PageView.builder(
             reverse: true,
             controller: PageController(initialPage: 1),
-            itemCount: homenewViewModel.state.data!.length + 1 ?? 5,
+            itemCount: 15,
             onPageChanged: (value) {
               print('Page changed to: $value');
               print(
                 'Page changed to lenhth: ${homenewViewModel.state.data?.length}',
               );
-              if (value != 0 && value != 4) {
+              if (value != 0 && value <= homenewViewModel.state.data!.length) {
                 loadImageHeight(value, data: homenewViewModel.state.data);
               }
             },
@@ -248,8 +248,21 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                   ),
                   BlocSelector<HomenewViewModel, HomenewState, String>(
                     selector: (state) {
-                      return state.data?.elementAt(index - 1)['title']
-                          as String;
+                      final currentLocale = context.locale.languageCode ?? 'en';
+
+                      final item = state.data?.elementAt(index - 1);
+                      // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
+                      // and values are maps containing localized data for each locale.
+                      // Example structure:
+                      // {
+                      //   'en': {'title': 'English Title'},
+                      //   'fr': {'title': 'French Title'}
+                      // }
+                      final translations =
+                          item?['translations'] as Map<String, dynamic>?;
+                      final localeData =
+                          translations?[currentLocale] as Map<String, dynamic>?;
+                      return localeData?['title'] as String? ?? '';
                     },
                     builder: (context, state) {
                       return SliverLayoutBuilder(
@@ -373,8 +386,22 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                         children: <Widget>[
                           BlocSelector<HomenewViewModel, HomenewState, String>(
                             selector: (state) {
-                              return state.data?.elementAt(index - 1)['story']
-                                  as String;
+                              final currentLocale =
+                                  context.locale.languageCode ?? 'en';
+
+                              final item = state.data?.elementAt(index - 1);
+                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
+                              // and values are maps containing localized data for each locale.
+                              // Example structure:
+                              // {
+                              //   'en': {'title': 'English Title'},
+                              //   'fr': {'title': 'French Title'}
+                              // }
+                              final translations = item?['translations']
+                                  as Map<String, dynamic>?;
+                              final localeData = translations?[currentLocale]
+                                  as Map<String, dynamic>?;
+                              return localeData?['content'] as String? ?? '';
                             },
                             builder: (context, state) {
                               return Text(
@@ -399,12 +426,25 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                           BlocSelector<HomenewViewModel, HomenewState,
                               (String, String)>(
                             selector: (state) {
+                              final currentLocale =
+                                  context.locale.languageCode ?? 'en';
+
+                              final item = state.data?.elementAt(index - 1);
+                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
+                              // and values are maps containing localized data for each locale.
+                              // Example structure:
+                              // {
+                              //   'en': {'title': 'English Title'},
+                              //   'fr': {'title': 'French Title'}
+                              // }
+                              final translations = item?['translations']
+                                  as Map<String, dynamic>?;
+                              final localeData = translations?[currentLocale]
+                                  as Map<String, dynamic>?;
                               return (
                                 state.data?.elementAt(index - 1)['birth_date']
                                     as String,
-                                state.data?.elementAt(index - 1)['birth_place']
-                                        as String? ??
-                                    '',
+                                localeData?['birth_place'] as String? ?? '',
                               );
                             },
                             builder: (context, state) {
@@ -426,9 +466,22 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
                           ),
                           BlocSelector<HomenewViewModel, HomenewState, String>(
                             selector: (state) {
-                              return state.data
-                                          ?.elementAt(index - 1)['nationality']
-                                      as String? ??
+                              final currentLocale =
+                                  context.locale.languageCode ?? 'en';
+
+                              final item = state.data?.elementAt(index - 1);
+                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
+                              // and values are maps containing localized data for each locale.
+                              // Example structure:
+                              // {
+                              //   'en': {'title': 'English Title'},
+                              //   'fr': {'title': 'French Title'}
+                              // }
+                              final translations = item?['translations']
+                                  as Map<String, dynamic>?;
+                              final localeData = translations?[currentLocale]
+                                  as Map<String, dynamic>?;
+                              return localeData?['nationality'] as String? ??
                                   'general.unknown'.tr();
                             },
                             builder: (context, state) {
