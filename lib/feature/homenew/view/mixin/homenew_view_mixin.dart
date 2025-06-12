@@ -41,22 +41,34 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
   }
 
   Future<void> fetchData() async {
-    // Önce dil ayarını set et
-    await supabaseClient.rpc<void>(
-      'f_set_language',
-      params: {
-        'p_requested_language': Localizations.localeOf(context).languageCode,
-      },
-    );
+    try {
+      // Dil ayarını veritabanında ayarla
+      final languageCode = Localizations.localeOf(context).languageCode;
 
-    final data =
-        await supabaseClient.from('daily_stories').select().order('created_at');
+      await supabaseClient.rpc<void>(
+        'f_set_language',
+        params: {'p_requested_language': languageCode},
+      );
 
-    print('data $data');
+      // Veriyi çek
+      final data = await supabaseClient
+          .from('daily_stories')
+          .select()
+          .order('created_at');
 
-    homenewViewModel.setData(data);
+      print('Fetched data: $data');
 
-    loadImageHeight(1, data: data);
+      if (data.isNotEmpty) {
+        homenewViewModel.setData(data);
+        loadImageHeight(1, data: data);
+      } else {
+        print('Uyarı: daily_stories tablosu boş.');
+      }
+    } catch (e, stackTrace) {
+      print('fetchData hatası: $e');
+      print('StackTrace: $stackTrace');
+      // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
+    }
   }
 
   double calculateTextHeight(String text) {
