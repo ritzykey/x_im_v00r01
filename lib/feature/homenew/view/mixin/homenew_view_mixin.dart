@@ -45,15 +45,11 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       // Dil ayarını veritabanında ayarla
       final languageCode = Localizations.localeOf(context).languageCode;
 
-      await supabaseClient.rpc<void>(
-        'f_set_language',
-        params: {'p_requested_language': languageCode},
-      );
-
       // Veriyi çek
       final data = await supabaseClient
           .from('daily_stories')
           .select()
+          .eq('language', languageCode)
           .order('created_at');
 
       print('Fetched data: $data');

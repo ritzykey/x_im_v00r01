@@ -29,6 +29,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
         body: SafeArea(
           child: BlocBuilder<FavoritesViewModel, FavoritesState>(
             builder: (context, state) {
+              final currentLocale = context.locale.languageCode ?? 'en';
+
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -155,7 +157,11 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    story.title ?? '',
+                                                    story.translations?[
+                                                                    currentLocale]
+                                                                ['title']
+                                                            as String? ??
+                                                        '',
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

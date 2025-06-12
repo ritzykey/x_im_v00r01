@@ -17,6 +17,7 @@ StoryModel _$StoryModelFromJson(Map<String, dynamic> json) => StoryModel(
       birthPlace: json['birth_palace'] as String?,
       nationality: json['nationality'] as String?,
       language: json['language'] as String?,
+      translations: json['translations'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$StoryModelToJson(StoryModel instance) =>
@@ -31,4 +32,5 @@ Map<String, dynamic> _$StoryModelToJson(StoryModel instance) =>
       'birthPlace': instance.birthPlace,
       'nationality': instance.nationality,
       'language': instance.language,
+      'translations': instance.translations,
     };

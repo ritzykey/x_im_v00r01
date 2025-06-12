@@ -25,7 +25,7 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
     emit(state.copyWith(isLoading: state.isLoading));
   }
 
-Future<void> fetchFavorites() async {
+  Future<void> fetchFavorites() async {
     changeLoading();
     try {
       final userId = _supabase.auth.currentUser?.id;
@@ -36,11 +36,6 @@ Future<void> fetchFavorites() async {
           .select('story_id, daily_stories(*)')
           .eq('status', 'G')
           .eq('user_id', userId);
-
-      if (response == null || response is! List) {
-        print('Unexpected response format: $response');
-        return;
-      }
 
       print('Favorites response: $response');
       print('Processing response to story models...');
@@ -63,7 +58,6 @@ Future<void> fetchFavorites() async {
       changeLoading();
     }
   }
-
 
   /* Future<void> toggleFavorite(String storyId) async {
     try {
