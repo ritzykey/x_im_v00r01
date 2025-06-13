@@ -30,7 +30,7 @@ class _FavoritesViewState extends BaseState<FavoritesView>
           child: BlocBuilder<FavoritesViewModel, FavoritesState>(
             builder: (context, state) {
               final currentLocale = context.locale.languageCode ?? 'en';
-
+    
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -38,7 +38,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
                       centerTitle: false,
-                      titlePadding: const EdgeInsets.symmetric(horizontal: 16),
+                      titlePadding:
+                          const EdgeInsets.symmetric(horizontal: 16),
                       title: Text(
                         'bottomNavigation.favorites'.tr(),
                         style: context.general.textTheme.headlineSmall,
@@ -97,8 +98,11 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                             final story = state.favoriteStories![index];
                             return GestureDetector(
                               onTap: () {
-                                context.router.replaceNamed(
-                                    'story/${state.favoriteStories![index].id}');
+                                productViewModel.changeTabIndex(
+                                  0,
+                                  context.router,
+                                  'story/${state.favoriteStories![index].id}',
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -113,10 +117,12 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                   ],
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: const BorderRadius.vertical(
+                                      borderRadius:
+                                          const BorderRadius.vertical(
                                         top: Radius.circular(16),
                                       ),
                                       child: AspectRatio(
@@ -125,7 +131,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                             ? Image.memory(
                                                 base64Decode(
                                                   (() {
-                                                    return story.photoUrl ?? '';
+                                                    return story.photoUrl ??
+                                                        '';
                                                   })(),
                                                 ),
                                                 fit: BoxFit.cover,
@@ -150,7 +157,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           SizedBox(
-                                            height: 28, // Matches the fontSize
+                                            height:
+                                                28, // Matches the fontSize
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

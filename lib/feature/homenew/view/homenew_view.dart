@@ -36,7 +36,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
 
   double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
 
-  PageController _pageController = PageController(initialPage: 1);
+  final PageController _pageController = PageController(initialPage: 1);
 
   @override
   void didChangeDependencies() {
@@ -45,15 +45,18 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
       (value) {
         // Data fetched successfully
         print('Data fetched successfully');
-        final startIndex = widget.storyId != null
+        /* final startIndex = widget.storyId != null
             ? homenewViewModel.state.data?.indexWhere(
                   (element) => element['id'] == widget.storyId,
                 ) ??
                 1
             : -1;
         _pageController =
-            PageController(initialPage: startIndex >= 0 ? startIndex + 1 : 1);
-        homenewViewModel.changeLoading(false);
+            PageController(initialPage: startIndex >= 0 ? startIndex + 1 : 1); */
+
+        fetchStoryIdData(widget.storyId as String).then((value) {
+          homenewViewModel.changeLoading(false);
+        });
       },
     ).catchError(
       (error) {

@@ -30,19 +30,5 @@ final class NavigationViewModel extends BaseCubit<NavigationState> {
     return !response.isNotEmpty;
   }
 
-  void changeTab(int index, StackRouter router) {
-    emit(state.copyWith(selectedindex: index));
-
-    if (index == 0) {
-      router.replaceNamed('story/1');
-    } else if (index == 1) {
-      router.replaceNamed('discover');
-    } else if (index == 2) {
-      router.replaceNamed('onboardings');
-    } else if (index == 3) {
-      router.replaceNamed('favorites');
-    } else if (index == 4) {
-      router.replaceNamed('settings');
-    }
-  }
+  
 }

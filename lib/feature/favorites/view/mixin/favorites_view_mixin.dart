@@ -20,5 +20,6 @@ mixin FavoritesViewMixin on BaseState<FavoritesView> {
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
+
   }
 }

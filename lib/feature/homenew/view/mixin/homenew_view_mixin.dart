@@ -42,13 +42,42 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
 
   Future<List> fetchData() async {
     try {
-      // Dil ayarını veritabanında ayarla
-      final languageCode = Localizations.localeOf(context).languageCode;
-
       // Veriyi çek
       final data = await supabaseClient
           .from('daily_stories')
           .select()
+          .order('created_at')
+          .then(
+        (data) {
+          print('Fetched data: $data');
+
+          if (data.isNotEmpty) {
+            homenewViewModel.setData(data);
+            loadImageHeight(1, data: data);
+            return data;
+          } else {
+            print('Uyarı: daily_stories tablosu boş.');
+
+            return [];
+          }
+        },
+      );
+      return data;
+    } catch (e, stackTrace) {
+      print('fetchData hatası: $e');
+      print('StackTrace: $stackTrace');
+      // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
+      return [];
+    }
+  }
+
+  Future<List> fetchStoryIdData(String storyId) async {
+    try {
+      // Veriyi çek
+      final data = await supabaseClient
+          .from('daily_stories')
+          .select()
+          .eq('id', storyId)
           .order('created_at')
           .then(
         (data) {

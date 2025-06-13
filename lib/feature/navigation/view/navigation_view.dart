@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:x_im_v00r01/feature/navigation/view/mixin/navigation_view_mixin.dart';
-import 'package:x_im_v00r01/feature/navigation/view_model/Navigation_view_model.dart';
-import 'package:x_im_v00r01/feature/navigation/view_model/state/navigation_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 @RoutePage()
 class NavigationView extends StatefulWidget {
@@ -21,13 +21,13 @@ class _NavigationViewState extends BaseState<NavigationView>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => navigationViewModel,
-      child: BlocBuilder<NavigationViewModel, NavigationState>(
+      create: (context) => productViewModel,
+      child: BlocBuilder<ProductViewModel, ProductState>(
         builder: (context, state) {
           return PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, result) {
-              navigationViewModel.changeTab(0, context.router);
+              productViewModel.changeTab(0, context.router);
             },
             child: Scaffold(
               body: const AutoRouter(),
@@ -35,7 +35,7 @@ class _NavigationViewState extends BaseState<NavigationView>
                 key: ValueKey(context.locale),
                 currentIndex: state.selectedindex ?? 0,
                 onTap: (index) {
-                  navigationViewModel.changeTab(index, context.router);
+                  productViewModel.changeTab(index, context.router);
                 },
                 items: <SalomonBottomBarItem>[
                   SalomonBottomBarItem(

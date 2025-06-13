@@ -35,35 +35,38 @@ class _PageBuilderHomenewState extends State<PageBuilderHomenewView> {
 
     expandedHeight = textHeight;
 
-    _scrollController.addListener(() {
-      if (!isAnimating) {
-        final offset = _scrollController.offset;
+    _scrollController.addListener(_handleScroll);
+  }
 
-        if (offset > 110 && offset < 135) {
-          _triggerScroll(_mediaSizeHeight * 0.6 + (expandedHeight - 45));
-        } else if (offset > (_mediaSizeHeight * 0.6 - 65) &&
-            offset < (_mediaSizeHeight * 0.6 - 50)) {
-          _triggerScroll(0);
-        }
-      }
-    });
+  void _handleScroll() {
+    if (isAnimating || !_scrollController.hasClients) return;
+
+    final offset = _scrollController.offset;
+
+    // Responsive eşikler
+    final triggerDownStart = _mediaSizeHeight * 0.15;
+    final triggerDownEnd = _mediaSizeHeight * 0.18;
+
+    final triggerUpStart = _mediaSizeHeight * 0.6 - 65;
+    final triggerUpEnd = _mediaSizeHeight * 0.6 - 50;
+
+    if (offset > triggerDownStart && offset < triggerDownEnd) {
+      _triggerScroll(_mediaSizeHeight * 0.6 + (expandedHeight - 45));
+    } else if (offset > triggerUpStart && offset < triggerUpEnd) {
+      _triggerScroll(0);
+    }
   }
 
   void _triggerScroll(double targetOffset) {
-    if (_scrollController.hasClients) {
-      isAnimating = true;
-      _scrollController
-          .animateTo(
-        targetOffset,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      )
-          .then((_) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          isAnimating = false;
-        });
-      });
-    }
+    isAnimating = true;
+
+    _scrollController
+        .animateTo(
+          targetOffset,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        )
+        .whenComplete(() => isAnimating = false);
   }
 
   @override
