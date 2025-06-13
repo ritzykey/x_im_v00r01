@@ -32,10 +32,12 @@ class AppRouter extends RootStackRouter {
           ],
           children: [
             // ✅ Children ekledik
-            AutoRoute(
+            CustomRoute<dynamic>(
               page: HomenewRoute.page,
               initial: true,
               path: 'story/:storyId',
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
             ),
             CustomRoute<dynamic>(
               page: DiscoverRoute.page,
@@ -74,18 +76,9 @@ class AppRouter extends RootStackRouter {
         ),
 
         AutoRoute(
-          page: DiscoverRoute.page,
-          path: '/discover/:id',
-        ),
-
-        AutoRoute(page: SettingsRoute.page),
-
-        AutoRoute(
           page: LoadingRoute.page,
           initial: true,
         ),
-
-        AutoRoute(page: OnboardingsRoute.page),
 
         AutoRoute(page: NoConnectionRoute.page),
 

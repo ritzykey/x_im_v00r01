@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
@@ -19,98 +22,72 @@ class _DiscoverViewState extends BaseState<DiscoverView>
     with DiscoverViewMixin {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider(
       create: (context) => discoverViewModel,
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Stack(
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        top: 20,
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Discover',
-                          style: context.general.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 20, bottom: 10),
+                  child: Text(
+                    'Discover',
+                    style: context.general.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      height: context.general.mediaSize.height * 0.45,
-                      child: PageView.builder(
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return const MainDiscover();
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        controller: topScrollController,
-                        itemBuilder: (context, index) {
-                          return ImageButton(
-                            onTap: () {
-                            },
-                            widthscale: index == 0 ? 2 : 1,
-                            imagePath: 'asset/images/pexels1.jpg',
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        controller: bottomScrollController,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return ImageButton(
-                            onTap: () {
-                            },
-                            widthscale: index == 0 ? 2 : 1,
-                            imagePath: 'asset/images/pexels1.jpg',
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                BlocSelector<DiscoverViewModel, DiscoverState, int>(
-                  selector: (state) {
-                    return state.currentPage;
-                  },
+                SizedBox(
+                  height: context.general.mediaSize.height * 0.4,
+                  child: BlocBuilder<DiscoverViewModel, DiscoverState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (state.stories == null || state.stories!.isEmpty) {
+                        return const Center(child: Text('No stories found.'));
+                      }
+                      return PageView.builder(
+                        itemCount: state.stories!.length,
+                        onPageChanged: discoverViewModel.onPageChanged,
+                        itemBuilder: (context, index) {
+                          final story = state.stories![index];
+                          return MainDiscover(
+                            title: story.translations[
+                                        context.locale.languageCode ?? 'en']
+                                    ['title'] as String ??
+                                'No Title',
+                            photoUrl: story.photoUrl,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+                BlocBuilder<DiscoverViewModel, DiscoverState>(
                   builder: (context, state) {
-                    return Positioned(
-                      bottom: 20,
-                      left: 20,
-                      child: Row(
-                        children: List.generate(
-                          discoverPages.length,
-                          (index) => Container(
-                            margin: const EdgeInsets.all(4),
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              color: state == index
-                                  ? const Color.fromARGB(255, 179, 134, 2)
-                                  : const Color(0xFFC9CCD2),
-                              shape: BoxShape.circle,
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            state.stories?.length ??
+                                0, // itemCount from PageView
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: state.currentPage == index ? 24 : 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: state.currentPage == index
+                                    ? theme.colorScheme.primary
+                                    : Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                         ),
@@ -118,6 +95,41 @@ class _DiscoverViewState extends BaseState<DiscoverView>
                     );
                   },
                 ),
+                const _SectionHeader(title: 'Top Picks For You'),
+                _HorizontalImageList(scrollController: topScrollController),
+                const _SectionHeader(title: 'Legendary Footballers'),
+                BlocBuilder<DiscoverViewModel, DiscoverState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state.legendaryFootballers == null ||
+                        state.legendaryFootballers!.isEmpty) {
+                      return const Center(
+                        child: Text('No legendary footballers found.'),
+                      );
+                    }
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                        controller: bottomScrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.legendaryFootballers!.length,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        itemBuilder: (context, index) {
+                          final footballer = state.legendaryFootballers![index];
+                          return ImageButton(
+                            onTap: () {},
+                            widthscale: 1.8,
+                            imageUrl: footballer.photoUrl,
+                            name: footballer.fullName,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -127,58 +139,104 @@ class _DiscoverViewState extends BaseState<DiscoverView>
   }
 }
 
-class MainDiscover extends StatelessWidget {
-  const MainDiscover({
-    super.key,
-  });
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 12,
-        top: 20,
-        right: 12,
+      padding: const EdgeInsets.only(left: 16, top: 20, bottom: 10),
+      child: Text(
+        title,
+        style: context.general.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
-      child: Material(
-        child: OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            side: BorderSide.none,
-            padding: EdgeInsets.zero, // 📌 Fazla boşluğu kaldır!
+    );
+  }
+}
 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+class _HorizontalImageList extends StatelessWidget {
+  const _HorizontalImageList({
+    required this.scrollController,
+  });
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 130, // Adjusted height
+      child: ListView.builder(
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        itemCount: 4,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        itemBuilder: (context, index) {
+          return ImageButton(
+            onTap: () {},
+            // A bit of variation for visual interest
+            widthscale: (index % 2 == 0) ? 1.8 : 1.2,
+            imagePath: 'asset/images/pexels1.jpg',
+          );
+        },
+      ),
+    );
+  }
+}
+
+class MainDiscover extends StatelessWidget {
+  const MainDiscover({
+    required this.title,
+    required this.photoUrl,
+    super.key,
+  });
+
+  final String title;
+  final String photoUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 8,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.memory(
+              base64Decode(photoUrl),
+              fit: BoxFit.cover,
             ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Stack(
-              children: [
-                Image.asset(
-                  //height: context.general.mediaSize.height * 0.45,
-                  'asset/images/pexels1.jpg',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.5, 1.0],
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.8),
+                  ],
                 ),
-                const Positioned(
-                  bottom: 0,
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      'Discover',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: Text(
+                title,
+                style: context.general.textTheme.headlineSmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -187,36 +245,65 @@ class MainDiscover extends StatelessWidget {
 
 class ImageButton extends StatelessWidget {
   const ImageButton({
-    required this.imagePath,
     required this.widthscale,
     required this.onTap,
+    this.imagePath,
+    this.imageUrl,
+    this.name,
     super.key,
-  });
-  final String imagePath;
+  }) : assert(imagePath != null || imageUrl != null);
+  final String? imagePath;
+  final String? imageUrl;
   final double widthscale;
   final VoidCallback onTap;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: GestureDetector(
-            onTap: onTap, // 📌 Butona basılınca çalışacak
-            child: ClipRRect(
-              child: Image.asset(
-                imagePath,
-                height: 120, // Yükseklik 120 piksel olacak
-                width: widthscale * 100, // Genişlik tam genişlikte olacak
-                fit: BoxFit.cover, // Resmi kapsayacak şekilde sığdır
-              ),
-            ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Stack(
+            children: [
+              if (imagePath != null)
+                Image.asset(
+                  imagePath!,
+                  height: 120,
+                  width: widthscale * 100,
+                  fit: BoxFit.cover,
+                )
+              else
+                Image.network(
+                  imageUrl!,
+                  height: 120,
+                  width: widthscale * 100,
+                  fit: BoxFit.cover,
+                ),
+              if (name != null)
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  right: 8,
+                  child: Text(
+                    name!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
