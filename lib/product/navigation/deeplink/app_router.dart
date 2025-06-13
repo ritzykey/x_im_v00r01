@@ -21,32 +21,9 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: HomeRoute.page),
-
-        AutoRoute(page: HomeDetailRoute.page),
-
-        AutoRoute(
-          page: LoginRoute.page,
-          fullscreenDialog: true,
-        ),
-
-        AutoRoute(page: HomenewRoute.page),
-
-        AutoRoute(page: DiscoverRoute.page, path: '/discover/:id'),
-
-        AutoRoute(page: SettingsRoute.page),
-
-        AutoRoute(
-          page: LoadingRoute.page,
-          initial: true,
-        ),
-
-        AutoRoute(page: OnboardingsRoute.page),
-
-        AutoRoute(page: NoConnectionRoute.page),
-
         AutoRoute(
           page: NavigationRoute.page,
+          path: '/',
           guards: [
             FirstTimeGuard(
               userCacheOperation:
@@ -58,29 +35,59 @@ class AppRouter extends RootStackRouter {
             AutoRoute(
               page: HomenewRoute.page,
               initial: true,
+              path: 'story/:storyId',
             ),
             CustomRoute<dynamic>(
               page: DiscoverRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'discover',
             ),
             CustomRoute<dynamic>(
               page: OnboardingsRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'onboardings',
             ),
             CustomRoute<dynamic>(
               page: FavoritesRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'favorites',
             ),
             CustomRoute<dynamic>(
               page: SettingsRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'settings',
             ),
           ],
         ),
+
+        AutoRoute(page: HomeRoute.page),
+
+        AutoRoute(page: HomeDetailRoute.page),
+
+        AutoRoute(
+          page: LoginRoute.page,
+          fullscreenDialog: true,
+        ),
+
+        AutoRoute(
+          page: DiscoverRoute.page,
+          path: '/discover/:id',
+        ),
+
+        AutoRoute(page: SettingsRoute.page),
+
+        AutoRoute(
+          page: LoadingRoute.page,
+          initial: true,
+        ),
+
+        AutoRoute(page: OnboardingsRoute.page),
+
+        AutoRoute(page: NoConnectionRoute.page),
 
         // Add more routes as needed...
       ];

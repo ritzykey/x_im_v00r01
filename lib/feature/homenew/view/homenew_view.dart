@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:x_im_v00r01/feature/homenew/view/homenew_pageBuilder.dart';
 import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_view_mixin.dart';
-import 'package:x_im_v00r01/feature/homenew/view/widget/home_favorite_button.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
@@ -21,7 +18,11 @@ import 'package:x_im_v00r01/product/state/base/base_state.dart';
 @RoutePage()
 class HomenewView extends StatefulWidget {
   /// HomeNewView widget displays the home screen of the application.
-  const HomenewView({super.key});
+  const HomenewView({
+    super.key,
+    @PathParam('storyId') this.storyId,
+  });
+  final dynamic storyId;
 
   @override
   State<HomenewView> createState() => _HomenewViewState();
@@ -32,55 +33,41 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   final String title2 = 'Harry Potter';
 
   int selectedIndex = 1;
-  final ScrollController _scrollController = ScrollController();
-  double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
-  bool isAnimating = false;
 
-  double textHeight = 50;
-  // ignore: prefer_final_locals
-  late double expandedHeight;
+  double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
+
+  PageController _pageController = PageController(initialPage: 1);
 
   @override
-  void initState() {
-    super.initState();
-
-    expandedHeight = textHeight;
-
-    _scrollController.addListener(() {
-      if (!isAnimating) {
-        final offset = _scrollController.offset;
-
-        if (offset > 110 && offset < 135) {
-          _triggerScroll(_mediaSizeHeight * 0.6 + (expandedHeight - 45));
-        } else if (offset > (_mediaSizeHeight * 0.6 - 65) &&
-            offset < (_mediaSizeHeight * 0.6 - 50)) {
-          _triggerScroll(0);
-        }
-      }
-    });
-  }
-
-  void _triggerScroll(double targetOffset) {
-    if (_scrollController.hasClients) {
-      isAnimating = true;
-      _scrollController
-          .animateTo(
-        targetOffset,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      )
-          .then((_) {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          isAnimating = false;
-        });
-      });
-    }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchData().then(
+      (value) {
+        // Data fetched successfully
+        print('Data fetched successfully');
+        final startIndex = widget.storyId != null
+            ? homenewViewModel.state.data?.indexWhere(
+                  (element) => element['id'] == widget.storyId,
+                ) ??
+                1
+            : -1;
+        _pageController =
+            PageController(initialPage: startIndex >= 0 ? startIndex + 1 : 1);
+        homenewViewModel.changeLoading(false);
+      },
+    ).catchError(
+      (error) {
+        // Handle error
+        print('Error fetching data: $error');
+      },
+    );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Kaydırma denetleyicisini temizliyoruz
+    // TODO: implement dispose
     super.dispose();
+    homenewViewModel.changeLoading(true);
   }
 
   @override
@@ -91,442 +78,73 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8, top: 22),
-          child: PageView.builder(
-            reverse: true,
-            controller: PageController(initialPage: 1),
-            itemCount: 15,
-            onPageChanged: (value) {
-              print('Page changed to: $value');
-              print(
-                'Page changed to lenhth: ${homenewViewModel.state.data?.length}',
-              );
-              if (value != 0 && value <= homenewViewModel.state.data!.length) {
-                loadImageHeight(value, data: homenewViewModel.state.data);
-              }
+          child: BlocSelector<HomenewViewModel, HomenewState, bool>(
+            selector: (state) {
+              return !state.isLoading;
             },
-            itemBuilder: (context, index) {
-              print('Index: $index');
+            builder: (context, state) {
+              return state
+                  ? PageView.builder(
+                      reverse: true,
+                      controller: _pageController,
+                      itemCount: 15,
+                      onPageChanged: (value) {
+                        print('Page changed to: $value');
+                        print(
+                          'Page changed to lenhth: ${homenewViewModel.state.data?.length}',
+                        );
+                        print('Story ID: ${context.router.current.path}');
 
-              if (index == 0) {
-                return Expanded(
-                  child: Container(
-                    child: const Center(child: Text('adfasdasfasdas')),
-                  ),
-                );
-              }
+                        if (value != 0 &&
+                            value <= homenewViewModel.state.data!.length) {
+                          // Mevcut story ID'sini al
+                          final storyId = homenewViewModel.state.data
+                              ?.elementAt(value - 1)['id'];
 
-              if (index > homenewViewModel.state.data!.length) {
-                return const Center(
-                  child: Text('No more data'),
-                );
-              }
+                          /* context.router.updateRouteData(
+                            '/homenew/${storyId ?? ''}',
+                          ); */
 
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: <Widget>[
-                  BlocSelector<HomenewViewModel, HomenewState,
-                      (double, String, String)>(
-                    selector: (state) {
-                      return (
-                        state.imageHeight ?? 250,
-                        state.data?.elementAt(index - 1)['photo_url'] ?? '',
-                        state.data?.elementAt(index - 1)['id'] ?? '',
-                      );
-                    },
-                    builder: (context, state) {
-                      return SliverAppBar(
-                        elevation: 1,
-                        expandedHeight: state.$1,
-                        automaticallyImplyLeading: false,
-                        flexibleSpace: FlexibleSpaceBar(
-                          expandedTitleScale: 1,
-                          titlePadding: const EdgeInsets.only(top: 10),
-                          title: Transform.translate(
-                            offset: const Offset(0, 20),
+                          loadImageHeight(
+                            value,
+                            data: homenewViewModel.state.data,
+                          );
+                        }
+                      },
+                      itemBuilder: (context, index) {
+                        print('Index: $index');
+                        print('Story ID: ${widget.storyId}');
+
+                        if (index == 0) {
+                          return Expanded(
                             child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                                color: context.general.colorScheme.surfaceDim,
-                              ),
-                              child: Transform.translate(
-                                offset: const Offset(0, -25),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: context.general.colorScheme
-                                              .surfaceBright,
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            'Bugün',
-                                            style: context
-                                                .general.textTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          HomeFavoriteButton(
-                                            storyId: state.$3,
-                                            size: context.general.textTheme
-                                                    .bodySmall!.fontSize! +
-                                                5,
-                                            color: context.general.textTheme
-                                                .bodySmall?.color,
-                                          ),
-                                          IconButton(
-                                            onPressed: () {
-                                              return;
-                                            },
-                                            icon: Icon(
-                                              Icons.share,
-                                              size: context.general.textTheme
-                                                      .bodySmall!.fontSize! +
-                                                  5,
-                                            ),
-                                            style: TextButton.styleFrom(
-                                              iconColor: context.general
-                                                  .textTheme.bodySmall?.color,
-                                              minimumSize: const Size(0, 32),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                              ),
-                                              textStyle: context
-                                                  .general.textTheme.bodySmall,
-                                              foregroundColor: context.general
-                                                  .textTheme.bodySmall?.color,
-                                              backgroundColor: context.general
-                                                  .colorScheme.surfaceBright,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          background: (!homenewViewModel.state.isLoading)
-                              ? Container(
-                                  color: Colors
-                                      .grey[300], // Arka plan placeholder rengi
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: MemoryImage(
-                                        base64Decode(state.$2),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      );
-                    },
-                  ),
-                  BlocSelector<HomenewViewModel, HomenewState, String>(
-                    selector: (state) {
-                      final currentLocale = context.locale.languageCode ?? 'en';
-
-                      final item = state.data?.elementAt(index - 1);
-                      // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
-                      // and values are maps containing localized data for each locale.
-                      // Example structure:
-                      // {
-                      //   'en': {'title': 'English Title'},
-                      //   'fr': {'title': 'French Title'}
-                      // }
-                      final translations =
-                          item?['translations'] as Map<String, dynamic>?;
-                      final localeData =
-                          translations?[currentLocale] as Map<String, dynamic>?;
-                      return localeData?['title'] as String? ?? '';
-                    },
-                    builder: (context, state) {
-                      return SliverLayoutBuilder(
-                        builder: (context, constraints) {
-                          // ignore: prefer_final_locals
-                          textHeight = calculateTextHeight(
-                            state,
-                          );
-                          // ignore: prefer_final_locals
-                          expandedHeight = textHeight + 35;
-
-                          return SliverAppBar(
-                            backgroundColor:
-                                context.general.colorScheme.surfaceDim,
-                            elevation: 0,
-                            scrolledUnderElevation: 0,
-                            shadowColor: context.general.colorScheme.surfaceDim,
-                            surfaceTintColor:
-                                context.general.colorScheme.surfaceDim,
-                            foregroundColor:
-                                context.general.colorScheme.surfaceDim,
-                            automaticallyImplyLeading: false,
-                            expandedHeight: expandedHeight,
-                            collapsedHeight: 45,
-                            toolbarHeight: 0,
-                            pinned: true,
-                            flexibleSpace: FlexibleSpaceBar(
-                              title: Transform.translate(
-                                offset: const Offset(0, 5),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    state,
-                                    style:
-                                        context.general.textTheme.headlineSmall,
-                                  ),
-                                ),
-                              ),
+                              child:
+                                  const Center(child: Text('adfasdasfasdas')),
                             ),
                           );
-                        },
-                      );
-                    },
-                  ),
-                  SliverAppBar(
-                    backgroundColor: context.general.colorScheme.surfaceDim,
-                    elevation: 0,
-                    scrolledUnderElevation: 0,
-                    shadowColor: context.general.colorScheme.surfaceDim,
-                    surfaceTintColor: context.general.colorScheme.surfaceDim,
-                    foregroundColor: context.general.colorScheme.surfaceDim,
-                    automaticallyImplyLeading: false,
-                    pinned: true,
-                    title: Row(
-                      children: [
-                        TextButton.icon(
-                          onPressed: () {
-                            return;
-                          },
-                          // icon: const CircleAvatar(
-                          //   radius: 12,
-                          //   backgroundImage: NetworkImage(
-                          //     'https://m.media-amazon.com/images/M/MV5BMTQ3ODE2NTMxMV5BMl5BanBnXkFtZTgwOTIzOTQzMjE@._V1_.jpg',
-                          //   ),
-                          // ),
-                          label: BlocSelector<HomenewViewModel, HomenewState,
-                              String>(
-                            selector: (state) {
-                              return state.data?.elementAt(index - 1)['name']
-                                      as String? ??
-                                  'Text Placeholder';
-                            },
-                            builder: (context, name) {
-                              return Text(
-                                name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            },
-                          ),
-                          style: TextButton.styleFrom(
-                            iconColor:
-                                context.general.textTheme.bodySmall?.color,
-                            minimumSize: const Size(0, 32),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                            ),
-                            textStyle: context.general.textTheme.bodySmall,
-                            foregroundColor:
-                                context.general.colorScheme.onTertiary,
-                            backgroundColor:
-                                context.general.colorScheme.tertiary,
-                          ),
-                        ),
-                        BlocSelector<HomenewViewModel, HomenewState, String>(
-                          selector: (state) {
-                            return state.data
-                                ?.elementAt(index - 1)['birth_date'] as String;
-                          },
-                          builder: (context, state) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                DateFormat.yMMMMd(context.locale.languageCode)
-                                    .format(DateTime.parse(state)),
-                                style: context.general.textTheme.labelMedium,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          BlocSelector<HomenewViewModel, HomenewState, String>(
-                            selector: (state) {
-                              final currentLocale =
-                                  context.locale.languageCode ?? 'en';
+                        }
 
-                              final item = state.data?.elementAt(index - 1);
-                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
-                              // and values are maps containing localized data for each locale.
-                              // Example structure:
-                              // {
-                              //   'en': {'title': 'English Title'},
-                              //   'fr': {'title': 'French Title'}
-                              // }
-                              final translations = item?['translations']
-                                  as Map<String, dynamic>?;
-                              final localeData = translations?[currentLocale]
-                                  as Map<String, dynamic>?;
-                              return localeData?['content'] as String? ?? '';
-                            },
-                            builder: (context, state) {
-                              return Text(
-                                state,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  height: 1.4,
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          Text(
-                            'Born',
-                            style: context.general.textTheme.bodyMedium,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          BlocSelector<HomenewViewModel, HomenewState,
-                              (String, String)>(
-                            selector: (state) {
-                              final currentLocale =
-                                  context.locale.languageCode ?? 'en';
+                        if (index > homenewViewModel.state.data!.length) {
+                          return const Center(
+                            child: Text('No more data'),
+                          );
+                        }
 
-                              final item = state.data?.elementAt(index - 1);
-                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
-                              // and values are maps containing localized data for each locale.
-                              // Example structure:
-                              // {
-                              //   'en': {'title': 'English Title'},
-                              //   'fr': {'title': 'French Title'}
-                              // }
-                              final translations = item?['translations']
-                                  as Map<String, dynamic>?;
-                              final localeData = translations?[currentLocale]
-                                  as Map<String, dynamic>?;
-                              return (
-                                state.data?.elementAt(index - 1)['birth_date']
-                                    as String,
-                                localeData?['birth_place'] as String? ?? '',
+                        /* if (homenewViewModel.state.data!.length <= 2) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
-                            },
-                            builder: (context, state) {
-                              return Text(
-                                '${DateFormat.yMMMMd(context.locale.languageCode).format(DateTime.parse(state.$1))}, ${state.$2}',
-                                style: const TextStyle(color: Colors.grey),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Nationality',
-                            style: context.general.textTheme.bodyMedium,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          BlocSelector<HomenewViewModel, HomenewState, String>(
-                            selector: (state) {
-                              final currentLocale =
-                                  context.locale.languageCode ?? 'en';
+                            } */
 
-                              final item = state.data?.elementAt(index - 1);
-                              // `translations` is expected to be a map where keys are locale codes (e.g., 'en', 'fr')
-                              // and values are maps containing localized data for each locale.
-                              // Example structure:
-                              // {
-                              //   'en': {'title': 'English Title'},
-                              //   'fr': {'title': 'French Title'}
-                              // }
-                              final translations = item?['translations']
-                                  as Map<String, dynamic>?;
-                              final localeData = translations?[currentLocale]
-                                  as Map<String, dynamic>?;
-                              return localeData?['nationality'] as String? ??
-                                  'general.unknown'.tr();
-                            },
-                            builder: (context, state) {
-                              return Text(
-                                state,
-                                style: const TextStyle(color: Colors.grey),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Videos',
-                            style: context.general.textTheme.bodyMedium,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                            height: 200,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                _makeVideo(
-                                  image: 'assets/images/emma-1.jpg',
-                                ),
-                                _makeVideo(
-                                  image: 'assets/images/emma-2.jpg',
-                                ),
-                                _makeVideo(
-                                  image: 'assets/images/emma-3.jpg',
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 120,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
+                        return PageBuilderHomenewView(
+                          key: ValueKey(index),
+                          index: index,
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    );
             },
           ),
         ),
@@ -535,39 +153,7 @@ class _HomenewViewState extends BaseState<HomenewView> with HomenewViewMixin {
   }
 }
 
-Widget _makeVideo({required String image}) {
-  return AspectRatio(
-    aspectRatio: 1.5 / 1,
-    child: Container(
-      margin: const EdgeInsets.only(right: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomRight,
-            colors: [
-              Colors.black.withOpacity(.9),
-              Colors.black.withOpacity(.3),
-            ],
-          ),
-        ),
-        child: const Align(
-          child: Icon(
-            Icons.play_arrow,
-            color: Colors.white,
-            size: 70,
-          ),
-        ),
-      ),
-    ),
-  );
-}
+
 
 /* class HomenewPage2 extends StatelessWidget {
   const HomenewPage2({

@@ -32,15 +32,15 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       pageController: PageController(),
     );
   }
-
+/* 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Fetch data when the widget is built
     fetchData();
-  }
+  } */
 
-  Future<void> fetchData() async {
+  Future<List> fetchData() async {
     try {
       // Dil ayarını veritabanında ayarla
       final languageCode = Localizations.localeOf(context).languageCode;
@@ -49,20 +49,28 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       final data = await supabaseClient
           .from('daily_stories')
           .select()
-          .order('created_at');
+          .order('created_at')
+          .then(
+        (data) {
+          print('Fetched data: $data');
 
-      print('Fetched data: $data');
+          if (data.isNotEmpty) {
+            homenewViewModel.setData(data);
+            loadImageHeight(1, data: data);
+            return data;
+          } else {
+            print('Uyarı: daily_stories tablosu boş.');
 
-      if (data.isNotEmpty) {
-        homenewViewModel.setData(data);
-        loadImageHeight(1, data: data);
-      } else {
-        print('Uyarı: daily_stories tablosu boş.');
-      }
+            return [];
+          }
+        },
+      );
+      return data;
     } catch (e, stackTrace) {
       print('fetchData hatası: $e');
       print('StackTrace: $stackTrace');
       // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
+      return [];
     }
   }
 

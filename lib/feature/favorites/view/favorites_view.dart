@@ -97,7 +97,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                             final story = state.favoriteStories![index];
                             return GestureDetector(
                               onTap: () {
-                                //context.router.push(const StoryyRoute());
+                                context.router.replaceNamed(
+                                    'story/${state.favoriteStories![index].id}');
                               },
                               child: Container(
                                 decoration: BoxDecoration(

@@ -20,7 +20,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
         pageController = pageController,
         super(
           const HomenewState(
-            isLoading: false,
+            isLoading: true,
             opacity: 0.00001,
             imageHeight: 250,
             data: [
@@ -83,8 +83,8 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   EdgeInsets dynamicPadding = const EdgeInsets.only(left: 8, right: 8, top: 20);
 
   /// Change loading states
-  void changeLoading() {
-    emit(state.copyWith(isLoading: !state.isLoading));
+  void changeLoading(bool isLoading) {
+    emit(state.copyWith(isLoading: isLoading));
   }
 
   Future<bool> fetchUsers() async {
@@ -150,7 +150,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     emit(
       state.copyWith(
         data: data,
-        isLoading: true,
       ),
     );
   }
@@ -160,7 +159,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       emit(
         state.copyWith(
           imageHeight: screenHeight * 0.6,
-          isLoading: true,
         ),
       );
       return;
@@ -168,7 +166,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     emit(
       state.copyWith(
         imageHeight: imageHeight,
-        isLoading: true,
       ),
     );
   }
