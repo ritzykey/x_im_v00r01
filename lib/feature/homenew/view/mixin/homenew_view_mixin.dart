@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' as ltr;
 
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
@@ -109,7 +110,7 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
         text: text,
         style: context.general.textTheme.headlineSmall,
       ),
-      textDirection: TextDirection.ltr,
+      textDirection: ltr.TextDirection.ltr,
       maxLines: 2, // Kaç satır olabileceğini belirle
     )..layout(
         maxWidth: MediaQuery.of(context).size.width,
@@ -148,4 +149,6 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       );
     });
   }
+
+
 }
