@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
@@ -99,5 +100,27 @@ final class ProductViewModel extends BaseCubit<ProductState> {
     final now = DateTime.now();
     emit(state.copyWith(currentDate: now));
     print('readDate: $now');
+  }
+
+  void changeTab(int index, StackRouter router) {
+    emit(state.copyWith(selectedindex: index));
+
+    if (index == 0) {
+      router.replaceNamed('story/1');
+    } else if (index == 1) {
+      router.replaceNamed('discover');
+    } else if (index == 2) {
+      router.replaceNamed('onboardings');
+    } else if (index == 3) {
+      router.replaceNamed('favorites');
+    } else if (index == 4) {
+      router.replaceNamed('settings');
+    }
+  }
+
+  void changeTabIndex(int index, StackRouter router, String path) {
+    emit(state.copyWith(selectedindex: index));
+
+    router.replaceNamed(path);
   }
 }

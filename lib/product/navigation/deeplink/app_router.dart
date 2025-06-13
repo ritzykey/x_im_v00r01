@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
+import 'package:x_im_v00r01/feature/favorites/view/favorites_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_detail_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_view.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
@@ -20,6 +21,51 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
+        AutoRoute(
+          page: NavigationRoute.page,
+          path: '/',
+          guards: [
+            FirstTimeGuard(
+              userCacheOperation:
+                  ProductStateItems.productCache.userCacheOperation,
+            ),
+          ],
+          children: [
+            // ✅ Children ekledik
+            CustomRoute<dynamic>(
+              page: HomenewRoute.page,
+              initial: true,
+              path: 'story/:storyId',
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+            ),
+            CustomRoute<dynamic>(
+              page: DiscoverRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'discover',
+            ),
+            CustomRoute<dynamic>(
+              page: OnboardingsRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'onboardings',
+            ),
+            CustomRoute<dynamic>(
+              page: FavoritesRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'favorites',
+            ),
+            CustomRoute<dynamic>(
+              page: SettingsRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'settings',
+            ),
+          ],
+        ),
+
         AutoRoute(page: HomeRoute.page),
 
         AutoRoute(page: HomeDetailRoute.page),
@@ -29,52 +75,12 @@ class AppRouter extends RootStackRouter {
           fullscreenDialog: true,
         ),
 
-        AutoRoute(page: HomenewRoute.page),
-
-        AutoRoute(page: DiscoverRoute.page, path: '/discover/:id'),
-
-        AutoRoute(page: SettingsRoute.page),
-
         AutoRoute(
           page: LoadingRoute.page,
           initial: true,
         ),
 
-        AutoRoute(page: OnboardingsRoute.page),
-
         AutoRoute(page: NoConnectionRoute.page),
-
-        AutoRoute(
-          page: NavigationRoute.page,
-          guards: [
-            FirstTimeGuard(
-              userCacheOperation:
-                  ProductStateItems.productCache.userCacheOperation,
-            ),
-          ],
-          children: [
-            // ✅ Children ekledik
-            AutoRoute(
-              page: HomenewRoute.page,
-              initial: true,
-            ),
-            CustomRoute<dynamic>(
-              page: DiscoverRoute.page,
-              transitionsBuilder: TransitionsBuilders.fadeIn,
-              durationInMilliseconds: 500, // 🔹 Animasyon süresi
-            ),
-            CustomRoute<dynamic>(
-              page: OnboardingsRoute.page,
-              transitionsBuilder: TransitionsBuilders.fadeIn,
-              durationInMilliseconds: 500, // 🔹 Animasyon süresi
-            ),
-            CustomRoute<dynamic>(
-              page: SettingsRoute.page,
-              transitionsBuilder: TransitionsBuilders.fadeIn,
-              durationInMilliseconds: 500, // 🔹 Animasyon süresi
-            ),
-          ],
-        ),
 
         // Add more routes as needed...
       ];

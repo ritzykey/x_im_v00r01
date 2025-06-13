@@ -31,18 +31,76 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
     );
+  }
+/* 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Fetch data when the widget is built
     fetchData();
+  } */
+
+  Future<List> fetchData() async {
+    try {
+      // Veriyi çek
+      final data = await supabaseClient
+          .from('daily_stories')
+          .select()
+          .order('created_at')
+          .then(
+        (data) {
+          print('Fetched data: $data');
+
+          if (data.isNotEmpty) {
+            homenewViewModel.setData(data);
+            loadImageHeight(1, data: data);
+            return data;
+          } else {
+            print('Uyarı: daily_stories tablosu boş.');
+
+            return [];
+          }
+        },
+      );
+      return data;
+    } catch (e, stackTrace) {
+      print('fetchData hatası: $e');
+      print('StackTrace: $stackTrace');
+      // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
+      return [];
+    }
   }
 
-  Future<void> fetchData() async {
-    final data =
-        await supabaseClient.from('daily_stories').select().order('created_at');
+  Future<List> fetchStoryIdData(String storyId) async {
+    try {
+      // Veriyi çek
+      final data = await supabaseClient
+          .from('daily_stories')
+          .select()
+          .eq('id', storyId)
+          .order('created_at')
+          .then(
+        (data) {
+          print('Fetched data: $data');
 
-    print('data $data');
+          if (data.isNotEmpty) {
+            homenewViewModel.setData(data);
+            loadImageHeight(1, data: data);
+            return data;
+          } else {
+            print('Uyarı: daily_stories tablosu boş.');
 
-    homenewViewModel.setData(data);
-
-    await loadImageHeight(1, data: data);
+            return [];
+          }
+        },
+      );
+      return data;
+    } catch (e, stackTrace) {
+      print('fetchData hatası: $e');
+      print('StackTrace: $stackTrace');
+      // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
+      return [];
+    }
   }
 
   double calculateTextHeight(String text) {

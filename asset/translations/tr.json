@@ -10,6 +10,7 @@
         "title": "Ana Sayfa"
     },
     "general": {
+        "unknown": "Bilinmeyen",
         "button": {
             "save": "Kaydet {}"
         },
@@ -22,7 +23,8 @@
     },
     "snackbar": {
         "successfulSignOUT": "Çıkış başarılı!",
-        "successfulSignIN": "Giriş başarılı!"
+        "successfulSignIN": "Giriş başarılı!",
+        "googleSignInFailed": "Google ile giriş başarısız oldu!"
     },
     "settings": {
         "title": "Ayarlar",

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/authenction_operation.dart';
@@ -19,7 +20,7 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
         pageController = pageController,
         super(
           const HomenewState(
-            isLoading: false,
+            isLoading: true,
             opacity: 0.00001,
             imageHeight: 250,
             data: [
@@ -29,6 +30,23 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'photo_url': '',
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
+                'birth_place': 'Turkey',
+                'translations': {
+                  'en': {
+                    'title': 'Story of Acun Ilıcalı',
+                    'content':
+                        'Acun Ilıcalı has achieved great success in the world of television. Starting his career at MTV Turkey, he eventually transformed it into a media empire by purchasing TV8.',
+                    'birthPlace': 'Istanbul',
+                    'nationality': 'Turkish',
+                  },
+                  'tr': {
+                    'title': 'Acun Ilıcalı Hikayesi',
+                    'content':
+                        'Acun Ilıcalı televizyon dünyasında büyük başarılara imza atmıştır. MTV Türkiye’de başladığı kariyeri, TV8’i satın alarak büyük bir medya imparatorluğuna dönüşmüştür.',
+                    'birthPlace': 'isntanbul',
+                    'nationality': 'Türk',
+                  },
+                },
               },
               {
                 'name': 'Acun Ilıcalı',
@@ -36,7 +54,24 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
                 'photo_url': '',
                 'story': 'Acun Story',
                 'title': 'Story of Acun',
-              }
+                'birth_place': 'Turkey',
+                'translations': {
+                  'en': {
+                    'title': 'Story of Acun Ilıcalı',
+                    'content':
+                        'Acun Ilıcalı has achieved great success in the world of television. Starting his career at MTV Turkey, he eventually transformed it into a media empire by purchasing TV8.',
+                    'birthPlace': 'Istanbul',
+                    'nationality': 'Turkish',
+                  },
+                  'tr': {
+                    'title': 'Acun Ilıcalı Hikayesi',
+                    'content':
+                        'Acun Ilıcalı televizyon dünyasında büyük başarılara imza atmıştır. MTV Türkiye’de başladığı kariyeri, TV8’i satın alarak büyük bir medya imparatorluğuna dönüşmüştür.',
+                    'birthPlace': 'isntanbul',
+                    'nationality': 'Türk',
+                  },
+                },
+              },
             ],
           ),
         );
@@ -48,8 +83,8 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
   EdgeInsets dynamicPadding = const EdgeInsets.only(left: 8, right: 8, top: 20);
 
   /// Change loading states
-  void changeLoading() {
-    emit(state.copyWith(isLoading: !state.isLoading));
+  void changeLoading(bool isLoading) {
+    emit(state.copyWith(isLoading: isLoading));
   }
 
   Future<bool> fetchUsers() async {
@@ -60,14 +95,61 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     return true;
   }
 
-  void favoritesButtton() {}
+  final _supabase = Supabase.instance.client;
 
+  Future<bool> isFavorite(String storyId) async {
+    try {
+      emit(state.copyWith(isLoadingFavRpc: true));
+
+      final response = await _supabase
+          .rpc<bool>('is_favorite', params: {'story_id': storyId});
+      final currentFavorites = Map<String, bool>.from(state.favorites);
+
+      currentFavorites[storyId] = response;
+
+      emit(
+        state.copyWith(
+          favorites: currentFavorites,
+          isLoadingFavRpc: false,
+        ),
+      );
+      return response;
+    } catch (e) {
+      print('Error checking favorite status: $e');
+      return false;
+    }
+  }
+
+  Future<void> toggleFavoriteRPC(String storyId) async {
+    try {
+      emit(state.copyWith(isLoadingFavRpc: true));
+
+      // Make API call using Supabase RPC
+      final response = await _supabase.rpc<Map<String, dynamic>>(
+        'favorite_story',
+        params: {'p_story_id': storyId},
+      ); // If API call fails, revert the optimistic update
+
+      await isFavorite(storyId);
+    } catch (e) {
+      // Revert optimistic update on error
+      final currentFavorites = Map<String, bool>.from(state.favorites);
+      currentFavorites[storyId] = !currentFavorites[storyId]!;
+      emit(
+        state.copyWith(
+          favorites: currentFavorites,
+          isLoadingFavRpc: false,
+        ),
+      );
+
+      print('Error toggling favorite: $e');
+    }
+  }
 
   void setData(List<Map<String, dynamic>>? data) {
     emit(
       state.copyWith(
         data: data,
-        isLoading: true,
       ),
     );
   }
@@ -77,7 +159,6 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
       emit(
         state.copyWith(
           imageHeight: screenHeight * 0.6,
-          isLoading: true,
         ),
       );
       return;
@@ -85,10 +166,12 @@ final class HomenewViewModel extends BaseCubit<HomenewState> {
     emit(
       state.copyWith(
         imageHeight: imageHeight,
-        isLoading: true,
       ),
     );
   }
 
-  void increaseFav() {}
+  void increaseFav(String $3) {
+    if (state.data == null || state.data!.isEmpty) return;
+    toggleFavoriteRPC($3);
+  }
 }

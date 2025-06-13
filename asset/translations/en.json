@@ -10,6 +10,7 @@
         "title": "Home Page"
     },
     "general": {
+        "unknown": "Unknown",
         "button": {
             "save": "Save {}"
         },
@@ -22,7 +23,8 @@
     },
     "snackbar": {
         "successfulSignOUT": "Sign out successful!",
-        "successfulSignIN": "Sign in successful!"
+        "successfulSignIN": "Sign in successful!",
+        "googleSignInFailed": "Google sign in failed!"
     },
     "settings": {
         "title": "Settings",

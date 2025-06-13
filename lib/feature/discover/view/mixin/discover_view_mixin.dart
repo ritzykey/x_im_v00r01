@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:x_im_v00r01/feature/discover/service/discover_service.dart';
 import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
 import 'package:x_im_v00r01/feature/discover/view/widget/discoverpages.dart';
 import 'package:x_im_v00r01/feature/discover/view_model/discover_view_model.dart';
@@ -16,10 +18,9 @@ mixin DiscoverViewMixin on BaseState<DiscoverView> {
   late final DiscoverViewModel discoverViewModel;
   final ScrollController topScrollController = ScrollController();
   final ScrollController bottomScrollController = ScrollController();
-  bool _isTopScrolling = false;
+  final bool _isTopScrolling = false;
   @override
   void initState() {
-    // TODO: implement activate
     super.initState();
     productNetworkErrorManager = ProductNetworkErrorManager(context);
     ProductStateItems.productNetworkManager.listenErrorState(
@@ -29,21 +30,10 @@ mixin DiscoverViewMixin on BaseState<DiscoverView> {
       operationService: LoginService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
+      discoverService: SupabaseDiscoverService(Supabase.instance.client),
     );
-
-    topScrollController.addListener(() {
-      if (_isTopScrolling) return; // Sonsuz döngüyü önlemek için
-      _isTopScrolling = true;
-      bottomScrollController.jumpTo(topScrollController.offset);
-      _isTopScrolling = false;
-    });
-
-    bottomScrollController.addListener(() {
-      if (_isTopScrolling) return; // Sonsuz döngüyü önlemek için
-      _isTopScrolling = true;
-      topScrollController.jumpTo(bottomScrollController.offset);
-      _isTopScrolling = false;
-    });
+    discoverViewModel.fetchDailyStories();
+    discoverViewModel.fetchLegendaryFootballers();
   }
 
   final List<Discoverpages> discoverPages = [

@@ -8,41 +8,51 @@ part 'storymodel.g.dart';
 @JsonSerializable()
 class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
   StoryModel({
-    /*this.storyId,
-    this.title,
-    this.content,
-    this.createdAt,
-    this.imageBase64,*/
-    this.userId,
     this.id,
+    this.name,
+    this.story,
     this.title,
-    this.body,
+    this.photoUrl,
+    this.birthDate,
+    this.createdAt,
+    this.birthPlace,
+    this.nationality,
+    this.language,
+    this.translations
   });
 
-  /// Get user from json
+  /// Get story from json
   factory StoryModel.fromJson(Map<String, dynamic> json) =>
       _$StoryModelFromJson(json);
-  /*final String? storyId;
-  final String? title;
-  final String? content;
-  final String? createdAt;
-  final String? imageBase64; // Base64 image için String alanı ekledik*/
-  final int? userId;
+
   final String? id;
+  final String? name;
+  final String? story;
   final String? title;
-  final String? body;
+  final String? photoUrl;
+  final String? birthDate;
+  final String? createdAt;
+  final String? birthPlace;
+  final String? nationality;
+  final String? language;
+  final Map<String, dynamic>? translations;
 
-  /*
-   işleyiş sırasından bakarsan 1. factory contructure çalışır  _$UserFromJson(json) tetiklenir ,
-   sonrasında bu fonksiyon aldığı parametreleri user clasının constucterına atar,
-   sonrasında this.user ıd gibi olan constucterlar class içerisinde bulunan final int?userid
-   ye atamayı yapar .
-  */
   @override
-  //List<Object?> get props => [storyId, title, content, createdAt, imageBase64];
-  List<Object?> get props => [userId, id, title, body];
+  List<Object?> get props => [
+        id,
+        name,
+        story,
+        title,
+        photoUrl,
+        birthDate,
+        createdAt,
+        birthPlace,
+        nationality,
+        language,
+        translations
+      ];
 
-  /// User model to map object
+  /// Story model to map object
   @override
   Map<String, dynamic> toJson() => _$StoryModelToJson(this);
 
@@ -52,27 +62,30 @@ class StoryModel extends INetworkModel<StoryModel> with EquatableMixin {
   }
 
   StoryModel copyWith({
-    int? userId,
     String? id,
+    String? name,
+    String? story,
     String? title,
-    String? body,
-
-    /*String? storyId,
-    String? title,
-    String? content,
+    String? photoUrl,
+    String? birthDate,
     String? createdAt,
-    String? imageBase64,*/
+    String? birthPlace,
+    String? nationality,
+    String? language,
+    Map<String, dynamic>? translations,
   }) {
     return StoryModel(
-      userId: userId ?? this.userId,
       id: id ?? this.id,
+      name: name ?? this.name,
+      story: story ?? this.story,
       title: title ?? this.title,
-      body: body ?? this.body,
-      /*storyId: storyId ?? this.storyId,
-      title: title ?? this.title,
-      content: content ?? this.content,
+      photoUrl: photoUrl ?? this.photoUrl,
+      birthDate: birthDate ?? this.birthDate,
       createdAt: createdAt ?? this.createdAt,
-      imageBase64: imageBase64 ?? this.imageBase64,*/
+      birthPlace: birthPlace ?? this.birthPlace,
+      nationality: nationality ?? this.nationality,
+      language: language ?? this.language,
+      translations: translations ?? this.translations,
     );
   }
 }

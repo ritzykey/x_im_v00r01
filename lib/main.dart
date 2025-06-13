@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +52,15 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp.router(
-      routerConfig: _appRouter.config(),
+      routerConfig: _appRouter.config(
+        deepLinkBuilder: (deepLinkBuilder) {
+          print('Deep link URI: ${deepLinkBuilder.path}');
+          if (deepLinkBuilder.path.startsWith('/story')) {
+            return deepLinkBuilder;
+          }
+          return DeepLink.defaultPath;
+        },
+      ),
       builder: (context, child) {
         return BlocListener<ProductViewModel, ProductState>(
           listener: (context, state) {

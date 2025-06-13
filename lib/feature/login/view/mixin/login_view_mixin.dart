@@ -13,7 +13,6 @@ import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
 mixin LoginViewMixin on BaseState<LoginView> {
-
   late final ProductNetworkErrorManager productNetworkErrorManager;
 
   late final LoginViewModel loginViewModel;
@@ -52,7 +51,9 @@ mixin LoginViewMixin on BaseState<LoginView> {
   }
 
   Future<bool> googleSignIn(BuildContext context) async {
+    debugPrint('Starting Google Sign In...');
     final webClientId = AppEnvironmentItems.webclientID.value;
+    debugPrint('Web Client ID: $webClientId');
 
     /// iOS Client ID that you registered with Google Cloud.
     //const iosClientId = 'my-ios.apps.googleusercontent.com';
@@ -65,42 +66,55 @@ mixin LoginViewMixin on BaseState<LoginView> {
       serverClientId: webClientId,
     );
 
-    final googleUser = await googleSignIn.signIn();
+    try {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in flow
+        return false;
+      }
 
-    final googleAuth = await googleUser!.authentication;
+      final googleAuth = await googleUser.authentication;
 
-    final accessToken = googleAuth.accessToken;
-    final idToken = googleAuth.idToken;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
 
-    if (accessToken == null) {
-      throw Exception('No Access Token found.');
+      if (accessToken == null) {
+        throw Exception('No Access Token found.');
+      }
+      if (idToken == null) {
+        throw Exception('No ID Token found.');
+      }
+
+      if (!context.mounted) return true;
+      await supabaseClient.auth
+          .signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      )
+          .then(
+        (value) {
+          print('object');
+          print('Google sign-in successful');
+
+          if (!context.mounted) return true;
+          context.router.popUntilRoot();
+
+          // SnackBar ile kullanıcıya bilgi verme
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('snackbar.successfulSignIN'.tr())),
+          );
+        },
+      );
+
+      return true;
+    } catch (error) {
+      if (!context.mounted) return false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('snackbar.googleSignInFailed'.tr())),
+      );
+      debugPrint('Google Sign In Error: $error');
+      return false;
     }
-    if (idToken == null) {
-      throw Exception('No ID Token found.');
-    }
-
-    if (!context.mounted) return true;
-    await supabaseClient.auth
-        .signInWithIdToken(
-      provider: OAuthProvider.google,
-      idToken: idToken,
-      accessToken: accessToken,
-    )
-        .then(
-      (value) {
-        print('object');
-        print('Google sign-in successful');
-
-        if (!context.mounted) return true;
-        context.router.popUntilRoot();
-
-        // SnackBar ile kullanıcıya bilgi verme
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('snackbar.successfulSignIN'.tr())),
-        );
-      },
-    );
-
-    return true;
   }
 }
