@@ -12,6 +12,20 @@ final class ProjectService extends ProjectOperation {
   final INetworkManager<EmptyModel> _networkManager;
 
   @override
+
+  // API'den 50 hikayeyi getir
+  Future<List<StoryModel>?> fetchStorys() async {
+    _networkManager.addBaseHeader(const MapEntry('key', 'value'));
+    final response = await _networkManager.send<StoryModel, List<StoryModel>>(
+      ProductServicePath.posts.value,
+      parseModel: StoryModel(),
+      method: RequestType.GET,
+    );
+
+    return response.data;
+  }
+
+  @override
   Future<DenemeResponseModel?> denemeusers() async {
     _networkManager.addBaseHeader(const MapEntry('key', 'value'));
     final response =
@@ -27,7 +41,6 @@ final class ProjectService extends ProjectOperation {
   @override
   Future<EmptyModel?> tokencheck(String token) async {
     _networkManager.addBaseHeader(MapEntry('Authorization', 'Bearer $token'));
-
     final response = await _networkManager.send<EmptyModel, EmptyModel>(
       ProductServicePath.secure.value,
       parseModel: const EmptyModel(),

@@ -76,12 +76,34 @@ class $AssetsLottieGen {
   LottieGenImage get animZombie =>
       const LottieGenImage('assets/lottie/anim_zombie.json');
 
+  /// File path: assets/lottie/onboardscreen1.json
+  LottieGenImage get onboardscreen1 =>
+      const LottieGenImage('assets/lottie/onboardscreen1.json');
+
+  /// File path: assets/lottie/onboardscreen2.json
+  LottieGenImage get onboardscreen2 =>
+      const LottieGenImage('assets/lottie/onboardscreen2.json');
+
+  /// File path: assets/lottie/onboardscreen3.json
+  LottieGenImage get onboardscreen3 =>
+      const LottieGenImage('assets/lottie/onboardscreen3.json');
+
+  /// File path: assets/lottie/onboardscreen4.json
+  LottieGenImage get onboardscreen4 =>
+      const LottieGenImage('assets/lottie/onboardscreen4.json');
+
   /// List of all assets
-  List<LottieGenImage> get values => [animZombie];
+  List<LottieGenImage> get values => [
+        animZombie,
+        onboardscreen1,
+        onboardscreen2,
+        onboardscreen3,
+        onboardscreen4
+      ];
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsColorsGen colors = $AssetsColorsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
@@ -122,7 +144,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -282,6 +304,9 @@ class LottieGenImage {
     bool? addRepaintBoundary,
     FilterQuality? filterQuality,
     void Function(String)? onWarning,
+    _lottie.LottieDecoder? decoder,
+    _lottie.RenderCache? renderCache,
+    bool? backgroundLoading,
   }) {
     return _lottie.Lottie.asset(
       _assetName,
@@ -306,6 +331,9 @@ class LottieGenImage {
       addRepaintBoundary: addRepaintBoundary,
       filterQuality: filterQuality,
       onWarning: onWarning,
+      decoder: decoder,
+      renderCache: renderCache,
+      backgroundLoading: backgroundLoading,
     );
   }
 

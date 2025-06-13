@@ -1,8 +1,16 @@
 {
+    "bottomNavigation": {
+        "home": "Home",
+        "discover": "Discover",
+        "search": "Search",
+        "favorites": "Favorites",
+        "profile": "Profile"
+    },
     "home": {
         "title": "Home Page"
     },
     "general": {
+        "unknown": "Unknown",
         "button": {
             "save": "Save {}"
         },
@@ -11,6 +19,70 @@
                 "title": "Version",
                 "content": "Version Info"
             }
+        }
+    },
+    "snackbar": {
+        "successfulSignOUT": "Sign out successful!",
+        "successfulSignIN": "Sign in successful!",
+        "googleSignInFailed": "Google sign in failed!"
+    },
+    "settings": {
+        "title": "Settings",
+        "login": "Login",
+        "register": "Register",
+        "account": "Account",
+        "signOut": "Sign out",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System",
+        "help": "Help",
+        "logout": "Logout",
+        "textSize": "Text Size",
+        "default": "Default",
+        "small": "Small",
+        "large": "Large",
+        "legal": {
+            "title": "Legal",
+            "termOfService": "Terms of Service",
+            "privacyPolicy": "Privacy Policy"
+        },
+        "rateApp": "Rate App",
+        "contactSupport": "Contact Support",
+        "appearance": {
+            "title": "Appearance",
+            "showModal": "Select a Theme"
+        },
+        "language": {
+            "title": "Language",
+            "content": "Language Selection",
+            "showModal": "Select a Language"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "showModal": {
+                "title": "Select a Notification Type"
+            }
+        }
+    },
+    "onboardings": {
+        "skip": "Skip",
+        "next": "Next",
+        "start": "Start",
+        "step1": {
+            "title": "Welcome to XDBM!",
+            "content": "Here, you can find inspiration from the lives of famous and successful people."
+        },
+        "step2": {
+            "title": "Motivational Advice",
+            "content": "Discover the experiences of world-renowned figures and get inspired!"
+        },
+        "step3": {
+            "title": "Save Your Favorites!",
+            "content": "Save the stories of the people you admire and read them later."
+        },
+        "step4": {
+            "title": "Get Started Now!",
+            "content": "Are you ready to explore thousands of inspiring stories waiting for you?"
         }
     }
 }

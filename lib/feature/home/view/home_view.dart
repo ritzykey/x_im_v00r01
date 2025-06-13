@@ -25,8 +25,6 @@ class _HomeViewState extends BaseState<HomeView> with HomeViewMixin {
       create: (context) => homeViewModel,
       child: Scaffold(
         floatingActionButton: CustomLoginButton(
-          widthScale: 100,
-          heightScale: 100,
           title: 'a',
           onOperation: () async {
             return homeViewModel.fetchUsers();

@@ -25,7 +25,6 @@ class LoginResponseModel2 extends INetworkModel<LoginResponseModel2>
   LoginResponseModel2 fromJson(Map<String, dynamic> json) {
     return _$LoginResponseModel2FromJson(json);
   }
-
 }
 
 @JsonSerializable()

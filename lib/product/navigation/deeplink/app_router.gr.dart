@@ -10,6 +10,44 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [DiscoverView]
+class DiscoverRoute extends PageRouteInfo<void> {
+  const DiscoverRoute({List<PageRouteInfo>? children})
+      : super(
+          DiscoverRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DiscoverRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DiscoverView();
+    },
+  );
+}
+
+/// generated route for
+/// [FavoritesView]
+class FavoritesRoute extends PageRouteInfo<void> {
+  const FavoritesRoute({List<PageRouteInfo>? children})
+      : super(
+          FavoritesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavoritesRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FavoritesView();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeDetailView]
 class HomeDetailRoute extends PageRouteInfo<HomeDetailRouteArgs> {
   HomeDetailRoute({
@@ -76,10 +114,18 @@ class HomeRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [HomenewView]
-class HomenewRoute extends PageRouteInfo<void> {
-  const HomenewRoute({List<PageRouteInfo>? children})
-      : super(
+class HomenewRoute extends PageRouteInfo<HomenewRouteArgs> {
+  HomenewRoute({
+    Key? key,
+    dynamic storyId,
+    List<PageRouteInfo>? children,
+  }) : super(
           HomenewRoute.name,
+          args: HomenewRouteArgs(
+            key: key,
+            storyId: storyId,
+          ),
+          rawPathParams: {'storyId': storyId},
           initialChildren: children,
         );
 
@@ -88,7 +134,48 @@ class HomenewRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const HomenewView();
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<HomenewRouteArgs>(
+          orElse: () => HomenewRouteArgs(storyId: pathParams.get('storyId')));
+      return HomenewView(
+        key: args.key,
+        storyId: args.storyId,
+      );
+    },
+  );
+}
+
+class HomenewRouteArgs {
+  const HomenewRouteArgs({
+    this.key,
+    this.storyId,
+  });
+
+  final Key? key;
+
+  final dynamic storyId;
+
+  @override
+  String toString() {
+    return 'HomenewRouteArgs{key: $key, storyId: $storyId}';
+  }
+}
+
+/// generated route for
+/// [LoadingView]
+class LoadingRoute extends PageRouteInfo<void> {
+  const LoadingRoute({List<PageRouteInfo>? children})
+      : super(
+          LoadingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoadingRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoadingView();
     },
   );
 }
@@ -108,6 +195,63 @@ class LoginRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const LoginView();
+    },
+  );
+}
+
+/// generated route for
+/// [NavigationView]
+class NavigationRoute extends PageRouteInfo<void> {
+  const NavigationRoute({List<PageRouteInfo>? children})
+      : super(
+          NavigationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NavigationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NavigationView();
+    },
+  );
+}
+
+/// generated route for
+/// [NoConnectionView]
+class NoConnectionRoute extends PageRouteInfo<void> {
+  const NoConnectionRoute({List<PageRouteInfo>? children})
+      : super(
+          NoConnectionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NoConnectionRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NoConnectionView();
+    },
+  );
+}
+
+/// generated route for
+/// [OnboardingsView]
+class OnboardingsRoute extends PageRouteInfo<void> {
+  const OnboardingsRoute({List<PageRouteInfo>? children})
+      : super(
+          OnboardingsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OnboardingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OnboardingsView();
     },
   );
 }

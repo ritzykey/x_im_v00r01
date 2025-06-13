@@ -1,6 +1,6 @@
-import 'package:x_im_v00r01/product/widget/button/normal_button.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
+import 'package:x_im_v00r01/product/widget/button/normal_button.dart';
 
 class DialogNormalButton extends StatelessWidget {
   const DialogNormalButton({required this.onComplete, super.key});

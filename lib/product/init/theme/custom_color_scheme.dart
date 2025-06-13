@@ -4,11 +4,9 @@ import 'package:gen/gen.dart';
 final class CustomColorScheme {
   CustomColorScheme._();
 
-  static const lightColorScheme = ColorScheme(
-    brightness: Brightness.light,
+  static ColorScheme lightColorScheme = const ColorScheme.light(
     primary: Color(0xff415f91),
     surfaceTint: Color(0xff415f91),
-    onPrimary: Color(0xffffffff),
     primaryContainer: Color(0xffd6e3ff),
     onPrimaryContainer: Color(0xff001b3e),
     secondary: Color(0xff565f71),
@@ -20,7 +18,6 @@ final class CustomColorScheme {
     tertiaryContainer: Color(0xfffad8fd),
     onTertiaryContainer: Color(0xff28132e),
     error: ColorName.crimsonRed,
-    onError: Color(0xffffffff),
     errorContainer: Color(0xffffdad6),
     onErrorContainer: Color(0xff410002),
     surface: Color(0xfff9f9ff),
@@ -44,8 +41,8 @@ final class CustomColorScheme {
     onTertiaryFixed: Color(0xff28132e),
     tertiaryFixedDim: Color(0xffddbce0),
     onTertiaryFixedVariant: Color(0xff573e5c),
-    surfaceDim: Color(0xffd9d9e0),
-    surfaceBright: Color(0xfff9f9ff),
+    surfaceDim: Color(0xfff9f9ff),
+    surfaceBright: Color(0xffd9d9e0),
     surfaceContainerLowest: Color(0xffffffff),
     surfaceContainerLow: Color(0xfff3f3fa),
     surfaceContainer: Color(0xffededf4),
@@ -53,8 +50,8 @@ final class CustomColorScheme {
     surfaceContainerHighest: Color(0xffe2e2e9),
   );
 
-  static const darkColorScheme = ColorScheme(
-    brightness: Brightness.dark,
+  static ColorScheme darkColorScheme = const ColorScheme.dark(
+    
     primary: Color(0xffaac7ff),
     surfaceTint: Color(0xffaac7ff),
     onPrimary: Color(0xff0a305f),
@@ -102,3 +99,16 @@ final class CustomColorScheme {
     surfaceContainerHighest: Color(0xff33353a),
   );
 }
+// onSurface: Color(0xffe2e2e9)  
+// Açıklama: Genel olarak metin rengi olarak kullanılır.  
+// Kullanım Alanı: "Skip" butonu ve onboarding sayfasındaki başlık (title) ve içerik (content) metinleri bu rengi kullanır.
+
+
+// surface: Color(0xff111318)  
+// Açıklama: Arka plan (background) rengi olarak kullanılır.  
+// Kullanım Alanı: Onboarding ekranlarının genel arka plan rengi bu renktir.
+
+
+// onPrimaryContainer: Color(0xffd6e3ff)  
+// Açıklama: "Primary Container" renginin üzerindeki metin rengi olarak kullanılır.  
+// Kullanım Alanı: Floating Action Button (FAB) içindeki "Next" (İlerle) butonunun metin rengi olarak kullanılır.
