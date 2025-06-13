@@ -26,16 +26,22 @@ class _PageBuilderHomenewState extends State<PageBuilderHomenewView> {
   late double expandedHeight;
 
   final ScrollController _scrollController = ScrollController();
-  final double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
+  double _mediaSizeHeight = 200; // SliverAppBar'ın başlangıç yüksekliği
   bool isAnimating = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _mediaSizeHeight = MediaQuery.of(context).size.height;
 
     expandedHeight = textHeight;
 
     _scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   void _handleScroll() {
