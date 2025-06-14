@@ -200,6 +200,63 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LullabiesListView]
+class LullabiesListRoute extends PageRouteInfo<void> {
+  const LullabiesListRoute({List<PageRouteInfo>? children})
+      : super(
+          LullabiesListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LullabiesListRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LullabiesListView();
+    },
+  );
+}
+
+/// generated route for
+/// [LullabyHomeView]
+class LullabyHomeRoute extends PageRouteInfo<void> {
+  const LullabyHomeRoute({List<PageRouteInfo>? children})
+      : super(
+          LullabyHomeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LullabyHomeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LullabyHomeView();
+    },
+  );
+}
+
+/// generated route for
+/// [NameView]
+class NameRoute extends PageRouteInfo<void> {
+  const NameRoute({List<PageRouteInfo>? children})
+      : super(
+          NameRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NameRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NameView();
+    },
+  );
+}
+
+/// generated route for
 /// [NavigationView]
 class NavigationRoute extends PageRouteInfo<void> {
   const NavigationRoute({List<PageRouteInfo>? children})

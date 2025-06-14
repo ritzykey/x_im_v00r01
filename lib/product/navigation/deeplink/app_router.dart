@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/view/name_view.dart';
 import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
 import 'package:x_im_v00r01/feature/favorites/view/favorites_view.dart';
 import 'package:x_im_v00r01/feature/home/view/home_detail_view.dart';
@@ -7,6 +8,8 @@ import 'package:x_im_v00r01/feature/home/view/home_view.dart';
 import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
 import 'package:x_im_v00r01/feature/loading/view/loading_view.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
+import 'package:x_im_v00r01/feature/lullabiesList/view/lullabiesList_view.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/view/lullabyHome_view.dart';
 import 'package:x_im_v00r01/feature/navigation/view/navigation_view.dart';
 import 'package:x_im_v00r01/feature/no_connection/view/no_connection.dart';
 import 'package:x_im_v00r01/feature/onboardings/view/onboardings_view.dart';
@@ -16,7 +19,6 @@ import 'package:x_im_v00r01/product/navigation/deeplink/autoguard.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
 part 'app_router.gr.dart';
-
 
 /* //XDBM AppRouter
 @AutoRouterConfig(replaceInRouteName: 'View,Route')
@@ -105,7 +107,7 @@ class AppRouter extends RootStackRouter {
           children: [
             // ✅ Children ekledik
             CustomRoute<dynamic>(
-              page: HomenewRoute.page,
+              page: LullabyHomeRoute.page,
               initial: true,
               path: 'story/:storyId',
               transitionsBuilder: TransitionsBuilders.fadeIn,
@@ -138,7 +140,12 @@ class AppRouter extends RootStackRouter {
           ],
         ),
 
-        AutoRoute(page: HomeRoute.page),
+        CustomRoute<dynamic>(
+          page: LullabiesListRoute.page,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+          durationInMilliseconds: 500, // 🔹 Animasyon süresi
+          path: '/lullabieslist',
+        ),
 
         AutoRoute(page: HomeDetailRoute.page),
 
