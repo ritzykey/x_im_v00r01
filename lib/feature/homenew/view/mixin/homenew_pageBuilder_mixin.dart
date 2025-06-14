@@ -90,4 +90,6 @@ mixin HomenewPageBuilderMixin on BaseState<PageBuilderHomenewView> {
       return DateFormat('d MMMM', context.locale.toLanguageTag()).format(date);
     }
   }
+
+  
 }

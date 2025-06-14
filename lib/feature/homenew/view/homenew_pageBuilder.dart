@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_pageBuilder.dart';
+import 'package:x_im_v00r01/feature/homenew/view/mixin/homenew_pageBuilder_mixin.dart';
 import 'package:x_im_v00r01/feature/homenew/view/widget/home_favorite_button.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/homenew_view_model.dart';
 import 'package:x_im_v00r01/feature/homenew/view_model/state/homenew_state.dart';
@@ -204,7 +204,10 @@ class _PageBuilderHomenewState extends BaseState<PageBuilderHomenewView>
                         padding: const EdgeInsets.only(left: 8),
                         child: Text(
                           state,
-                          style: context.general.textTheme.headlineSmall,
+                          style:
+                              context.general.textTheme.headlineSmall?.copyWith(
+                            height: 1.1,
+                          ),
                         ),
                       ),
                     ),

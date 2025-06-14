@@ -74,6 +74,8 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
 
   Future<List> fetchStoryIdData(String storyId) async {
     try {
+      if (storyId.startsWith('homepage') || storyId.startsWith(':storyId'))
+        return [];
       // Veriyi çek
       final data = await supabaseClient
           .from('daily_stories')
@@ -101,6 +103,27 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       print('StackTrace: $stackTrace');
       // Hata loglaması veya kullanıcıya gösterilecek hata mesajı eklenebilir
       return [];
+    }
+  }
+
+  Future<void> fetchFavCount(String storyId) async {
+    try {
+      await supabaseClient
+          .from('story_favorite_counts')
+          .select()
+          .eq('story_id', storyId)
+          .then(
+            (res) => (res as List).isNotEmpty
+                ? res.first['favorite_count'] as int?
+                : null,
+          )
+          .then((count) {
+        if (count == null) return homenewViewModel.setfavCount(0);
+        print('setfavCount: $count');
+        homenewViewModel.setfavCount(count);
+      });
+    } catch (e) {
+      print('fetchFavCount hatası: $e');
     }
   }
 
@@ -149,6 +172,4 @@ mixin HomenewViewMixin on BaseState<HomenewView> {
       );
     });
   }
-
-
 }
