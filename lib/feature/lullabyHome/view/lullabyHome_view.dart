@@ -177,7 +177,7 @@ class _CategoryCard extends StatelessWidget {
       child: InkWell(
         borderRadius: context.border.normalBorderRadius,
         onTap: () {
-          context.router.replaceNamed('/lullabieslist');
+          context.router.pushNamed('lullabieslist');
         },
         child: Container(
           decoration: BoxDecoration(

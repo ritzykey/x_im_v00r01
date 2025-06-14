@@ -137,14 +137,14 @@ class AppRouter extends RootStackRouter {
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
               path: 'settings',
             ),
-          ],
-        ),
 
-        CustomRoute<dynamic>(
-          page: LullabiesListRoute.page,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
-          durationInMilliseconds: 500, // 🔹 Animasyon süresi
-          path: '/lullabieslist',
+            CustomRoute<dynamic>(
+              page: LullabiesListRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'lullabieslist',
+            ),
+          ],
         ),
 
         AutoRoute(page: HomeDetailRoute.page),
