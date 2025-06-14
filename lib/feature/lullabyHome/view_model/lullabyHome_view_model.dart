@@ -10,12 +10,31 @@ final class LullabyHomeViewModel extends BaseCubit<LullabyHomeState> {
     required HiveCacheOperation<UserCacheModel> userCacheOperation,
   })  : _projectOperationService = operationService,
         userCacheOperation = userCacheOperation,
-        super(const LullabyHomeState(isLoading: false));
+        super(
+          const LullabyHomeState(
+            isLoading: false,
+            isPlaying: false,
+            duration: Duration(minutes: 3, seconds: 13),
+            position: Duration(minutes: 1, seconds: 5),
+          ),
+        );
 
   final ProjectOperation _projectOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
 
   void changeLoading() {
     emit(state.copyWith(isLoading: state.isLoading));
+  }
+
+  void changeIsPlaying(bool playerState) {
+    emit(state.copyWith(isPlaying: playerState));
+  }
+
+  void changeDuration(Duration duration) {
+    emit(state.copyWith(duration: duration));
+  }
+
+  void changePosition(Duration position) {
+    emit(state.copyWith(position: position));
   }
 }
