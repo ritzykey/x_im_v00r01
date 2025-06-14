@@ -17,6 +17,78 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 
 part 'app_router.gr.dart';
 
+
+/* //XDBM AppRouter
+@AutoRouterConfig(replaceInRouteName: 'View,Route')
+class AppRouter extends RootStackRouter {
+  @override
+  List<AutoRoute> get routes => [
+        AutoRoute(
+          page: NavigationRoute.page,
+          path: '/',
+          guards: [
+            FirstTimeGuard(
+              userCacheOperation:
+                  ProductStateItems.productCache.userCacheOperation,
+            ),
+          ],
+          children: [
+            // ✅ Children ekledik
+            CustomRoute<dynamic>(
+              page: HomenewRoute.page,
+              initial: true,
+              path: 'story/:storyId',
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+            ),
+            CustomRoute<dynamic>(
+              page: DiscoverRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'discover',
+            ),
+            CustomRoute<dynamic>(
+              page: OnboardingsRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'onboardings',
+            ),
+            CustomRoute<dynamic>(
+              page: FavoritesRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'favorites',
+            ),
+            CustomRoute<dynamic>(
+              page: SettingsRoute.page,
+              transitionsBuilder: TransitionsBuilders.fadeIn,
+              durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              path: 'settings',
+            ),
+          ],
+        ),
+
+        AutoRoute(page: HomeRoute.page),
+
+        AutoRoute(page: HomeDetailRoute.page),
+
+        AutoRoute(
+          page: LoginRoute.page,
+          fullscreenDialog: true,
+        ),
+
+        AutoRoute(
+          page: LoadingRoute.page,
+          initial: true,
+        ),
+
+        AutoRoute(page: NoConnectionRoute.page),
+
+        // Add more routes as needed...
+      ];
+} */
+
+//Lullaby AppRouter
 @AutoRouterConfig(replaceInRouteName: 'View,Route')
 class AppRouter extends RootStackRouter {
   @override

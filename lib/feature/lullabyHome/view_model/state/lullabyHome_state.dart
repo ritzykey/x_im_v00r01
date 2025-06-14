@@ -1,7 +1,7 @@
-/* import 'package:equatable/equatable.dart';
+import 'package:equatable/equatable.dart';
 
-final class FavoritesState extends Equatable {
-  const FavoritesState({
+final class LullabyHomeState extends Equatable {
+  const LullabyHomeState({
     this.isLoading,
   });
 
@@ -10,12 +10,11 @@ final class FavoritesState extends Equatable {
   @override
   List<Object?> get props => [isLoading];
 
-  FavoritesState copyWith({
+  LullabyHomeState copyWith({
     bool? isLoading,
   }) {
-    return FavoritesState(
+    return LullabyHomeState(
       isLoading: isLoading ?? this.isLoading,
     );
   }
 }
- */
