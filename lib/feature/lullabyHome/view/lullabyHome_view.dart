@@ -35,7 +35,7 @@ class _LullabyHomeViewState extends BaseState<LullabyHomeView>
           ),
           centerTitle: false,
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          // backgroundColor: Colors.transparent,
         ),
         body: SafeArea(
           child: ListView(
@@ -283,7 +283,7 @@ class _CategoryCard extends StatelessWidget {
       child: InkWell(
         borderRadius: context.border.normalBorderRadius,
         onTap: () {
-          context.router.pushNamed('lullabieslist');
+          context.router.pushNamed('lullabylist');
         },
         child: Container(
           decoration: BoxDecoration(

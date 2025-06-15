@@ -57,7 +57,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                   ),
                 ),
               ),
-              backgroundColor: const Color(0xFF4A6FA5), // Match banner color
+              // backgroundColor: const Color(0xFF4A6FA5), // Match banner color
               leading: SizedBox(
                 height: 5,
                 child: IconButton(

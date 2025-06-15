@@ -9,6 +9,7 @@ import 'package:x_im_v00r01/feature/homenew/view/homenew_view.dart';
 import 'package:x_im_v00r01/feature/loading/view/loading_view.dart';
 import 'package:x_im_v00r01/feature/login/view/login_view.dart';
 import 'package:x_im_v00r01/feature/lullabiesList/view/lullabiesList_view.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/view/lullabyHomeParent_view.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view/lullabyHome_view.dart';
 import 'package:x_im_v00r01/feature/navigation/view/navigation_view.dart';
 import 'package:x_im_v00r01/feature/no_connection/view/no_connection.dart';
@@ -122,10 +123,25 @@ class AppRouter extends RootStackRouter {
           ],
           children: [
             CustomRoute<dynamic>(
-              page: LullabyHomeRoute.page,
-              path: 'story/:storyId',
+              page: LullabyHomeParentRoute.page,
+              path: 'home',
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
+              children: [
+                CustomRoute<dynamic>(
+                  page: LullabyHomeRoute.page,
+                  transitionsBuilder: TransitionsBuilders.fadeIn,
+                  durationInMilliseconds: 500, // 🔹 Animasyon süresi
+                  path: 'lullabyhome',
+                  initial: true,
+                ),
+                CustomRoute<dynamic>(
+                  page: LullabiesListRoute.page,
+                  transitionsBuilder: TransitionsBuilders.fadeIn,
+                  durationInMilliseconds: 500, // 🔹 Animasyon süresi
+                  path: 'lullabylist',
+                ),
+              ],
             ),
             CustomRoute<dynamic>(
               page: DiscoverRoute.page,
@@ -150,12 +166,6 @@ class AppRouter extends RootStackRouter {
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
               path: 'settings',
-            ),
-            CustomRoute<dynamic>(
-              page: LullabiesListRoute.page,
-              transitionsBuilder: TransitionsBuilders.fadeIn,
-              durationInMilliseconds: 500, // 🔹 Animasyon süresi
-              path: 'lullabieslist',
             ),
           ],
         ),

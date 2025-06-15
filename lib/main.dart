@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:widgets/widgets.dart';
 import 'package:x_im_v00r01/product/init/application_initialize.dart';
@@ -12,6 +13,13 @@ import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 Future<void> main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor:
+          Colors.transparent, // Durum çubuğu rengini şeffaf yapıyoruz
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
   await AplicationInitiliaze().make();
   runApp(ProductLocalization(child: const StateInitialize(child: MyApp())));
 }
@@ -82,7 +90,6 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      
     );
   }
 }

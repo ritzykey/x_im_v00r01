@@ -11,6 +11,7 @@ class MyRouteObserver extends AutoRouterObserver {
       const SystemUiOverlayStyle(
         statusBarColor:
             Colors.transparent, // Durum çubuğu rengini şeffaf yapıyoruz
+            statusBarIconBrightness: Brightness.dark,
       ),
     );
   }

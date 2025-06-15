@@ -219,6 +219,25 @@ class LullabiesListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LullabyHomeParentView]
+class LullabyHomeParentRoute extends PageRouteInfo<void> {
+  const LullabyHomeParentRoute({List<PageRouteInfo>? children})
+      : super(
+          LullabyHomeParentRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LullabyHomeParentRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LullabyHomeParentView();
+    },
+  );
+}
+
+/// generated route for
 /// [LullabyHomeView]
 class LullabyHomeRoute extends PageRouteInfo<void> {
   const LullabyHomeRoute({List<PageRouteInfo>? children})

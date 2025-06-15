@@ -18,15 +18,14 @@ class NavigationView extends StatelessWidget {
         OnboardingsRoute(),
         FavoritesRoute(),
         SettingsRoute(),
-        LullabiesListRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return SizedBox(
-          height: context.general.mediaSize.height * 0.15,
+          height: context.general.mediaSize.height * 0.20,
           child: Column(
             children: [
               SizedBox(
-                height: (context.general.mediaSize.height * 0.13) / 2,
+                height: (context.general.mediaSize.height * 0.19) / 2,
                 child: Container(
                   color: Colors.black,
                 ),
