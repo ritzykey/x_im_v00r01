@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
 import 'package:x_im_v00r01/product/init/index.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
 import 'package:x_im_v00r01/product/state/container/product_state_container.dart';
@@ -17,4 +18,6 @@ final class ProductStateItems {
 
   static SupabaseClient get supabaseClient =>
       ProductContainer.read<SupabaseClient>();
+
+  static AudioService get audioService => ProductContainer.read<AudioService>();
 }

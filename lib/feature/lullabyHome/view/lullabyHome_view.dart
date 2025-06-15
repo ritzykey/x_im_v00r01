@@ -81,6 +81,7 @@ class _LullabyHomeViewState extends BaseState<LullabyHomeView>
                               const LulbyModel(
                                 audioURL: '',
                                 title: '**** ****** *****',
+                                artist: 'Anonim',
                               ),
                             ];
                       },
@@ -138,7 +139,7 @@ class _PlayerRow extends StatelessWidget {
                   await audioPlayer?.pause();
                 } else {
                   await audioPlayer?.play(
-                    'https://fgtupdhhjcmdoqfrerxj.supabase.co/storage/v1/object/public/lullabies//AtemTutemMen.mp3',
+                    state.$2,
                   );
                 }
               },

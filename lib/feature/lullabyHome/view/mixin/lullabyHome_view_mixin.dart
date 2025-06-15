@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/service/lullabyHome_service.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view/lullabyHome_view.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/lullabyHome_view_model.dart';
@@ -11,7 +10,6 @@ import 'package:x_im_v00r01/product/state/container/product_state_items.dart';
 mixin LullabyHomeViewMixin on BaseState<LullabyHomeView> {
   late final ProductNetworkErrorManager productNetworkErrorManager;
   late final LullabyHomeViewModel lullabyHomeViewModel;
-  late final AudioService audioService;
 
   @override
   void initState() {
@@ -27,12 +25,6 @@ mixin LullabyHomeViewMixin on BaseState<LullabyHomeView> {
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       lullabyHomeService: SupabaseLullabyHomeService(supabaseClient),
-    );
-
-    audioService = AudioService();
-
-    audioService.setUrl(
-      'https://fgtupdhhjcmdoqfrerxj.supabase.co/storage/v1/object/public/lullabies//AtemTutemMen.mp3',
     );
 
     audioService.onPlayerStateChanged.listen((state) {

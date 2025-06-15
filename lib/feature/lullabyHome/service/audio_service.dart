@@ -58,14 +58,14 @@ class AudioService {
   /// Resume paused audio
   Future<void> resume() async {
     try {
-      // Ses tamamlandıysa başa sar ve yeniden oynat
       if (_isCompleted) {
+        // Eğer ses tamamlandıysa başa sar ve yeniden başlat
         await _audioPlayer.seek(Duration.zero);
-        await _audioPlayer.resume();
-        _isCompleted = false;
-      } else {
-        await _audioPlayer.resume();
       }
+
+      // Her durumda oynatmaya çalış
+      await _audioPlayer.resume();
+      _isCompleted = false;
     } catch (e, stack) {
       log('Error while resuming audio: $e', stackTrace: stack);
     }

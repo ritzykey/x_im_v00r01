@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:x_im_v00r01/feature/lullabyMiniPlayer/view/MiniAudioPlayer.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 
 @RoutePage()
@@ -24,12 +25,7 @@ class NavigationView extends StatelessWidget {
           height: context.general.mediaSize.height * 0.20,
           child: Column(
             children: [
-              SizedBox(
-                height: (context.general.mediaSize.height * 0.19) / 2,
-                child: Container(
-                  color: Colors.black,
-                ),
-              ),
+              const MiniAudioPlayer(),
               SalomonBottomBar(
                 key: ValueKey(context.locale),
                 currentIndex: tabsRouter.activeIndex,

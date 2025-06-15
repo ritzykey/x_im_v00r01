@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
 import 'package:x_im_v00r01/product/cache/product_cache.dart';
 import 'package:x_im_v00r01/product/init/config/app_environment.dart';
 import 'package:x_im_v00r01/product/service/manager/product_service_manager.dart';
@@ -31,6 +32,9 @@ final class ProductContainer {
       ..registerLazySingleton<SupabaseClient>(() => Supabase.instance.client)
       ..registerLazySingleton<ProductViewModel>(
         ProductViewModel.new,
+      )
+      ..registerLazySingleton<AudioService>(
+        AudioService.new,
       );
   }
 
