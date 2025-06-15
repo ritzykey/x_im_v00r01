@@ -1,4 +1,4 @@
-import 'package:x_im_v00r01/feature/navigation/view/navigation_view.dart';
+/* import 'package:x_im_v00r01/feature/navigation/view/navigation_view.dart';
 import 'package:x_im_v00r01/feature/navigation/view_model/Navigation_view_model.dart';
 import 'package:x_im_v00r01/product/service/login_service.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
@@ -26,3 +26,4 @@ mixin NavigationViewMixin on BaseState<NavigationView> {
     );
   }
 }
+ */

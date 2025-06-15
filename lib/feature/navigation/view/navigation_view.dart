@@ -1,41 +1,42 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kartal/kartal.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:x_im_v00r01/feature/navigation/view/mixin/navigation_view_mixin.dart';
-import 'package:x_im_v00r01/product/state/base/base_state.dart';
-import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
-import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
+import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 
 @RoutePage()
-class NavigationView extends StatefulWidget {
+class NavigationView extends StatelessWidget {
   const NavigationView({super.key});
 
   @override
-  State<NavigationView> createState() => _NavigationViewState();
-}
-
-class _NavigationViewState extends BaseState<NavigationView>
-    with NavigationViewMixin {
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => productViewModel,
-      child: BlocBuilder<ProductViewModel, ProductState>(
-        builder: (context, state) {
-          return PopScope(
-            canPop: false,
-            onPopInvokedWithResult: (didPop, result) {
-              productViewModel.changeTab(0, context.router);
-            },
-            child: Scaffold(
-              body: const AutoRouter(),
-              bottomNavigationBar: SalomonBottomBar(
+    return AutoTabsScaffold(
+      routes: const [
+        LullabyHomeRoute(),
+        DiscoverRoute(),
+        OnboardingsRoute(),
+        FavoritesRoute(),
+        SettingsRoute(),
+        LullabiesListRoute(),
+      ],
+      bottomNavigationBuilder: (_, tabsRouter) {
+        return SizedBox(
+          height: context.general.mediaSize.height * 0.15,
+          child: Column(
+            children: [
+              SizedBox(
+                height: (context.general.mediaSize.height * 0.13) / 2,
+                child: Container(
+                  color: Colors.black,
+                ),
+              ),
+              SalomonBottomBar(
                 key: ValueKey(context.locale),
-                currentIndex: state.selectedindex ?? 0,
+                currentIndex: tabsRouter.activeIndex,
                 onTap: (index) {
-                  productViewModel.changeTab(index, context.router);
+                  // here we switch between tabs
+                  tabsRouter.setActiveIndex(index);
                 },
                 items: <SalomonBottomBarItem>[
                   SalomonBottomBarItem(
@@ -65,10 +66,10 @@ class _NavigationViewState extends BaseState<NavigationView>
                   ),
                 ],
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

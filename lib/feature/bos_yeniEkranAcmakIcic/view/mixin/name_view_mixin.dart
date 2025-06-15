@@ -1,3 +1,4 @@
+import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/service/name_service.dart';
 import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/view/name_view.dart';
 import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/view_model/name_view_model.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
@@ -19,6 +20,7 @@ mixin NameViewMixin on BaseState<NameView> {
     nameViewModel = NameViewModel(
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
+      nameService: SupabaseNameService(supabaseClient),
     );
   }
 }

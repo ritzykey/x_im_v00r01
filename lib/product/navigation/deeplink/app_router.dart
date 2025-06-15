@@ -95,6 +95,22 @@ class AppRouter extends RootStackRouter {
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
+        AutoRoute(page: OnboardingsRoute.page),
+
+        AutoRoute(page: HomeDetailRoute.page),
+
+        AutoRoute(
+          page: LoginRoute.page,
+          fullscreenDialog: true,
+        ),
+
+        AutoRoute(
+          page: LoadingRoute.page,
+          initial: true,
+        ),
+
+        AutoRoute(page: NoConnectionRoute.page),
+
         AutoRoute(
           page: NavigationRoute.page,
           path: '/',
@@ -105,10 +121,8 @@ class AppRouter extends RootStackRouter {
             ),
           ],
           children: [
-            // ✅ Children ekledik
             CustomRoute<dynamic>(
               page: LullabyHomeRoute.page,
-              initial: true,
               path: 'story/:storyId',
               transitionsBuilder: TransitionsBuilders.fadeIn,
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
@@ -137,7 +151,6 @@ class AppRouter extends RootStackRouter {
               durationInMilliseconds: 500, // 🔹 Animasyon süresi
               path: 'settings',
             ),
-
             CustomRoute<dynamic>(
               page: LullabiesListRoute.page,
               transitionsBuilder: TransitionsBuilders.fadeIn,
@@ -146,20 +159,6 @@ class AppRouter extends RootStackRouter {
             ),
           ],
         ),
-
-        AutoRoute(page: HomeDetailRoute.page),
-
-        AutoRoute(
-          page: LoginRoute.page,
-          fullscreenDialog: true,
-        ),
-
-        AutoRoute(
-          page: LoadingRoute.page,
-          initial: true,
-        ),
-
-        AutoRoute(page: NoConnectionRoute.page),
 
         // Add more routes as needed...
       ];

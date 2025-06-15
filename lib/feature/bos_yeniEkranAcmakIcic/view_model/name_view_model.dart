@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/service/name_service.dart';
 import 'package:x_im_v00r01/feature/bos_yeniEkranAcmakIcic/view_model/state/name_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/project_operation.dart';
@@ -8,12 +9,15 @@ final class NameViewModel extends BaseCubit<NameState> {
   NameViewModel({
     required ProjectOperation operationService,
     required HiveCacheOperation<UserCacheModel> userCacheOperation,
+    required SupabaseNameService nameService
   })  : _projectOperationService = operationService,
         userCacheOperation = userCacheOperation,
+        _nameService = nameService,
         super(const NameState(isLoading: false));
 
   final ProjectOperation _projectOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
+  final SupabaseNameService _nameService;
 
   void changeLoading() {
     emit(state.copyWith(isLoading: state.isLoading));

@@ -156,6 +156,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                                 trailing: const Icon(Icons.arrow_forward_ios),
                                 onTap: () {
                                   // TODO: Navigate to lullaby detail page
+                                  print('Navigate detail page');
                                 },
                               ),
                             );
