@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/discover/service/discover_service.dart';
 import 'package:x_im_v00r01/feature/discover/view/discover_view.dart';
 import 'package:x_im_v00r01/feature/discover/view/widget/discoverpages.dart';
@@ -30,7 +29,7 @@ mixin DiscoverViewMixin on BaseState<DiscoverView> {
       operationService: LoginService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       pageController: PageController(),
-      discoverService: SupabaseDiscoverService(Supabase.instance.client),
+      discoverService: SupabaseDiscoverService(supabaseClient),
     );
     discoverViewModel.fetchDailyStories();
     discoverViewModel.fetchLegendaryFootballers();

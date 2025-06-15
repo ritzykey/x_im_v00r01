@@ -86,5 +86,10 @@
             "title": "Get Started Now!",
             "content": "Are you ready to explore thousands of inspiring stories waiting for you?"
         }
+    },
+    "lullaby": {
+        "home": {
+            "title": "Lullaby of the day"
+        }
     }
 }

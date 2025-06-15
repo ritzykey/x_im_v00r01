@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/service/lullabyHome_service.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/state/lullabyHome_state.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/project_operation.dart';
@@ -8,8 +9,10 @@ final class LullabyHomeViewModel extends BaseCubit<LullabyHomeState> {
   LullabyHomeViewModel({
     required ProjectOperation operationService,
     required HiveCacheOperation<UserCacheModel> userCacheOperation,
+    required LullabyHomeService lullabyHomeService,
   })  : _projectOperationService = operationService,
         userCacheOperation = userCacheOperation,
+        _lullabyHomeService = lullabyHomeService,
         super(
           const LullabyHomeState(
             isLoading: false,
@@ -21,6 +24,7 @@ final class LullabyHomeViewModel extends BaseCubit<LullabyHomeState> {
 
   final ProjectOperation _projectOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
+  final LullabyHomeService _lullabyHomeService;
 
   void changeLoading() {
     emit(state.copyWith(isLoading: state.isLoading));
@@ -36,5 +40,10 @@ final class LullabyHomeViewModel extends BaseCubit<LullabyHomeState> {
 
   void changePosition(Duration position) {
     emit(state.copyWith(position: position));
+  }
+
+  Future<void> getLullaby() async {
+    final lullaby = await _lullabyHomeService.getLulbies();
+    emit(state.copyWith(lullaby: lullaby));
   }
 }

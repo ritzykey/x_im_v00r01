@@ -86,5 +86,10 @@
             "title": "Hemen Başlayın!",
             "content": "Sizi bekleyen binlerce ilham verici hikayeyi keşfetmeye hazır mısınız?"
         }
+    },
+    "lullaby": {
+        "home": {
+            "title": "Günün Ninnisi"
+        }
     }
 }

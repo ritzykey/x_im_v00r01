@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/service/lullabyHome_service.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view/lullabyHome_view.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/lullabyHome_view_model.dart';
 import 'package:x_im_v00r01/product/service/manager/index.dart';
@@ -15,16 +16,19 @@ mixin LullabyHomeViewMixin on BaseState<LullabyHomeView> {
   @override
   void initState() {
     super.initState();
+
     productNetworkErrorManager = ProductNetworkErrorManager(context);
+
     ProductStateItems.productNetworkManager.listenErrorState(
       onErrorStatus: productNetworkErrorManager.handleError,
     );
+
     lullabyHomeViewModel = LullabyHomeViewModel(
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
+      lullabyHomeService: SupabaseLullabyHomeService(supabaseClient),
     );
 
-    super.initState();
     audioService = AudioService();
 
     audioService.setUrl(
@@ -46,6 +50,8 @@ mixin LullabyHomeViewMixin on BaseState<LullabyHomeView> {
     audioService.onPlayerComplate.listen((event) {
       lullabyHomeViewModel.changePosition(Duration.zero);
     });
+
+    lullabyHomeViewModel.getLullaby();
   }
 
   @override
