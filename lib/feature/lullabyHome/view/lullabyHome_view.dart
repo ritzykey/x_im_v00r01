@@ -9,7 +9,6 @@ import 'package:x_im_v00r01/feature/lullabyHome/view/mixin/lullabyHome_view_mixi
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/lullabyHome_view_model.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/state/lullabyHome_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
-import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 
 @RoutePage()
@@ -75,22 +74,6 @@ class _LullabyHomeViewState extends BaseState<LullabyHomeView>
                       ),
                     ),
                     SizedBox(height: context.sized.lowValue),
-                    BlocSelector<LullabyHomeViewModel, LullabyHomeState,
-                        LulbyModel>(
-                      selector: (state) {
-                        return state.lulbyModel;
-                      },
-                      builder: (context, state) {
-                        return Text(
-                          state.title,
-                          style:
-                              context.general.textTheme.headlineSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      },
-                    ),
                     SizedBox(height: context.sized.lowValue),
                     _PlayerRow(audioPlayer: audioService),
                   ],
@@ -123,101 +106,66 @@ class _PlayerRow extends StatelessWidget {
             return state.lulbyModel;
           },
           builder: (context, state) {
-            return IconButton(
-              icon: Icon(
-                context.watch<AudioViewModel>().state.isPlaying
-                    ? Icons.pause_circle_filled
-                    : Icons.play_circle_fill,
-                size: 40,
-              ),
-              color: Colors.white,
-              onPressed: () async {
-                if (context.read<AudioViewModel>().state.isPlaying) {
-                  await audioPlayer?.pause();
-                } else {
-                  await audioPlayer
-                      ?.play(
-                        state.audioURL,
-                      )
-                      .then(
-                        (value) => context
-                            .read<AudioViewModel>()
-                            .changeLullaby([state]),
-                      );
-                }
+            return GestureDetector(
+              onTap: () async {
+                await audioPlayer?.play(state.audioURL).then(
+                      (value) =>
+                          context.read<AudioViewModel>().changeLullaby([state]),
+                    );
               },
-            );
-          },
-        ),
-        BlocSelector<AudioViewModel, AudioState, Duration>(
-          selector: (state) {
-            return state.position;
-          },
-          builder: (context, state) {
-            String formatDuration(Duration duration) {
-              String twoDigits(int n) => n.toString().padLeft(2, '0');
-              final minutes = twoDigits(duration.inMinutes.remainder(60));
-              final seconds = twoDigits(duration.inSeconds.remainder(60));
-              return '$minutes:$seconds';
-            }
-
-            return Text(
-              formatDuration(state), // Current time
-              style: context.general.textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
-              ),
-            );
-          },
-        ),
-        BlocSelector<AudioViewModel, AudioState, (Duration, Duration)>(
-          selector: (state) {
-            return (state.position, state.duration);
-          },
-          builder: (context, state) {
-            return Expanded(
-              child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  trackHeight: 6,
-                  thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 8,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  overlayShape: const RoundSliderOverlayShape(
-                    overlayRadius: 16,
-                  ),
-                  activeTrackColor: Colors.white,
-                  inactiveTrackColor: Colors.white.withOpacity(0.5),
-                  thumbColor: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Slider(
-                  value: state.$1.inSeconds
-                      .toDouble()
-                      .clamp(0.0, state.$2.inSeconds.toDouble()),
-                  max: state.$2.inSeconds.toDouble(),
-                  onChanged: (value) async {
-                    final position = Duration(seconds: value.toInt());
-                    await audioPlayer?.seek(position);
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Icon(
+                      Icons.play_circle_fill,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.title.length > 21
+                              ? '${state.title.substring(0, 21)}...'
+                              : state.title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          state.artist.length > 20
+                              ? '${state.artist.substring(0, 20)}...'
+                              : state.artist,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-            );
-          },
-        ),
-        BlocSelector<AudioViewModel, AudioState, Duration>(
-          selector: (state) {
-            return state.duration;
-          },
-          builder: (context, state) {
-            String formatDuration(Duration duration) {
-              String twoDigits(int n) => n.toString().padLeft(2, '0');
-              final minutes = twoDigits(duration.inMinutes.remainder(60));
-              final seconds = twoDigits(duration.inSeconds.remainder(60));
-              return '$minutes:$seconds';
-            }
-
-            return Text(
-              formatDuration(state), // Total duration
-              style: context.general.textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
               ),
             );
           },

@@ -34,6 +34,7 @@ class _MiniAudioPlayerState extends BaseState<MiniAudioPlayer>
             ),
             child: Row(
               children: [
+                const SizedBox(width: 6),
                 // Albüm görseli
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
@@ -44,7 +45,7 @@ class _MiniAudioPlayerState extends BaseState<MiniAudioPlayer>
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 6),
 
                 // Şarkı ve sanatçı
                 Expanded(
@@ -71,7 +72,9 @@ class _MiniAudioPlayerState extends BaseState<MiniAudioPlayer>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      state.first.title,
+                                      state.first.title.length > 21
+                                          ? '${state.first.title.substring(0, 21)}...'
+                                          : state.first.title,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -80,7 +83,9 @@ class _MiniAudioPlayerState extends BaseState<MiniAudioPlayer>
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
-                                      state.first.artist,
+                                      state.first.artist.length > 21
+                                          ? '${state.first.artist.substring(0, 21)}...'
+                                          : state.first.artist,
                                       style: const TextStyle(
                                         color: Colors.white70,
                                         fontSize: 13,
