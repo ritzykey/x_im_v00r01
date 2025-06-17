@@ -139,7 +139,7 @@ class AppRouter extends RootStackRouter {
                   page: LullabiesListRoute.page,
                   transitionsBuilder: TransitionsBuilders.fadeIn,
                   durationInMilliseconds: 500, // 🔹 Animasyon süresi
-                  path: 'lullabylist',
+                  path: 'lullabylist/:categoryId',
                 ),
               ],
             ),

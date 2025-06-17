@@ -8,6 +8,7 @@ import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view/mixin/lullabyHome_view_mixin.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/lullabyHome_view_model.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/state/lullabyHome_state.dart';
+import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 
@@ -188,21 +189,25 @@ class _CategoryGrid extends StatelessWidget {
       mainAxisSpacing: context.padding.low.vertical,
       children: const [
         _CategoryCard(
+          path: 1,
           icon: Icons.bedtime_outlined,
           title: 'Ninniler',
           color: Color.fromARGB(255, 253, 179, 135),
         ),
         _CategoryCard(
+          path: 2,
           icon: Icons.book_outlined,
           title: 'Masallar',
           color: Color.fromARGB(255, 252, 134, 154),
         ),
         _CategoryCard(
+          path: 3,
           icon: Icons.music_note_outlined,
           title: 'Şarkılar',
           color: Color.fromARGB(255, 179, 136, 253),
         ),
         _CategoryCard(
+          path: 4,
           icon: Icons.mic_none,
           title: 'Kendi Ninnin',
           color: Color.fromARGB(255, 133, 180, 255),
@@ -214,6 +219,7 @@ class _CategoryGrid extends StatelessWidget {
 
 class _CategoryCard extends StatelessWidget {
   const _CategoryCard({
+    required this.path,
     required this.icon,
     required this.title,
     required this.color,
@@ -222,6 +228,7 @@ class _CategoryCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final Color color;
+  final int path;
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +241,7 @@ class _CategoryCard extends StatelessWidget {
       child: InkWell(
         borderRadius: context.border.normalBorderRadius,
         onTap: () {
-          context.router.pushNamed('lullabylist');
+          context.router.push(LullabiesListRoute(title: title, path: path));
         },
         child: Container(
           decoration: BoxDecoration(

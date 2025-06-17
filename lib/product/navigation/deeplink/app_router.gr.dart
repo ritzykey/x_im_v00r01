@@ -201,10 +201,20 @@ class LoginRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LullabiesListView]
-class LullabiesListRoute extends PageRouteInfo<void> {
-  const LullabiesListRoute({List<PageRouteInfo>? children})
-      : super(
+class LullabiesListRoute extends PageRouteInfo<LullabiesListRouteArgs> {
+  LullabiesListRoute({
+    required String title,
+    Key? key,
+    int? path,
+    List<PageRouteInfo>? children,
+  }) : super(
           LullabiesListRoute.name,
+          args: LullabiesListRouteArgs(
+            title: title,
+            key: key,
+            path: path,
+          ),
+          rawPathParams: {'categoryId': path},
           initialChildren: children,
         );
 
@@ -213,9 +223,33 @@ class LullabiesListRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LullabiesListView();
+      final args = data.argsAs<LullabiesListRouteArgs>();
+      return LullabiesListView(
+        title: args.title,
+        key: args.key,
+        path: args.path,
+      );
     },
   );
+}
+
+class LullabiesListRouteArgs {
+  const LullabiesListRouteArgs({
+    required this.title,
+    this.key,
+    this.path,
+  });
+
+  final String title;
+
+  final Key? key;
+
+  final int? path;
+
+  @override
+  String toString() {
+    return 'LullabiesListRouteArgs{title: $title, key: $key, path: $path}';
+  }
 }
 
 /// generated route for

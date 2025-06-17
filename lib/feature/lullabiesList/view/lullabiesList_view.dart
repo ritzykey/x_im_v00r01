@@ -2,36 +2,30 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:x_im_v00r01/feature/lullabiesList/view/mixin/lullabiesList_view_mixin.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/model/lulby_model.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 
 @RoutePage()
 class LullabiesListView extends StatefulWidget {
-  const LullabiesListView({super.key});
+  const LullabiesListView({
+    required this.title,
+    super.key,
+    @PathParam('categoryId') this.path,
+  });
+  final int? path;
+
+  final String title;
 
   @override
   State<LullabiesListView> createState() => _LullabiesListViewState();
 }
 
-class _LullabiesListViewState extends BaseState<LullabiesListView> {
-  late final Future<List<LulbyModel>> _lullabiesFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _lullabiesFuture = _getLullabies();
-  }
-
-  Future<List<LulbyModel>> _getLullabies() async {
-    final response = await supabaseClient
-        .from('lullabies')
-        .select()
-        .order('created_at', ascending: false);
-    return response.map(LulbyModel.fromJson).toList();
-  }
-
+class _LullabiesListViewState extends BaseState<LullabiesListView>
+    with LullabiesListViewMixin {
   @override
   Widget build(BuildContext context) {
+    print(widget.path);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -69,7 +63,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                 ),
               ),
               title: Text(
-                'Ninniler',
+                widget.title,
                 style: context.general.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors
@@ -100,7 +94,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                   color: Colors
                       .white, // Background for the list to appear floating
                   child: FutureBuilder<List<LulbyModel>>(
-                    future: _lullabiesFuture,
+                    future: lullabiesFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
