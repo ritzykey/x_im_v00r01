@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_im_v00r01/product/state/container/index.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 final class StateInitialize extends StatelessWidget {
@@ -15,6 +16,9 @@ final class StateInitialize extends StatelessWidget {
       providers: [
         BlocProvider<ProductViewModel>.value(
           value: ProductStateItems.productViewModel,
+        ),
+        BlocProvider<AudioViewModel>.value(
+          value: ProductStateItems.audioViewModel,
         ),
       ],
       child: child,

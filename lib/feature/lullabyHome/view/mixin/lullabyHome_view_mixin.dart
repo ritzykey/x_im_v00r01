@@ -25,22 +25,23 @@ mixin LullabyHomeViewMixin on BaseState<LullabyHomeView> {
       operationService: ProjectService(ProductStateItems.productNetworkManager),
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
       lullabyHomeService: SupabaseLullabyHomeService(supabaseClient),
+      audioViewModel: ProductStateItems.audioViewModel,
     );
 
     audioService.onPlayerStateChanged.listen((state) {
-      lullabyHomeViewModel.changeIsPlaying(state == PlayerState.playing);
+      audioViewModel.changeIsPlaying(state == PlayerState.playing);
     });
 
     audioService.onDurationChanged.listen((newDuration) {
-      lullabyHomeViewModel.changeDuration(newDuration!);
+      audioViewModel.changeDuration(newDuration!);
     });
 
     audioService.onPositionChanged.listen((newPosition) {
-      lullabyHomeViewModel.changePosition(newPosition);
+      audioViewModel.changePosition(newPosition);
     });
 
     audioService.onPlayerComplate.listen((event) {
-      lullabyHomeViewModel.changePosition(Duration.zero);
+      audioViewModel.changePosition(Duration.zero);
     });
 
     lullabyHomeViewModel.getLullaby();

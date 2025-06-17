@@ -5,6 +5,7 @@ import 'package:x_im_v00r01/feature/lullabyHome/service/audio_service.dart';
 import 'package:x_im_v00r01/product/cache/product_cache.dart';
 import 'package:x_im_v00r01/product/init/config/app_environment.dart';
 import 'package:x_im_v00r01/product/service/manager/product_service_manager.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
 /// Product container for dependency injection
@@ -32,6 +33,9 @@ final class ProductContainer {
       ..registerLazySingleton<SupabaseClient>(() => Supabase.instance.client)
       ..registerLazySingleton<ProductViewModel>(
         ProductViewModel.new,
+      )
+      ..registerLazySingleton<AudioViewModel>(
+        AudioViewModel.new,
       )
       ..registerLazySingleton<AudioService>(
         AudioService.new,

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/model/lulby_model.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
 
 @RoutePage()
@@ -13,7 +14,7 @@ class LullabiesListView extends StatefulWidget {
 }
 
 class _LullabiesListViewState extends BaseState<LullabiesListView> {
-  late final Future<List<Map<String, dynamic>>> _lullabiesFuture;
+  late final Future<List<LulbyModel>> _lullabiesFuture;
 
   @override
   void initState() {
@@ -21,12 +22,12 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
     _lullabiesFuture = _getLullabies();
   }
 
-  Future<List<Map<String, dynamic>>> _getLullabies() async {
+  Future<List<LulbyModel>> _getLullabies() async {
     final response = await supabaseClient
         .from('lullabies')
         .select()
         .order('created_at', ascending: false);
-    return (response as List<dynamic>).cast<Map<String, dynamic>>();
+    return response.map(LulbyModel.fromJson).toList();
   }
 
   @override
@@ -98,7 +99,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                 child: Container(
                   color: Colors
                       .white, // Background for the list to appear floating
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                  child: FutureBuilder<List<LulbyModel>>(
                     future: _lullabiesFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -141,8 +142,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover,
-                                    imageUrl:
-                                        (lullaby['cover_url'] ?? '') as String,
+                                    imageUrl: lullaby.coverURL ?? '',
                                     placeholder: (context, url) =>
                                         const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
@@ -150,13 +150,23 @@ class _LullabiesListViewState extends BaseState<LullabiesListView> {
                                   ),
                                 ),
                                 title: Text(
-                                  (lullaby['title'] ?? 'No Title') as String,
+                                  lullaby.title,
                                   style: context.general.textTheme.titleMedium,
                                 ),
                                 trailing: const Icon(Icons.arrow_forward_ios),
                                 onTap: () {
                                   // TODO: Navigate to lullaby detail page
                                   print('Navigate detail page');
+                                  audioViewModel.changeLullaby([
+                                    LulbyModel(
+                                      title: lullaby.title,
+                                      audioURL: lullaby.audioURL,
+                                      artist: lullaby.artist,
+                                    ),
+                                  ]);
+                                  audioService.play(
+                                    lullaby.audioURL,
+                                  );
                                 },
                               ),
                             );

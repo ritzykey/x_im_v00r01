@@ -9,6 +9,8 @@ import 'package:x_im_v00r01/feature/lullabyHome/view/mixin/lullabyHome_view_mixi
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/lullabyHome_view_model.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/view_model/state/lullabyHome_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 
 @RoutePage()
 class LullabyHomeView extends StatefulWidget {
@@ -74,20 +76,13 @@ class _LullabyHomeViewState extends BaseState<LullabyHomeView>
                     ),
                     SizedBox(height: context.sized.lowValue),
                     BlocSelector<LullabyHomeViewModel, LullabyHomeState,
-                        List<LulbyModel>>(
+                        LulbyModel>(
                       selector: (state) {
-                        return state.lullaby ??
-                            [
-                              const LulbyModel(
-                                audioURL: '',
-                                title: '**** ****** *****',
-                                artist: 'Anonim',
-                              ),
-                            ];
+                        return state.lulbyModel;
                       },
                       builder: (context, state) {
                         return Text(
-                          state.first.title,
+                          state.title,
                           style:
                               context.general.textTheme.headlineSmall?.copyWith(
                             color: Colors.white,
@@ -123,30 +118,38 @@ class _PlayerRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        BlocSelector<LullabyHomeViewModel, LullabyHomeState, (bool, String)>(
+        BlocSelector<LullabyHomeViewModel, LullabyHomeState, LulbyModel>(
           selector: (state) {
-            return (state.isPlaying, state.lullaby?.first.audioURL ?? '');
+            return state.lulbyModel;
           },
           builder: (context, state) {
             return IconButton(
               icon: Icon(
-                state.$1 ? Icons.pause_circle_filled : Icons.play_circle_fill,
+                context.watch<AudioViewModel>().state.isPlaying
+                    ? Icons.pause_circle_filled
+                    : Icons.play_circle_fill,
                 size: 40,
               ),
               color: Colors.white,
               onPressed: () async {
-                if (state.$1) {
+                if (context.read<AudioViewModel>().state.isPlaying) {
                   await audioPlayer?.pause();
                 } else {
-                  await audioPlayer?.play(
-                    state.$2,
-                  );
+                  await audioPlayer
+                      ?.play(
+                        state.audioURL,
+                      )
+                      .then(
+                        (value) => context
+                            .read<AudioViewModel>()
+                            .changeLullaby([state]),
+                      );
                 }
               },
             );
           },
         ),
-        BlocSelector<LullabyHomeViewModel, LullabyHomeState, Duration>(
+        BlocSelector<AudioViewModel, AudioState, Duration>(
           selector: (state) {
             return state.position;
           },
@@ -166,8 +169,7 @@ class _PlayerRow extends StatelessWidget {
             );
           },
         ),
-        BlocSelector<LullabyHomeViewModel, LullabyHomeState,
-            (Duration, Duration)>(
+        BlocSelector<AudioViewModel, AudioState, (Duration, Duration)>(
           selector: (state) {
             return (state.position, state.duration);
           },
@@ -200,7 +202,7 @@ class _PlayerRow extends StatelessWidget {
             );
           },
         ),
-        BlocSelector<LullabyHomeViewModel, LullabyHomeState, Duration>(
+        BlocSelector<AudioViewModel, AudioState, Duration>(
           selector: (state) {
             return state.duration;
           },
