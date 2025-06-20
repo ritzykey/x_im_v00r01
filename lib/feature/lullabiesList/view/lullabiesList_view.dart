@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:x_im_v00r01/feature/lullabiesList/view/mixin/lullabiesList_view_mixin.dart';
-import 'package:x_im_v00r01/feature/lullabiesList/view_model/lullabiesList_view_model.dart';
-import 'package:x_im_v00r01/feature/lullabiesList/view_model/state/lullabiesList_state.dart';
 import 'package:x_im_v00r01/feature/lullabyHome/model/lulby_model.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 
 @RoutePage()
 class LullabiesListView extends StatefulWidget {
@@ -157,10 +157,12 @@ class _LullabiesListViewState extends BaseState<LullabiesListView>
                                     style:
                                         context.general.textTheme.titleMedium,
                                   ),
-                                  trailing: BlocSelector<LullabiesListViewModel,
-                                      LullabiesListState, List<String>>(
+                                  trailing: BlocSelector<AudioViewModel,
+                                      AudioState, List<String>>(
                                     selector: (state) {
-                                      return state.favoriteIds;
+                                      return state.lullabyFavs!
+                                          .map((e) => e.id)
+                                          .toList();
                                     },
                                     builder: (context, state) {
                                       final isFavorite =
@@ -205,10 +207,7 @@ class _LullabiesListViewState extends BaseState<LullabiesListView>
                                                 ),
                                               );
 
-                                              lullabiesListViewModel
-                                                  .changeFavorites(
-                                                updatedFavorites,
-                                              );
+                                              changeFavList(updatedFavorites);
                                             },
                                           ),
                                           const Icon(Icons.arrow_forward_ios),

@@ -5,6 +5,7 @@ import 'package:x_im_v00r01/feature/favorites/view_model/favorites_view_model.da
 class FavoriteButton extends StatefulWidget {
   const FavoriteButton({
     required this.storyId,
+    required this.toggleLullabyFav,
     this.size = 24,
     this.color,
     super.key,
@@ -13,6 +14,7 @@ class FavoriteButton extends StatefulWidget {
   final String storyId;
   final double size;
   final Color? color;
+  final Future<void> Function(String lullabyId) toggleLullabyFav;
 
   @override
   State<FavoriteButton> createState() => _FavoriteButtonState();
@@ -51,7 +53,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     _isLoading.value = true;
 
     final viewModel = context.read<FavoritesViewModel>();
-    await viewModel.toggleFavoriteRPC(widget.storyId);
+    await widget.toggleLullabyFav(widget.storyId);
 
     if (mounted) {
       _isLoading.value = false;

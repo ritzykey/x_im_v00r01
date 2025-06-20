@@ -9,6 +9,7 @@ import 'package:x_im_v00r01/product/init/product_localization.dart';
 import 'package:x_im_v00r01/product/init/state_initialize.dart';
 import 'package:x_im_v00r01/product/init/theme/custom_scroll_behavior.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
+import 'package:x_im_v00r01/product/navigation/deeplink/my_route_observer.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_state.dart';
 import 'package:x_im_v00r01/product/state/view_model/product_view_model.dart';
 
@@ -58,7 +59,6 @@ class MyApp extends StatelessWidget {
         NetworkStatus.disconnected) {
       _appRouter.replaceAll([const NoConnectionRoute()]);
     }
-
     return MaterialApp.router(
       routerConfig: _appRouter.config(
         deepLinkBuilder: (deepLinkBuilder) {

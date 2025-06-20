@@ -10,6 +10,7 @@ final class FavoritesState extends Equatable {
   final bool? isLoading;
   final List<StoryModel>? favoriteStories;
 
+
   @override
   List<Object?> get props => [isLoading, favoriteStories];
 

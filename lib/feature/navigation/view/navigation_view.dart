@@ -5,6 +5,7 @@ import 'package:kartal/kartal.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:x_im_v00r01/feature/lullabyMiniPlayer/view/MiniAudioPlayer.dart';
 import 'package:x_im_v00r01/product/navigation/deeplink/app_router.dart';
+import 'package:x_im_v00r01/product/navigation/deeplink/my_route_observer.dart';
 
 @RoutePage()
 class NavigationView extends StatelessWidget {
@@ -12,7 +13,9 @@ class NavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myRouteObserver = MyRouteObserver();
     return AutoTabsScaffold(
+      navigatorObservers: () => [myRouteObserver],
       routes: const [
         LullabyHomeRoute(),
         DiscoverRoute(),

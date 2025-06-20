@@ -24,12 +24,14 @@ mixin LullabiesListViewMixin on BaseState<LullabiesListView> {
       userCacheOperation: ProductStateItems.productCache.userCacheOperation,
     );
     lullabiesFuture = _getLullabies(widget.path);
+    changeFavList(null);
   }
 
   Future<List<LulbyModel>> _getLullabies(int? categoryId) async {
     if (categoryId == null) {
       return [];
     }
+
     final response = await supabaseClient
         .from('lullabies')
         .select()
@@ -40,14 +42,48 @@ mixin LullabiesListViewMixin on BaseState<LullabiesListView> {
         lullabiesListViewModel.userCacheOperation.get('favorites')?.favorites ??
             [];
 
-    lullabiesListViewModel.changeFavorites(favoriteIds);
-
     return response.map((json) {
       final model = LulbyModel.fromJson(json);
       final isFav = favoriteIds.contains(model.id);
       return model.copyWith(isFavorite: isFav);
     }).toList();
+  }
 
-    return response.map(LulbyModel.fromJson).toList();
+  Future<void> changeFavList(List<String>? updatedFavorites) async {
+    final response = await supabaseClient
+        .from('lullabies')
+        .select()
+        .order('created_at', ascending: false);
+
+    if (updatedFavorites == null) {
+      final favoriteIds = lullabiesListViewModel.userCacheOperation
+              .get('favorites')
+              ?.favorites ??
+          [];
+      final favLullaby = response
+          .map((json) {
+            final model = LulbyModel.fromJson(json);
+            final isFav = favoriteIds.contains(model.id);
+            return model.copyWith(isFavorite: isFav);
+          })
+          .where(
+            (element) => element.isFavorite == true,
+          )
+          .toList();
+      audioViewModel.changeLullabyFavs(favLullaby);
+      return;
+    }
+
+    final favLullaby = response
+        .map((json) {
+          final model = LulbyModel.fromJson(json);
+          final isFav = updatedFavorites.contains(model.id);
+          return model.copyWith(isFavorite: isFav);
+        })
+        .where(
+          (element) => element.isFavorite == true,
+        )
+        .toList();
+    audioViewModel.changeLullabyFavs(favLullaby);
   }
 }

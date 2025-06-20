@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:gen/gen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:x_im_v00r01/feature/favorites/view_model/state/favorites_state.dart';
+import 'package:x_im_v00r01/feature/lullabyHome/model/lulby_model.dart';
 import 'package:x_im_v00r01/product/cache/model/user_cache_model.dart';
 import 'package:x_im_v00r01/product/service/interface/project_operation.dart';
 import 'package:x_im_v00r01/product/state/base/base_cubit.dart';
@@ -10,28 +11,32 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
   FavoritesViewModel({
     required ProjectOperation operationService,
     required HiveCacheOperation<UserCacheModel> userCacheOperation,
+    required SupabaseClient supabaseClient,
   })  : _projectOperationService = operationService,
         userCacheOperation = userCacheOperation,
+        _supabaseClient = supabaseClient,
         super(const FavoritesState(isLoading: false)) {
     // Load favorites when view model is created
-    fetchFavorites();
+    // fetchFavorites();
   }
 
   final ProjectOperation _projectOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
-  final _supabase = Supabase.instance.client;
+  final SupabaseClient _supabaseClient;
 
   void changeLoading() {
     emit(state.copyWith(isLoading: state.isLoading));
   }
 
+
+
   Future<void> fetchFavorites() async {
     changeLoading();
     try {
-      final userId = _supabase.auth.currentUser?.id;
+      final userId = _supabaseClient.auth.currentUser?.id;
       if (userId == null) return;
 
-      final response = await _supabase
+      final response = await _supabaseClient
           .from('favorites')
           .select('story_id, daily_stories(*)')
           .eq('status', 'G')
@@ -95,7 +100,7 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
 
   Future<bool> isFavorite(String storyId) async {
     try {
-      final response = await _supabase
+      final response = await _supabaseClient
           .rpc<bool>('is_favorite', params: {'story_id': storyId});
       return response;
     } catch (e) {
@@ -106,7 +111,7 @@ final class FavoritesViewModel extends BaseCubit<FavoritesState> {
 
   Future<Map<String, dynamic>> toggleFavoriteRPC(String storyId) async {
     try {
-      final response = await _supabase.rpc<Map<String, dynamic>>(
+      final response = await _supabaseClient.rpc<Map<String, dynamic>>(
         'favorite_story',
         params: {'p_story_id': storyId},
       );

@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:x_im_v00r01/feature/favorites/view/widget/favorite_button.dart';
 import 'package:x_im_v00r01/feature/favorites/view_model/favorites_view_model.dart';
 import 'package:x_im_v00r01/feature/favorites/view_model/state/favorites_state.dart';
 import 'package:x_im_v00r01/product/state/base/base_state.dart';
+import 'package:x_im_v00r01/product/state/view_model/audio_state/audio_view_model.dart';
 
 @RoutePage()
 class FavoritesView extends StatefulWidget {
@@ -20,7 +20,14 @@ class FavoritesView extends StatefulWidget {
 }
 
 class _FavoritesViewState extends BaseState<FavoritesView>
-    with FavoritesViewMixin {
+    with FavoritesViewMixin, RouteAware {
+  @override
+  void didPopNext() {
+    // bu sayfa tekrar göründüğünde
+    print('ProfilePage tekrar aktif');
+    // veri yenile vs.
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -49,7 +56,12 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                     const SliverFillRemaining(
                       child: Center(child: CircularProgressIndicator()),
                     )
-                  else if (state.favoriteStories?.isEmpty ?? true)
+                  else if (context
+                          .watch<AudioViewModel>()
+                          .state
+                          .lullabyFavs
+                          ?.isEmpty ??
+                      true)
                     SliverFillRemaining(
                       child: Center(
                         child: Column(
@@ -91,17 +103,14 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                         ),
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
-                            print(
-                              'Favorite Story at index $index: ${state.favoriteStories![index]}',
-                            );
-                            final story = state.favoriteStories![index];
+                            final story = context
+                                .read<AudioViewModel>()
+                                .state
+                                .lullabyFavs![index];
                             return GestureDetector(
                               onTap: () {
-                                productViewModel.changeTabIndex(
-                                  0,
-                                  context.router,
-                                  'story/${state.favoriteStories![index].id}',
-                                );
+                                audioService.play(story.audioURL);
+                                audioViewModel.changeLullaby([story]);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -124,23 +133,16 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                       ),
                                       child: AspectRatio(
                                         aspectRatio: 1,
-                                        child: story.photoUrl != null
-                                            ? Image.memory(
-                                                base64Decode(
-                                                  story.photoUrl ?? '',
-                                                ),
-                                                fit: BoxFit.cover,
-                                                errorBuilder: (
-                                                  context,
-                                                  error,
-                                                  stackTrace,
-                                                ) {
-                                                  return _buildImageError(
-                                                    context,
-                                                  );
-                                                },
-                                              )
-                                            : _buildImageError(context),
+                                        child: CachedNetworkImage(
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                          imageUrl: story.coverURL ?? '',
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                       ),
                                     ),
                                     Padding(
@@ -159,11 +161,7 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    story.translations?[
-                                                                    currentLocale]
-                                                                ['title']
-                                                            as String? ??
-                                                        '',
+                                                    story.title,
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -175,6 +173,8 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                                   ),
                                                 ),
                                                 FavoriteButton(
+                                                  toggleLullabyFav:
+                                                      toggleLullabyFav,
                                                   storyId: story.id ?? '',
                                                   size: 14,
                                                 ),
@@ -182,19 +182,18 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                                             ),
                                           ),
                                           const SizedBox(height: 2),
-                                          if (story.id != null)
-                                            Text(
-                                              DateFormat.yMMMd()
-                                                  .format(DateTime.now()),
-                                              style: context
-                                                  .general.textTheme.bodySmall
-                                                  ?.copyWith(
-                                                fontSize: 10,
-                                                color: context.general
-                                                    .colorScheme.onSurface
-                                                    .withOpacity(0.6),
-                                              ),
+                                          Text(
+                                            DateFormat.yMMMd()
+                                                .format(DateTime.now()),
+                                            style: context
+                                                .general.textTheme.bodySmall
+                                                ?.copyWith(
+                                              fontSize: 10,
+                                              color: context
+                                                  .general.colorScheme.onSurface
+                                                  .withOpacity(0.6),
                                             ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -203,7 +202,12 @@ class _FavoritesViewState extends BaseState<FavoritesView>
                               ),
                             );
                           },
-                          childCount: state.favoriteStories?.length ?? 0,
+                          childCount: context
+                                  .watch<AudioViewModel>()
+                                  .state
+                                  .lullabyFavs
+                                  ?.length ??
+                              0,
                         ),
                       ),
                     ),

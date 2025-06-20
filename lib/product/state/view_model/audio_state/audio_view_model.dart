@@ -18,6 +18,7 @@ final class AudioViewModel extends BaseCubit<AudioState> {
                 artist: 'Anonim',
               ),
             ],
+            lullabyFavs: [],
           ),
         );
 
@@ -39,5 +40,9 @@ final class AudioViewModel extends BaseCubit<AudioState> {
 
   void changeLullaby(List<LulbyModel> lullaby) {
     emit(state.copyWith(lullaby: lullaby));
+  }
+
+  void changeLullabyFavs(List<LulbyModel> lullaby) {
+    emit(state.copyWith(lullabyFavs: lullaby));
   }
 }

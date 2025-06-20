@@ -4,6 +4,20 @@ import 'package:flutter/services.dart';
 
 class MyRouteObserver extends AutoRouterObserver {
   @override
+  void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
+    // TODO: implement didInitTabRoute
+    super.didInitTabRoute(route, previousRoute);
+    debugPrint('didInitTabRoute from: ${route.index}');
+  }
+
+  @override
+  void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
+    // TODO: implement didChangeTabRoute
+    super.didChangeTabRoute(route, previousRoute);
+    debugPrint('didChangeTabRoute from: ${route.index}');
+  }
+
+  @override
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
     debugPrint('Navigated to: ${route.settings.name}');
@@ -11,7 +25,7 @@ class MyRouteObserver extends AutoRouterObserver {
       const SystemUiOverlayStyle(
         statusBarColor:
             Colors.transparent, // Durum çubuğu rengini şeffaf yapıyoruz
-            statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
   }
