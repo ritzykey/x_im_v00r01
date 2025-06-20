@@ -11,7 +11,7 @@ final class UserCacheModel with CacheModel {
     this.language,
     this.selectedTextSize,
     this.fontSize,
-
+    this.favorites,
   });
 
   UserCacheModel.empty()
@@ -20,7 +20,8 @@ final class UserCacheModel with CacheModel {
         themeMode = null,
         language = null,
         selectedTextSize = null,
-        fontSize = 12.0;
+        fontSize = 12.0,
+        favorites = [];
 
   final LoginResponseModel2? user;
   final bool? isFirstTime; // Opsiyonel alan
@@ -28,7 +29,7 @@ final class UserCacheModel with CacheModel {
   final Locale? language;
   final List<bool>? selectedTextSize;
   final double? fontSize;
-
+  final List<String>? favorites;
 
   @override
   UserCacheModel fromDynamicJson(dynamic json) {
@@ -48,7 +49,9 @@ final class UserCacheModel with CacheModel {
           ?.map((e) => e as bool)
           .toList(),
       fontSize: jsonMap['fontSize'] as double?,
-
+      favorites: (jsonMap['favorites'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
     );
   }
 
@@ -64,18 +67,18 @@ final class UserCacheModel with CacheModel {
       'language': language?.languageCode,
       'selectedTextSize': selectedTextSize,
       'fontSize': fontSize,
-
+      'favorites': favorites,
     };
   }
 
   UserCacheModel copyWith({
+    List<String>? favorites,
     LoginResponseModel2? user,
     bool? isFirstTime,
     ThemeMode? themeMode,
     Locale? language,
     List<bool>? selectedTextSize,
     double? fontSize,
-
   }) {
     return UserCacheModel(
       user: user ?? this.user,
@@ -84,7 +87,7 @@ final class UserCacheModel with CacheModel {
       language: language ?? this.language,
       selectedTextSize: selectedTextSize ?? this.selectedTextSize,
       fontSize: fontSize ?? this.fontSize,
-
+      favorites: favorites ?? this.favorites,
     );
   }
 

@@ -16,6 +16,7 @@ final class MiniAudioPlaterViewModel extends BaseCubit<MiniAudioPlayerState> {
           const MiniAudioPlayerState(
             isLoading: false,
             lulbyModel: LulbyModel(
+              id: '',
               title: '****** ******',
               audioURL: '',
               artist: 'Anonim',

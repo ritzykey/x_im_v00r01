@@ -35,6 +35,19 @@ mixin LullabiesListViewMixin on BaseState<LullabiesListView> {
         .select()
         .eq('category', categoryId)
         .order('created_at', ascending: false);
+
+    final favoriteIds =
+        lullabiesListViewModel.userCacheOperation.get('favorites')?.favorites ??
+            [];
+
+    lullabiesListViewModel.changeFavorites(favoriteIds);
+
+    return response.map((json) {
+      final model = LulbyModel.fromJson(json);
+      final isFav = favoriteIds.contains(model.id);
+      return model.copyWith(isFavorite: isFav);
+    }).toList();
+
     return response.map(LulbyModel.fromJson).toList();
   }
 }

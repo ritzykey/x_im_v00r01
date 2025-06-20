@@ -10,12 +10,16 @@ final class LullabiesListViewModel extends BaseCubit<LullabiesListState> {
     required HiveCacheOperation<UserCacheModel> userCacheOperation,
   })  : _projectOperationService = operationService,
         userCacheOperation = userCacheOperation,
-        super(const LullabiesListState(isLoading: false));
+        super(const LullabiesListState(favoriteIds: []));
 
   final ProjectOperation _projectOperationService;
   final HiveCacheOperation<UserCacheModel> userCacheOperation;
 
   void changeLoading() {
     emit(state.copyWith(isLoading: state.isLoading));
+  }
+
+  void changeFavorites(List<String> favoriteIds) {
+    emit(state.copyWith(favoriteIds: favoriteIds));
   }
 }

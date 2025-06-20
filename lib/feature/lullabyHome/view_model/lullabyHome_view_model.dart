@@ -20,8 +20,8 @@ final class LullabyHomeViewModel extends BaseCubit<LullabyHomeState> {
         super(
           const LullabyHomeState(
             isLoading: false,
-            lulbyModel:
-                LulbyModel(title: '**** ***', audioURL: '', artist: '*****'),
+            lulbyModel: LulbyModel(
+                id: '', title: '**** ***', audioURL: '', artist: '*****'),
           ),
         );
 

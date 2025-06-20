@@ -12,6 +12,7 @@ final class AudioViewModel extends BaseCubit<AudioState> {
             position: Duration.zero,
             lullaby: [
               LulbyModel(
+                id: '',
                 audioURL: '',
                 title: '**** ****** *****',
                 artist: 'Anonim',
